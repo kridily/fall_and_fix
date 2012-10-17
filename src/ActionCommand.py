@@ -1,11 +1,13 @@
 import math, sys, random
 
 class ActionCommand:
-    def __init__(self,size,letter_array):
+    def __init__(self,size,letter_array,fixedCommandList = 0):
         #Initalizes the Action Command
         #
         #Size: Size of the Command
         #letter_array: strings that represent commands that can be entered.
+        #fixedCommandList: if you input an array here, it will be used instead of the random array.
+
         self.size = size
 
         if self.size < 0:
@@ -13,10 +15,14 @@ class ActionCommand:
 
         self.CommandArray = []
 
-        for i in range (0, size):
-            pickletter = letter_array[random.randint(0, letter_array.__len__()-1)]
-            self.CommandArray.append(pickletter)
-        print self.CommandArray
+        if fixedCommandList == 0:
+            for i in range (0, size):
+                pickletter = letter_array[random.randint(0, letter_array.__len__()-1)]
+                self.CommandArray.append(pickletter)
+            print self.CommandArray
+        else:
+            self.CommandArray = list(fixedCommandList)
+            print self.CommandArray
 
     def inputCommand(self,character):
         if self.CommandArray != []:
