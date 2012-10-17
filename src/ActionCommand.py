@@ -34,3 +34,7 @@ class ActionCommand:
             return True
         else:
             return False
+            
+#DEBUG            
+#AC = ActionCommand(5,['!','@','#','$','%'])
+
