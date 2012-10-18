@@ -1,0 +1,44 @@
+#make an account at github.com and email me your username
+#download git for your OS at git-scm.com
+#open the git bash (shell)
+#it should currently be in your UserProfile
+
+# Set the default name for git to use when you commit
+git config --global user.name "Your Name Here"
+
+# Set the default email for git to use when you commit
+git config --global user.email "your_email@youremail.com"
+#use the email you used when you made the git-hub account
+
+#Create a local folder you want to use and 
+#use cd to navigate to the directory, eg.:
+cd documents/GameDev1/project3
+
+#initalize an empty git repository
+git init
+
+#setup origin to be the project repository,
+#once I've added you as a collaborator
+git remote add origin https://github.com/kridily/fall_and_fix.git
+#_______________________________________________________________________
+#All above is setup. After now you should only have to use the following
+
+#pull the data off the server
+git pull origin master
+#you should now have a clone of the server copy
+
+#If you modify, add, or delete files, and want to upload changes
+#mark all files to look at for modifications
+git add -A .
+#commit your changes, adding a message to identify the changes
+git commit -m 'message'
+#make sure you have the most recent copy of the repository
+git pull origin master
+#push your changes, typing in your username and password 
+git push origin master
+
+#If there are merge conflicts or any other problems pushing, pull
+#If there are still problems, type:
+git reset --hard
+
+
