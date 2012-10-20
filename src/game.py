@@ -12,7 +12,7 @@ class World(DirectObject): #necessary to accept events
     def __init__(self):
         #turn off default mouse control
         #otherwise we can't position the camera
-        #base.disableMouse()
+        base.disableMouse()
         camera.setPosHpr(0, -18, 3, 0, 0, 0)
         self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "drop":0}
         self.prevTime = 0
