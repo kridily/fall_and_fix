@@ -12,7 +12,7 @@ class World(DirectObject): #necessary to accept events
     def __init__(self):
         #turn off default mouse control
         #otherwise we can't position the camera
-        base.disableMouse()
+        #base.disableMouse()
         camera.setPosHpr(0, -18, 3, 0, 0, 0)
         self.keyMap = {"left":0, "right":0, "forward":0, "back":0, "drop":0}
         self.prevTime = 0
@@ -51,14 +51,14 @@ class World(DirectObject): #necessary to accept events
         # self.accept("arrow_left-up", self.setKey, ["left", 0])
         # self.accept("arrow_right-up", self.setKey, ["right", 0])
         
-        # self.accept("w", self.setKey, ["forward", 1])
-        # self.accept("s", self.setKey, ["back", 1])
-        # self.accept("a", self.setKey, ["left", 1])
-        # self.accept("d", self.setKey, ["right", 1])
-        # self.accept("w-up", self.setKey, ["forward", 0])
-        # self.accept("s-up", self.setKey, ["back", 0])
-        # self.accept("a-up", self.setKey, ["left", 0])
-        # self.accept("d-up", self.setKey, ["right", 0])
+        self.accept("w", self.setKey, ["forward", 1])
+        self.accept("s", self.setKey, ["back", 1])
+        self.accept("a", self.setKey, ["left", 1])
+        self.accept("d", self.setKey, ["right", 1])
+        self.accept("w-up", self.setKey, ["forward", 0])
+        self.accept("s-up", self.setKey, ["back", 0])
+        self.accept("a-up", self.setKey, ["left", 0])
+        self.accept("d-up", self.setKey, ["right", 0])
         
         self.accept("ate-smiley", self.eat)
         
@@ -70,14 +70,14 @@ class World(DirectObject): #necessary to accept events
         
     def loadModels(self):
         """loads initial models into the world"""
-        self.numPipes = 12
+        self.numPipes = 6
         self.numTypes = 6
         self.pipeBag = GrabBag(self.numTypes)
         self.pipeList = []
-        self.pipeInterval = 20.25
+        self.pipeInterval = 20.25*3.05
         
         for i in range(self.numPipes):
-            filename = ["../models/unbrokenWall"]
+            filename = ["../models/tunnelWallTemp"]
             filename.append(str(self.pipeBag.pick()-1))
             filename.append(".egg")
             filename = ''.join(filename)
@@ -89,19 +89,18 @@ class World(DirectObject): #necessary to accept events
             self.pipeList.append(pipe)
         self.pipeDepth = 0
         
-        self.panda = loader.loadModel("../models/spiderHigh.egg")
+        self.panda = loader.loadModel("../models/spider.egg")
         self.panda.reparentTo(render)
-        self.panda.setScale(.075)
+        self.panda.setScale(.045)
         self.panda.setZ(3.5)
-        self.panda.setH(90)
-        self.panda.setR(-65)
+        self.panda.setH(180)
+        self.panda.setP(-65)
 
         
             
     def loadSound(self):
         self.openingMusic = loader.loadSfx("../audio/opening.wav")
         self.mainLoopMusic = loader.loadSfx("../audio/mainLoop.wav")
-        #self.music = loader.loadSfx("audio/music")
         SoundInterval(self.openingMusic).start()
         
             
@@ -258,7 +257,7 @@ class World(DirectObject): #necessary to accept events
             self.pipeList[0].removeNode()
             self.pipeList.pop(0)
         
-            filename = ["../models/unbrokenWall"]
+            filename = ["../models/tunnelWallTemp"]
             filename.append(str(self.pipeBag.pick()-1))
             filename.append(".egg")
             filename = ''.join(filename)
@@ -274,22 +273,27 @@ class World(DirectObject): #necessary to accept events
             for i in range(self.pipeList.__len__()):
                 self.pipeList[i].setY(self.pipeList[i].getY() - dt*100)            
         
-        if self.keyMap["left"] == 1:
-            self.panda.setH(self.panda.getH() + dt*100)
+        dist = .1
+        if self.keyMap["left"] == 1:            
+            self.panda.setHpr(-115, 0, 90)
+            self.panda.setX(self.panda.getX()-1*dist)
         if self.keyMap["right"] == 1:
-            self.panda.setH(self.panda.getH() - dt*100)
+            self.panda.setHpr(115, -0, -90)
+            self.panda.setX(self.panda.getX()+1*dist)            
         if self.keyMap["forward"] == 1:
-            dist = .6 #.1
-            angle = deg2Rad(self.panda.getH())
-            dx = dist * math.sin(angle)
-            dy = dist * -math.cos(angle)
-            self.panda.setPos(self.panda.getX() + dx, self.panda.getY() + dy, 2.5)
+            dist = .1
+            #self.panda.setHpr(self.panda.getHpr()+1)
+            self.panda.setHpr(180, -65, 0)
+            #self.panda.setHpr(542,295,360)            
+            self.panda.setZ(self.panda.getZ()+1*dist)            
         if self.keyMap["back"] == 1:
-            dist = .25 #.1
-            angle = deg2Rad(self.panda.getH())
-            dx = dist * math.sin(angle)
-            dy = dist * -math.cos(angle)
-            self.panda.setPos(self.panda.getX() - dx, self.panda.getY() - dy, 2.5)
+            dist = .1
+            #self.panda.setHpr(self.panda.getHpr()+1)
+            #self.panda.setH(self.panda.getH()+180)
+            self.panda.setHpr(180, 65, 180)
+            print self.panda.getHpr()
+            self.panda.setZ(self.panda.getZ()-1*dist)
+          
         
         self.prevTime = task.time
         return Task.cont

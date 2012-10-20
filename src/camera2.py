@@ -73,10 +73,10 @@ class World(DirectObject): #necessary to accept events
         self.numPipes = 6
         self.pipeBag = GrabBag(self.numPipes)
         self.pipeList = []
-        self.pipeInterval = 20.25
+        self.pipeInterval = 20.25*3.05
         
         for i in range(self.numPipes):
-            filename = ["models/unbrokenWall"]
+            filename = ["../models/tunnelWallTemp"]
             filename.append(str(self.pipeBag.pick() % 6))
             filename.append(".egg")
             filename = ''.join(filename)
@@ -88,17 +88,17 @@ class World(DirectObject): #necessary to accept events
             self.pipeList.append(pipe)
         self.pipeDepth = 0
         
-        self.panda = loader.loadModel("models/spiderHigh.egg")
+        self.panda = loader.loadModel("../models/spiderHigh.egg")
         self.panda.reparentTo(render)
-        self.panda.setScale(.075)
+        self.panda.setScale(.05)
         self.panda.setZ(3)
         self.panda.setH(90)
         self.panda.setR(-90)
         
         
     def loadSound(self):
-        self.openingMusic = loader.loadSfx("audio/opening.wav")
-        self.mainLoopMusic = loader.loadSfx("audio/mainLoop.wav")
+        self.openingMusic = loader.loadSfx("../audio/opening.wav")
+        self.mainLoopMusic = loader.loadSfx("../audio/mainLoop.wav")
         #self.music = loader.loadSfx("audio/music")
         SoundInterval(self.openingMusic).start()
         
@@ -258,7 +258,7 @@ class World(DirectObject): #necessary to accept events
             self.pipeList[0].removeNode()
             self.pipeList.pop(0)
         
-            filename = ["models/unbrokenWall"]
+            filename = ["../models/tunnelWallTemp"]
             filename.append(str(self.pipeBag.pick() % 6))
             filename.append(".egg")
             filename = ''.join(filename)
