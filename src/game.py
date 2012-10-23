@@ -11,7 +11,7 @@ from GrabBag import *
 class World(DirectObject): #necessary to accept events
     def __init__(self):
         #turn off default mouse control
-        #base.disableMouse()
+        base.disableMouse()
         
         camera.setPosHpr(0, -18, 3, 0, 0, 0)
         self.keyMap = {"moveLeft":0, "moveRight":0, "moveUp":0, "moveDown":0, "drop":0}
@@ -19,8 +19,7 @@ class World(DirectObject): #necessary to accept events
         taskMgr.add(self.move, "moveTask")
         
         self.loadModels()
-        #camera.lookAt(self.spider)
-    
+            
         self.setupLights()
         #self.setupLights2()
         
@@ -90,7 +89,7 @@ class World(DirectObject): #necessary to accept events
         self.spider = loader.loadModel("../models/spider.egg")
         self.spider.reparentTo(render)
         self.spider.setScale(.045)
-        self.spider.setZ(3.5)
+        self.spider.setZ(4.25)
         self.spider.setH(180)
         self.spider.setP(-65)
 
@@ -147,7 +146,7 @@ class World(DirectObject): #necessary to accept events
         #stuff and things
         
         #comment this line to debug camera
-        #self.adjustCamera()
+        self.adjustCamera()
         
         if self.openingMusic.status() != self.openingMusic.PLAYING:
             if self.mainLoopMusic.status() != self.mainLoopMusic.PLAYING:
@@ -193,13 +192,13 @@ class World(DirectObject): #necessary to accept events
                 self.spider.setX(self.spider.getX()+1*dist)            
         if self.keyMap["moveUp"] == 1:
             self.spider.setHpr(180, -65, 0)
-            if self.spider.getZ() < 6.5:
+            if self.spider.getZ() < 6.45:
                 self.spider.setZ(self.spider.getZ()+1*dist)            
         if self.keyMap["moveDown"] == 1:
             self.spider.setHpr(180, 65, 180)
             if self.spider.getZ() > 2.6:            
                 self.spider.setZ(self.spider.getZ()-1*dist)
-        
+        #print self.spider.getPos()
                
         
         self.prevTime = task.time
@@ -222,7 +221,7 @@ class World(DirectObject): #necessary to accept events
         turnRate = 0.1
         camera.setPos(camera.getPos() + (dirVec * turnRate))
         camera.setZ(4.5)
-        #camera.lookAt(self.spider)
+        camera.lookAt(self.spider)
 
         
     def setupCollisions(self):
