@@ -15,7 +15,7 @@ class World(DirectObject): #necessary to accept events
         #add update tasks to taskManager
         taskMgr.add(self.keyEvents, "keyEventTask")
         taskMgr.add(self.loopMusic, "loopMusicTask")
-        taskMgr.add(self.createPipe, "createPipeTask")
+        taskMgr.add(self.checkPipes, "checkPipesTask")
         
         
         camera.setPosHpr(0, -18, 3, 0, 0, 0)
@@ -29,7 +29,7 @@ class World(DirectObject): #necessary to accept events
                 
         self.loadSound()
                 
-        #self.setupCollisions()
+        self.setupCollisions()
       
         self.accept("escape", sys.exit) #message name, function to call, (optional) list of arguments to that function
         #useful interval methods:
@@ -75,22 +75,14 @@ class World(DirectObject): #necessary to accept events
         self.numTypes = 6
         self.pipeBag = GrabBag(self.numTypes)
         self.pipeList = []
-        self.pipeInterval = 20.25*3.05
-        
-        for i in range(self.numPipes):
-            filename = ["../models/tunnelWallTemp"]
-            filename.append(str(self.pipeBag.pick()-1))
-            filename.append(".egg")
-            filename = ''.join(filename)
-            
-            pipe = loader.loadModel(filename)
-            pipe.setScale(.0175)
-            pipe.setPos(0, i*self.pipeInterval, 0)
-            pipe.reparentTo(render)
-            self.pipeList.append(pipe)
-        
+        self.pipeInterval = 20.25*3.05#*.90 #length*timesLonger*overlapConstant
         self.pipeDepth = 0
         
+        self.redHelperList = []
+        self.redLightList = []
+        for i in range(self.numPipes):
+            self.createPipe(i)   
+                
         #load spider
         self.spider = loader.loadModel("../models/spider.egg")
         self.spider.reparentTo(render)
@@ -129,20 +121,28 @@ class World(DirectObject): #necessary to accept events
     def addPointLight(self, pipe):    
         """create a point light for pipe"""      
         
-        #The blue point light and helper
-        helper = loader.loadModel("assets/maya/sphere.egg.pz")
-        helper.setColor( Vec4( 1, 0, 0, 1 ) )        
+        #The redpoint light and helper
+        gb = random.uniform(0, 300) / 1000
+        r = random.uniform(700, 900) / 1000        
+        helper = loader.loadModel("../models/sphere.egg.pz")
+        
+        helper.setColor( Vec4( r, gb, gb, 1 ) )      
         helper.setPos(pipe.getPos())
-        print helper.getPos()
-        helper.setScale(.25)
+        print helper.getColor()
+        helper.setScale(.25*0)
+        #optionally set location of light within pipe
+        helper.setY(helper.getY()-50*35 ) #moves to inbetween segments
+        #helper.setZ(helper.getZ()-50*6 ) #makes 3 sided lights
+        
         light = helper.attachNewNode( PointLight( "light" ) )
-        light.node().setAttenuation( Vec3( .1, 0.04, 0.0 ) )
-        gb = random.uniform(0, 600) / 1000
-        r = random.uniform(700, 900) / 1000            
+        light.node().setAttenuation( Vec3( .1, 0.04, 0.0 )/2 )                   
         light.node().setColor( Vec4( r, gb, gb, 1 ) )
         light.node().setSpecularColor( Vec4( 1 ) )
         helper.reparentTo( pipe )
-        render.setLight( light )       
+        render.setLight( light )
+        
+        self.redHelperList.append(helper)
+        self.redLightList.append(light)
    
     
     def setupCollisions(self):
@@ -153,7 +153,7 @@ class World(DirectObject): #necessary to accept events
         # "%in" is substituted with the name of the into object
         self.cHandler.setInPattern("ate-%in")
         
-        cSphere = CollisionSphere((0,-.25,-1.1), 7.3)
+        cSphere = CollisionSphere((0,-5,0), 40)
         cNode = CollisionNode("spider")
         cNode.addSolid(cSphere)
         #spider is *only* a from object
@@ -162,12 +162,12 @@ class World(DirectObject): #necessary to accept events
         #cNodePath.show()
         base.cTrav.addCollider(cNodePath, self.cHandler)
         
-        for target in self.targets:
-            cSphere = CollisionSphere((0,0,4), 6)
-            cNode = CollisionNode("smiley")
-            cNode.addSolid(cSphere)
-            cNodePath = target.attachNewNode(cNode)
-            #cNodePath.show()
+        # for pipe in self.pipeList:
+            # cSphere = CollisionSphere((0,0,0), 100)
+            # cNode = CollisionNode("smiley")
+            # cNode.addSolid(cSphere)
+            # cNodePath = pipe.attachNewNode(cNode)
+            # cNodePath.show()
         
     def eat(self, cEntry):
         self.targets.remove(cEntry.getIntoNodePath().getParent())
@@ -183,9 +183,8 @@ import updateWorld
 World.keyEvents = updateWorld.keyEvents
 World.adjustCamera = updateWorld.adjustCamera
 World.loopMusic = updateWorld.loopMusic
+World.checkPipes = updateWorld.checkPipes
 World.createPipe = updateWorld.createPipe
+
 w = World()
-#time.sleep(3)
-#add update tasks to taskManager
-#w.update = Update(w)
 run()
