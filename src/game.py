@@ -11,7 +11,7 @@ from GrabBag import *
 class World(DirectObject): #necessary to accept events
     def __init__(self):
         #turn off default mouse control
-        base.disableMouse()
+        #base.disableMouse()
         #add update tasks to taskManager
         taskMgr.add(self.keyEvents, "keyEventTask")
         taskMgr.add(self.loopMusic, "loopMusicTask")
@@ -75,7 +75,7 @@ class World(DirectObject): #necessary to accept events
         self.numTypes = 6
         self.pipeBag = GrabBag(self.numTypes)
         self.pipeList = []
-        self.pipeInterval = 20.25*3.05*.90 #length*timesLonger*overlapConstant
+        self.pipeInterval = 20.25*3.05#*.90 #length*timesLonger*overlapConstant
         self.pipeDepth = 0
         
         for i in range(self.numPipes):

@@ -42,7 +42,7 @@ def keyEvents(self, task):
             self.spider.setZ(self.spider.getZ()-1*dist)
     #print self.spider.getPos()
     
-    self.adjustCamera()
+    #self.adjustCamera()
     
     self.prevTime = task.time
     return Task.cont
