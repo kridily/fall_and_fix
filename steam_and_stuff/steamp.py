@@ -51,7 +51,7 @@ class World(DirectObject):
         self.p.loadConfig(Filename(file))        
         #Sets particles to birth relative to the teapot, but to render at toplevel
         self.p.start(self.t)
-        self.p.setPos(-2.00, 0.000, 3.250)
+        self.p.setPos(-2.00, 0.000, 3.050)
     
     #Setup lighting
     def setupLights(self):
