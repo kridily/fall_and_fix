@@ -19,9 +19,9 @@ def keyEvents(self, task):
     if self.keyMap["drop"] == 0:
         for i in range(self.pipeList.__len__()):
             self.pipeList[i].setY(self.pipeList[i].getY() - dt*100)
-    # else:
-        # for i in range(self.pipeList.__len__()):
-            # self.pipeList[i].setR(self.pipeList[i].getR() + dt*10*i)
+    else:
+        for i in range(self.pipeList.__len__()):
+            self.pipeList[i].setR(self.pipeList[i].getR() + dt*10*i)
     
     dist = .1
     if self.keyMap["moveLeft"] == 1:          
@@ -91,7 +91,7 @@ def createPipe(self, i):
         filename.append(str(self.pipeBag.pick()-1))
         filename.append(".egg")
         filename = ''.join(filename)
-        filename = "../models/NO TRY ME INSTEAD-tunnelwall template5.egg"
+        filename = "../models/NO TRY MEEE- tunnelwall template5.egg"
         
         #load file
         pipe = loader.loadModel(filename)
@@ -106,7 +106,6 @@ def createPipe(self, i):
             
         #rotate by 0, 90, 180, or 270 degrees
         pipe.setR(random.randint(0,3)*90)
-        #if pipe.getR() == 180: pipe.setZ(pipe.getZ()-.1)
         print pipe.getR()
         
         # if filename == "tunnelWallTemp5.egg":
