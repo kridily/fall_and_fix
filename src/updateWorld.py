@@ -18,7 +18,7 @@ def keyEvents(self, task):
     
     if self.keyMap["drop"] == 0:
         for i in range(self.pipeList.__len__()):
-            self.pipeList[i].setY(self.pipeList[i].getY() - dt*100)
+            self.pipeList[i].setY(self.pipeList[i].getY() - dt*100*1.6)
     if self.keyMap["drop"] == 1:
         for i in range(self.pipeList.__len__()):
             self.pipeList[i].setR(self.pipeList[i].getR() + dt*20*i)
@@ -34,7 +34,7 @@ def keyEvents(self, task):
             self.spider.setX(self.spider.getX()+1*dist)            
     if self.keyMap["moveUp"] == 1:
         self.spider.setHpr(180, -65, 0)
-        if self.spider.getZ() < 6.45:
+        if self.spider.getZ() < 6.1:
             self.spider.setZ(self.spider.getZ()+1*dist)            
     if self.keyMap["moveDown"] == 1:
         self.spider.setHpr(180, 65, 180)

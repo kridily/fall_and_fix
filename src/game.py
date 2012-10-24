@@ -122,16 +122,17 @@ class World(DirectObject): #necessary to accept events
         """create a point light for pipe"""      
         
         #The redpoint light and helper
-        gb = random.uniform(0, 400) / 1000
+        gb = random.uniform(0, 300) / 1000
         r = random.uniform(700, 900) / 1000        
         helper = loader.loadModel("../models/sphere.egg.pz")
         
         helper.setColor( Vec4( r, gb, gb, 1 ) )      
         helper.setPos(pipe.getPos())
-        #optionally set location of light within pipe to end
-        #helper.setY(helper.getY()-50*35 )
         print helper.getColor()
         helper.setScale(.25*0)
+        #optionally set location of light within pipe
+        helper.setY(helper.getY()-50*35 ) #moves to inbetween segments
+        helper.setZ(helper.getZ()-50*6 ) #makes 3 sided lights
         
         light = helper.attachNewNode( PointLight( "light" ) )
         light.node().setAttenuation( Vec3( .1, 0.04, 0.0 )/2 )                   
