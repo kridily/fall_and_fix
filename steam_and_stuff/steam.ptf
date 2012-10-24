@@ -36,7 +36,7 @@ p0.renderer.setInitialXScale(0.5000)
 p0.renderer.setFinalXScale(1.0000)
 p0.renderer.setInitialYScale(0.5000)
 p0.renderer.setFinalYScale(1.0000)
-p0.renderer.setNonanimatedTheta(0.0000)
+p0.renderer.setNonanimatedTheta(90.0000)
 p0.renderer.setAlphaBlendMethod(BaseParticleRenderer.PPNOBLEND)
 p0.renderer.setAlphaDisable(0)
 # Emitter parameters
