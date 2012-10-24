@@ -4,7 +4,7 @@ from direct.showbase.DirectObject import DirectObject #for event handling
 from direct.actor.Actor import Actor #for animated models
 from direct.interval.IntervalGlobal import * #for compound intervals
 from direct.task import Task #for update functions
-import math, sys, random
+import math, sys, random, time
 from GrabBag import *
 
 
@@ -12,17 +12,21 @@ class World(DirectObject): #necessary to accept events
     def __init__(self):
         #turn off default mouse control
         base.disableMouse()
+        #add update tasks to taskManager
+        taskMgr.add(self.keyEvents, "keyEventTask")
+        taskMgr.add(self.loopMusic, "loopMusicTask")
+        taskMgr.add(self.createPipe, "createPipeTask")
+        
         
         camera.setPosHpr(0, -18, 3, 0, 0, 0)
         self.keyMap = {"moveLeft":0, "moveRight":0, "moveUp":0, "moveDown":0, "drop":0}
         self.prevTime = 0
-        taskMgr.add(self.move, "moveTask")
-        
+                
         self.loadModels()
+        #camera.lookAt(self.spider)
             
         self.setupLights()
-        #self.setupLights2()
-        
+                
         self.loadSound()
                 
         #self.setupCollisions()
@@ -58,6 +62,8 @@ class World(DirectObject): #necessary to accept events
         
         #self.env.setShaderAuto()
         self.shaderenable = 1
+    
+    
     
     def setKey(self, key, value):
         self.keyMap[key] = value
@@ -139,91 +145,6 @@ class World(DirectObject): #necessary to accept events
         render.setLight( light )       
    
     
-
-    def move(self, task):
-        """compound interval for walking"""
-        dt = task.time - self.prevTime
-        #stuff and things
-        
-        #comment this line to debug camera
-        self.adjustCamera()
-        
-        if self.openingMusic.status() != self.openingMusic.PLAYING:
-            if self.mainLoopMusic.status() != self.mainLoopMusic.PLAYING:
-                SoundInterval(self.mainLoopMusic).loop()
-      
-        self.pipeDepth = self.pipeList[0].getY()
-        #print self.pipeDepth
-        if self.pipeDepth < -1*self.pipeInterval:
-            self.pipeList[0].removeNode()
-            self.pipeList.pop(0)
-            
-            #pick file
-            filename = ["../models/tunnelWallTemp"]
-            filename.append(str(self.pipeBag.pick()-1))
-            filename.append(".egg")
-            filename = ''.join(filename)
-            
-            #load file
-            pipe = loader.loadModel(filename)
-            pipe.setScale(.0175)
-            # pipe.setR(random.randint(0,3)*90)
-            # print pipe.getR()
-            pipe.setPos(0, self.pipeList[self.pipeList.__len__()-1].getY() + self.pipeInterval, 0)
-            
-            if filename == "tunnelWallTemp5.egg":
-                addPointLight(pipe)
-            pipe.reparentTo(render)
-            self.pipeList.append(pipe)            
-           
-        
-        if self.keyMap["drop"] == 0:
-            for i in range(self.pipeList.__len__()):
-                self.pipeList[i].setY(self.pipeList[i].getY() - dt*100)            
-        
-        dist = .1
-        if self.keyMap["moveLeft"] == 1:          
-            self.spider.setHpr(-115, 0, 90)
-            if self.spider.getX() > -2.0:
-                self.spider.setX(self.spider.getX()-1*dist)
-        if self.keyMap["moveRight"] == 1: 
-            self.spider.setHpr(115, -0, -90)
-            if self.spider.getX() < 2.0:
-                self.spider.setX(self.spider.getX()+1*dist)            
-        if self.keyMap["moveUp"] == 1:
-            self.spider.setHpr(180, -65, 0)
-            if self.spider.getZ() < 6.45:
-                self.spider.setZ(self.spider.getZ()+1*dist)            
-        if self.keyMap["moveDown"] == 1:
-            self.spider.setHpr(180, 65, 180)
-            if self.spider.getZ() > 2.6:            
-                self.spider.setZ(self.spider.getZ()-1*dist)
-        #print self.spider.getPos()
-               
-        
-        self.prevTime = task.time
-        return Task.cont
-        
-    def adjustCamera (self):
-        camvec = self.spider.getPos() - camera.getPos()
-        #camH = camera.getH() - self.spider.getH()
-        camvec.setZ(0)
-        camdist = camvec.length()
-        camvec.normalize()
-
-        if (camdist > -10.0):
-            camera.setPos(camera.getPos() + camvec * (camdist - 20))
-        elif (camdist < -15.0):
-            camera.setPos(camera.getPos() - camvec * (15 - camdist))
-
-        dirVec = self.spider.getPos(render) - camera.getPos()
-        dirVec.setZ(0)
-        turnRate = 0.1
-        camera.setPos(camera.getPos() + (dirVec * turnRate))
-        camera.setZ(4.5)
-        camera.lookAt(self.spider)
-
-        
     def setupCollisions(self):
         #make a collision traverser, set it to default
         base.cTrav = CollisionTraverser()
@@ -258,6 +179,13 @@ class World(DirectObject): #necessary to accept events
             sound = loader.loadSfx("assets/bubbles2.wav")
         SoundInterval(sound).start()
         
-        
+import updateWorld
+World.keyEvents = updateWorld.keyEvents
+World.adjustCamera = updateWorld.adjustCamera
+World.loopMusic = updateWorld.loopMusic
+World.createPipe = updateWorld.createPipe
 w = World()
+#time.sleep(3)
+#add update tasks to taskManager
+#w.update = Update(w)
 run()

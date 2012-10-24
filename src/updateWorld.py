@@ -18,7 +18,10 @@ def keyEvents(self, task):
     
     if self.keyMap["drop"] == 0:
         for i in range(self.pipeList.__len__()):
-            self.pipeList[i].setY(self.pipeList[i].getY() - dt*100)            
+            self.pipeList[i].setY(self.pipeList[i].getY() - dt*100)
+    else:
+        for i in range(self.pipeList.__len__()):
+            self.pipeList[i].setR(self.pipeList[i].getR() + dt*10*i)
     
     dist = .1
     if self.keyMap["moveLeft"] == 1:          
@@ -63,8 +66,6 @@ def adjustCamera(self):
     camera.setZ(4.5)
     camera.lookAt(self.spider)
     
-    #return Task.cont
-    
     
 def loopMusic(self, task):    
     if self.openingMusic.status() != self.openingMusic.PLAYING:
@@ -72,31 +73,44 @@ def loopMusic(self, task):
                 SoundInterval(self.mainLoopMusic).loop()
                 
     return Task.cont
-    
-    
-def createPipe(self, task):                
+
+def checkPipes(self, task):
     self.pipeDepth = self.pipeList[0].getY()
     #print self.pipeDepth
     if self.pipeDepth < -1*self.pipeInterval:
         self.pipeList[0].removeNode()
         self.pipeList.pop(0)
         
+        self.createPipe(-1)
+        
+    return Task.cont
+    
+def createPipe(self, i):                
         #pick file
         filename = ["../models/tunnelWallTemp"]
         filename.append(str(self.pipeBag.pick()-1))
         filename.append(".egg")
         filename = ''.join(filename)
+        filename = "../models/tunnelWallTemplate.egg"
         
         #load file
         pipe = loader.loadModel(filename)
         pipe.setScale(.0175)
+        
+        #rotate by 0, 90, 180, or 270 degrees
         # pipe.setR(random.randint(0,3)*90)
         # print pipe.getR()
-        pipe.setPos(0, self.pipeList[self.pipeList.__len__()-1].getY() + self.pipeInterval, 0)
         
-        if filename == "tunnelWallTemp5.egg":
-            self.addPointLight(pipe)
+        #set position in queue
+        if i >= 0:
+            pipe.setPos(0, i*self.pipeInterval, 0)
+        else:
+            pipe.setPos(0, self.pipeList[self.pipeList.__len__()-1].getY() \
+            + self.pipeInterval, 0)
+        
+        # if filename == "tunnelWallTemp5.egg":
+            # self.addPointLight(pipe)
         pipe.reparentTo(render)
         self.pipeList.append(pipe)
         
-    return Task.cont
+        

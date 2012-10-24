@@ -15,7 +15,7 @@ class World(DirectObject): #necessary to accept events
         #add update tasks to taskManager
         taskMgr.add(self.keyEvents, "keyEventTask")
         taskMgr.add(self.loopMusic, "loopMusicTask")
-        taskMgr.add(self.createPipe, "createPipeTask")
+        taskMgr.add(self.checkPipes, "checkPipesTask")
         
         
         camera.setPosHpr(0, -18, 3, 0, 0, 0)
@@ -76,21 +76,11 @@ class World(DirectObject): #necessary to accept events
         self.pipeBag = GrabBag(self.numTypes)
         self.pipeList = []
         self.pipeInterval = 20.25*3.05
-        
-        for i in range(self.numPipes):
-            filename = ["../models/tunnelWallTemp"]
-            filename.append(str(self.pipeBag.pick()-1))
-            filename.append(".egg")
-            filename = ''.join(filename)
-            
-            pipe = loader.loadModel(filename)
-            pipe.setScale(.0175)
-            pipe.setPos(0, i*self.pipeInterval, 0)
-            pipe.reparentTo(render)
-            self.pipeList.append(pipe)
-        
         self.pipeDepth = 0
         
+        for i in range(self.numPipes):
+            self.createPipe(i)        
+                
         #load spider
         self.spider = loader.loadModel("../models/spider.egg")
         self.spider.reparentTo(render)
@@ -183,9 +173,8 @@ import updateWorld
 World.keyEvents = updateWorld.keyEvents
 World.adjustCamera = updateWorld.adjustCamera
 World.loopMusic = updateWorld.loopMusic
+World.checkPipes = updateWorld.checkPipes
 World.createPipe = updateWorld.createPipe
+
 w = World()
-#time.sleep(3)
-#add update tasks to taskManager
-#w.update = Update(w)
 run()
