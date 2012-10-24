@@ -8,6 +8,21 @@ from direct.showbase.DirectObject import DirectObject #for event handling
 from direct.actor.Actor import Actor #for animated models
 from direct.interval.IntervalGlobal import * #for compound intervals
 from direct.task import Task #for update functions
+
+import direct.directbase.DirectStart
+from panda3d.physics import BaseParticleEmitter,BaseParticleRenderer
+from panda3d.physics import PointParticleFactory,SpriteParticleRenderer
+from panda3d.physics import LinearNoiseForce,DiscEmitter
+from panda3d.core import TextNode
+from panda3d.core import AmbientLight,DirectionalLight
+from panda3d.core import Point3,Vec3,Vec4
+from panda3d.core import Filename
+from direct.particles.Particles import Particles
+from direct.particles.ParticleEffect import ParticleEffect
+from direct.particles.ForceGroup import ForceGroup
+from direct.gui.OnscreenText import OnscreenText
+from direct.showbase.DirectObject import DirectObject
+
 import math, sys, random, time
 from GrabBag import *
 
@@ -78,6 +93,16 @@ def checkPipes(self, task):
     self.pipeDepth = self.pipeList[0].getY()
     #print self.pipeDepth
     if self.pipeDepth < -1*self.pipeInterval:
+
+        #Remove particles from particle list
+        #DOES NOT WORK PROPERLY, VERY CHOPPY
+        #
+        #Idea: Instead of deleting particle effects, try moving them
+        #to new pipe segment?
+##        self.particleList[0].cleanup()
+##        self.particleList[0].removeNode()
+##        self.particleList.pop(0)
+
         #remove pointLight from segment
         render.clearLight(self.redLightList[0])
         self.redLightList.pop(0)
@@ -90,6 +115,8 @@ def checkPipes(self, task):
 
         #create new pipe segment
         self.createPipe(-1)
+
+
 
     return Task.cont
 
@@ -126,4 +153,13 @@ def createPipe(self, i):
         cNode.addSolid(cSphere)
         cNodePath = pipe.attachNewNode(cNode)
         cNodePath.show()
+
+        #Particle Effect: VERY SLOW
+##        p = ParticleEffect()
+##        p.loadConfig("../models/steam.ptf")
+##        p.start(pipe)
+##        p.setPos(100.00, 0.000, 0)
+##        p.setScale(100.00, 80.000, 80)
+##
+##        self.particleList.append(p)
 

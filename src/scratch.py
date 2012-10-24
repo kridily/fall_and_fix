@@ -17,6 +17,8 @@ class World(DirectObject): #necessary to accept events
         taskMgr.add(self.loopMusic, "loopMusicTask")
         taskMgr.add(self.checkPipes, "checkPipesTask")
 
+        #Added to start particle effects
+        base.enableParticles()
 
         camera.setPosHpr(0, -18, 3, 0, 0, 0)
         self.keyMap = {"moveLeft":0, "moveRight":0, "moveUp":0, "moveDown":0, "drop":0}
@@ -81,6 +83,10 @@ class World(DirectObject): #necessary to accept events
 
         self.redHelperList = []
         self.redLightList = []
+
+        #Stores particle effects
+        self.particleList = []
+
         for i in range(self.numPipes):
             self.createPipe(i)
 
@@ -183,6 +189,8 @@ class World(DirectObject): #necessary to accept events
     def pipeCollide(self, cEntry):
         self.currentPipeSegment = cEntry.getIntoNodePath().getParent()
         print "Collided with Pipe"
+
+
 
 import updateWorld
 World.keyEvents = updateWorld.keyEvents
