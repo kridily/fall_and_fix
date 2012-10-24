@@ -91,7 +91,7 @@ def createPipe(self, i):
         filename.append(str(self.pipeBag.pick()-1))
         filename.append(".egg")
         filename = ''.join(filename)
-        filename = "../models/tunnelWallTemplate.egg"
+        filename = "../models/TRYTHIS-tunnelwall template4.egg"
         
         #load file
         pipe = loader.loadModel(filename)
@@ -103,10 +103,10 @@ def createPipe(self, i):
         
         #set position in queue
         if i >= 0:
-            pipe.setPos(0, i*self.pipeInterval, 0)
+            pipe.setPos(0, i*self.pipeInterval, 4.25)
         else:
             pipe.setPos(0, self.pipeList[self.pipeList.__len__()-1].getY() \
-            + self.pipeInterval, 0)
+            + self.pipeInterval, 4.25)
         
         # if filename == "tunnelWallTemp5.egg":
             # self.addPointLight(pipe)
