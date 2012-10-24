@@ -19,9 +19,9 @@ def keyEvents(self, task):
     if self.keyMap["drop"] == 0:
         for i in range(self.pipeList.__len__()):
             self.pipeList[i].setY(self.pipeList[i].getY() - dt*100)
-    else:
-        for i in range(self.pipeList.__len__()):
-            self.pipeList[i].setR(self.pipeList[i].getR() + dt*10*i)
+    # else:
+        # for i in range(self.pipeList.__len__()):
+            # self.pipeList[i].setR(self.pipeList[i].getR() + dt*10*i)
     
     dist = .1
     if self.keyMap["moveLeft"] == 1:          
@@ -42,7 +42,7 @@ def keyEvents(self, task):
             self.spider.setZ(self.spider.getZ()-1*dist)
     #print self.spider.getPos()
     
-    #self.adjustCamera()
+    self.adjustCamera()
     
     self.prevTime = task.time
     return Task.cont
@@ -91,15 +91,11 @@ def createPipe(self, i):
         filename.append(str(self.pipeBag.pick()-1))
         filename.append(".egg")
         filename = ''.join(filename)
-        filename = "../models/TRYTHIS-tunnelwall template4.egg"
+        filename = "../models/NO TRY ME INSTEAD-tunnelwall template5.egg"
         
         #load file
         pipe = loader.loadModel(filename)
         pipe.setScale(.0175)
-        
-        #rotate by 0, 90, 180, or 270 degrees
-        pipe.setR(random.randint(0,3)*90)
-        print pipe.getR()
         
         #set position in queue
         if i >= 0:
@@ -107,6 +103,11 @@ def createPipe(self, i):
         else:
             pipe.setPos(0, self.pipeList[self.pipeList.__len__()-1].getY() \
             + self.pipeInterval, 4.25)
+            
+        #rotate by 0, 90, 180, or 270 degrees
+        pipe.setR(random.randint(0,3)*90)
+        #if pipe.getR() == 180: pipe.setZ(pipe.getZ()-.1)
+        print pipe.getR()
         
         # if filename == "tunnelWallTemp5.egg":
             # self.addPointLight(pipe)

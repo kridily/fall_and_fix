@@ -11,7 +11,7 @@ from GrabBag import *
 class World(DirectObject): #necessary to accept events
     def __init__(self):
         #turn off default mouse control
-        #base.disableMouse()
+        base.disableMouse()
         #add update tasks to taskManager
         taskMgr.add(self.keyEvents, "keyEventTask")
         taskMgr.add(self.loopMusic, "loopMusicTask")
