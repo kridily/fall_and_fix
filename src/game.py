@@ -128,6 +128,8 @@ class World(DirectObject): #necessary to accept events
         
         helper.setColor( Vec4( r, gb, gb, 1 ) )      
         helper.setPos(pipe.getPos())
+        #optionally set location of light within pipe to end
+        #helper.setY(helper.getY()-50*35 )
         print helper.getColor()
         helper.setScale(.25*0)
         
