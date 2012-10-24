@@ -98,8 +98,8 @@ def createPipe(self, i):
         pipe.setScale(.0175)
         
         #rotate by 0, 90, 180, or 270 degrees
-        # pipe.setR(random.randint(0,3)*90)
-        # print pipe.getR()
+        pipe.setR(random.randint(0,3)*90)
+        print pipe.getR()
         
         #set position in queue
         if i >= 0:
