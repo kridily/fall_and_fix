@@ -29,7 +29,7 @@ class World(DirectObject): #necessary to accept events
                 
         self.loadSound()
                 
-        #self.setupCollisions()
+        self.setupCollisions()
       
         self.accept("escape", sys.exit) #message name, function to call, (optional) list of arguments to that function
         #useful interval methods:
@@ -78,8 +78,10 @@ class World(DirectObject): #necessary to accept events
         self.pipeInterval = 20.25*3.05#*.90 #length*timesLonger*overlapConstant
         self.pipeDepth = 0
         
+        self.redHelperList = []
+        self.redLightList = []
         for i in range(self.numPipes):
-            self.createPipe(i)        
+            self.createPipe(i)   
                 
         #load spider
         self.spider = loader.loadModel("../models/spider.egg")
@@ -119,20 +121,25 @@ class World(DirectObject): #necessary to accept events
     def addPointLight(self, pipe):    
         """create a point light for pipe"""      
         
-        #The blue point light and helper
-        helper = loader.loadModel("assets/maya/sphere.egg.pz")
-        helper.setColor( Vec4( 1, 0, 0, 1 ) )        
+        #The redpoint light and helper
+        gb = random.uniform(0, 400) / 1000
+        r = random.uniform(700, 900) / 1000        
+        helper = loader.loadModel("../models/sphere.egg.pz")
+        
+        helper.setColor( Vec4( r, gb, gb, 1 ) )      
         helper.setPos(pipe.getPos())
-        print helper.getPos()
-        helper.setScale(.25)
+        print helper.getColor()
+        helper.setScale(.25*0)
+        
         light = helper.attachNewNode( PointLight( "light" ) )
-        light.node().setAttenuation( Vec3( .1, 0.04, 0.0 ) )
-        gb = random.uniform(0, 600) / 1000
-        r = random.uniform(700, 900) / 1000            
+        light.node().setAttenuation( Vec3( .1, 0.04, 0.0 )/2 )                   
         light.node().setColor( Vec4( r, gb, gb, 1 ) )
         light.node().setSpecularColor( Vec4( 1 ) )
         helper.reparentTo( pipe )
-        render.setLight( light )       
+        render.setLight( light )
+        
+        self.redHelperList.append(helper)
+        self.redLightList.append(light)
    
     
     def setupCollisions(self):
@@ -143,7 +150,7 @@ class World(DirectObject): #necessary to accept events
         # "%in" is substituted with the name of the into object
         self.cHandler.setInPattern("ate-%in")
         
-        cSphere = CollisionSphere((0,-.25,-1.1), 7.3)
+        cSphere = CollisionSphere((0,-5,0), 40)
         cNode = CollisionNode("spider")
         cNode.addSolid(cSphere)
         #spider is *only* a from object
@@ -152,12 +159,12 @@ class World(DirectObject): #necessary to accept events
         #cNodePath.show()
         base.cTrav.addCollider(cNodePath, self.cHandler)
         
-        for target in self.targets:
-            cSphere = CollisionSphere((0,0,4), 6)
-            cNode = CollisionNode("smiley")
-            cNode.addSolid(cSphere)
-            cNodePath = target.attachNewNode(cNode)
-            #cNodePath.show()
+        # for pipe in self.pipeList:
+            # cSphere = CollisionSphere((0,0,0), 100)
+            # cNode = CollisionNode("smiley")
+            # cNode.addSolid(cSphere)
+            # cNodePath = pipe.attachNewNode(cNode)
+            # cNodePath.show()
         
     def eat(self, cEntry):
         self.targets.remove(cEntry.getIntoNodePath().getParent())

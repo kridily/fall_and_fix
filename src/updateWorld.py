@@ -19,9 +19,9 @@ def keyEvents(self, task):
     if self.keyMap["drop"] == 0:
         for i in range(self.pipeList.__len__()):
             self.pipeList[i].setY(self.pipeList[i].getY() - dt*100)
-    else:
+    if self.keyMap["drop"] == 1:
         for i in range(self.pipeList.__len__()):
-            self.pipeList[i].setR(self.pipeList[i].getR() + dt*10*i)
+            self.pipeList[i].setR(self.pipeList[i].getR() + dt*20*i)
     
     dist = .1
     if self.keyMap["moveLeft"] == 1:          
@@ -78,9 +78,17 @@ def checkPipes(self, task):
     self.pipeDepth = self.pipeList[0].getY()
     #print self.pipeDepth
     if self.pipeDepth < -1*self.pipeInterval:
+        #remove pointLight from segment
+        render.clearLight(self.redLightList[0])
+        self.redLightList.pop(0)
+        self.redHelperList[0].removeNode()
+        self.redHelperList.pop(0)
+        
+        #remove pipe segment
         self.pipeList[0].removeNode()
         self.pipeList.pop(0)
         
+        #create new pipe segment
         self.createPipe(-1)
         
     return Task.cont
@@ -91,11 +99,12 @@ def createPipe(self, i):
         filename.append(str(self.pipeBag.pick()-1))
         filename.append(".egg")
         filename = ''.join(filename)
-        filename = "../models/NO TRY MEEE- tunnelwall template5.egg"
+        filename = "../models/pipe_vCurr.egg"
         
         #load file
         pipe = loader.loadModel(filename)
         pipe.setScale(.0175)
+        self.addPointLight(pipe)
         
         #set position in queue
         if i >= 0:
@@ -106,10 +115,8 @@ def createPipe(self, i):
             
         #rotate by 0, 90, 180, or 270 degrees
         pipe.setR(random.randint(0,3)*90)
-        print pipe.getR()
+        print pipe.getR()        
         
-        # if filename == "tunnelWallTemp5.egg":
-            # self.addPointLight(pipe)
         pipe.reparentTo(render)
         self.pipeList.append(pipe)
         
