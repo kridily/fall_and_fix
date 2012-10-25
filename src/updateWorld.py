@@ -9,7 +9,6 @@ from direct.actor.Actor import Actor #for animated models
 from direct.interval.IntervalGlobal import * #for compound intervals
 from direct.task import Task #for update functions
 
-import direct.directbase.DirectStart
 from panda3d.physics import BaseParticleEmitter,BaseParticleRenderer
 from panda3d.physics import PointParticleFactory,SpriteParticleRenderer
 from panda3d.physics import LinearNoiseForce,DiscEmitter
@@ -21,7 +20,7 @@ from direct.particles.Particles import Particles
 from direct.particles.ParticleEffect import ParticleEffect
 from direct.particles.ForceGroup import ForceGroup
 from direct.gui.OnscreenText import OnscreenText
-from direct.showbase.DirectObject import DirectObject
+
 
 import math, sys, random, time
 from GrabBag import *
@@ -152,7 +151,7 @@ def createPipe(self, i):
         cNode = CollisionNode("pipe")
         cNode.addSolid(cSphere)
         cNodePath = pipe.attachNewNode(cNode)
-        cNodePath.show()
+        #cNodePath.show()
 
         #Particle Effect: VERY SLOW
 ##        p = ParticleEffect()

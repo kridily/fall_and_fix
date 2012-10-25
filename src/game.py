@@ -17,18 +17,19 @@ class World(DirectObject): #necessary to accept events
         taskMgr.add(self.loopMusic, "loopMusicTask")
         taskMgr.add(self.checkPipes, "checkPipesTask")
         
+        #Enables particle effects
+        base.enableParticles()
         
         camera.setPosHpr(0, -18, 3, 0, 0, 0)
         self.keyMap = {"moveLeft":0, "moveRight":0, "moveUp":0, "moveDown":0, "drop":0}
         self.prevTime = 0
-                
-        self.loadModels()
-        #camera.lookAt(self.spider)
-            
-        self.setupLights()
-                
-        self.loadSound()
-                
+        
+        #Sets initial collision state, will change name later
+        self.currentPipeSegment = False
+        
+        self.loadModels()            
+        self.setupLights()                
+        self.loadSound()                
         self.setupCollisions()
       
         self.accept("escape", sys.exit) #message name, function to call, (optional) list of arguments to that function
@@ -58,7 +59,7 @@ class World(DirectObject): #necessary to accept events
         self.accept("a-up", self.setKey, ["moveLeft", 0])
         self.accept("d-up", self.setKey, ["moveRight", 0])
         
-        self.accept("ate-smiley", self.eat)
+        self.accept("over-pipe", self.pipeCollide)
         
         #self.env.setShaderAuto()
         self.shaderenable = 1
@@ -75,11 +76,16 @@ class World(DirectObject): #necessary to accept events
         self.numTypes = 6
         self.pipeBag = GrabBag(self.numTypes)
         self.pipeList = []
-        self.pipeInterval = 20.25*3.05#*.90 #length*timesLonger*overlapConstant
+        self.pipeInterval = 20.25*3.05 #length*timesLonger
         self.pipeDepth = 0
         
         self.redHelperList = []
         self.redLightList = []
+        
+        #Stores particle effects
+        self.particleList = []
+        #Note: These lists will be replaced when pipe objects are created
+        
         for i in range(self.numPipes):
             self.createPipe(i)   
                 
@@ -151,7 +157,7 @@ class World(DirectObject): #necessary to accept events
         self.cHandler = CollisionHandlerEvent()
         #set the pattern for the event sent on collision
         # "%in" is substituted with the name of the into object
-        self.cHandler.setInPattern("ate-%in")
+        self.cHandler.setInPattern("over-%in")
         
         cSphere = CollisionSphere((0,-5,0), 40)
         cNode = CollisionNode("spider")
@@ -162,22 +168,12 @@ class World(DirectObject): #necessary to accept events
         #cNodePath.show()
         base.cTrav.addCollider(cNodePath, self.cHandler)
         
-        # for pipe in self.pipeList:
-            # cSphere = CollisionSphere((0,0,0), 100)
-            # cNode = CollisionNode("smiley")
-            # cNode.addSolid(cSphere)
-            # cNodePath = pipe.attachNewNode(cNode)
-            # cNodePath.show()
         
-    def eat(self, cEntry):
-        self.targets.remove(cEntry.getIntoNodePath().getParent())
-        cEntry.getIntoNodePath().getParent().remove()
-        n = random.uniform(0,1)
-        if n < .5:
-            sound = loader.loadSfx("assets/bubbles1.wav")
-        else:
-            sound = loader.loadSfx("assets/bubbles2.wav")
-        SoundInterval(sound).start()
+    def pipeCollide(self, cEntry):
+        self.currentPipeSegment = cEntry.getIntoNodePath().getParent()
+        print "!!!!!!    Collided with Pipe"
+        
+        
         
 import updateWorld
 World.keyEvents = updateWorld.keyEvents
