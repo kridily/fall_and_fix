@@ -122,35 +122,6 @@ class World(DirectObject): #necessary to accept events
         self.dirLightNP.setHpr(0, -25, 0)
         render.setLight(self.dirLightNP)
         
-    
-        
-    def addPointLight(self, pipe):    
-        """create a point light for pipe"""      
-        
-        #The redpoint light and helper
-        gb = random.uniform(0, 300) / 1000
-        r = random.uniform(700, 900) / 1000        
-        helper = loader.loadModel("../models/sphere.egg.pz")
-        
-        helper.setColor( Vec4( r, gb, gb, 1 ) )      
-        helper.setPos(pipe.getPos())
-        print helper.getColor()
-        helper.setScale(.25*0)
-        #optionally set location of light within pipe
-        helper.setY(helper.getY()-50*35 ) #moves to inbetween segments
-        helper.setZ(helper.getZ()-50*6 ) #makes 3 sided lights
-        
-        light = helper.attachNewNode( PointLight( "light" ) )
-        light.node().setAttenuation( Vec3( .1, 0.04, 0.0 )/2 )                   
-        light.node().setColor( Vec4( r, gb, gb, 1 ) )
-        light.node().setSpecularColor( Vec4( 1 ) )
-        helper.reparentTo( pipe )
-        render.setLight( light )
-        
-        self.redHelperList.append(helper)
-        self.redLightList.append(light)
-   
-    
     def setupCollisions(self):
         #make a collision traverser, set it to default
         base.cTrav = CollisionTraverser()
@@ -175,12 +146,12 @@ class World(DirectObject): #necessary to accept events
         
         
         
-import updateWorld
-World.keyEvents = updateWorld.keyEvents
-World.adjustCamera = updateWorld.adjustCamera
-World.loopMusic = updateWorld.loopMusic
-World.checkPipes = updateWorld.checkPipes
-World.createPipe = updateWorld.createPipe
+import updateScratch
+World.keyEvents = updateScratch.keyEvents
+World.adjustCamera = updateScratch.adjustCamera
+World.loopMusic = updateScratch.loopMusic
+World.checkPipes = updateScratch.checkPipes
+World.createPipe = updateScratch.createPipe
 
-w = World()
+world = World()
 run()
