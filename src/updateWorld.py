@@ -103,10 +103,10 @@ def checkPipes(self, task):
 ##        self.particleList.pop(0)
 
         #remove pointLight from segment
-        # render.clearLight(self.redLightList[0])
-        # self.redLightList.pop(0)
-        # self.redHelperList[0].removeNode()
-        # self.redHelperList.pop(0)
+        render.clearLight(self.redLightList[0])
+        self.redLightList.pop(0)
+        self.redHelperList[0].removeNode()
+        self.redHelperList.pop(0)
 
         #remove pipe segment
         self.pipeList[0].removeNode()
@@ -130,7 +130,7 @@ def createPipe(self, i):
         #load file
         pipe = loader.loadModel(filename)
         pipe.setScale(.0175)
-        #self.addPointLight(pipe)
+        self.addPointLight(pipe)
 
         #set position in queue
         if i >= 0:

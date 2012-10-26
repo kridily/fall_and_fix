@@ -76,7 +76,7 @@ class World(DirectObject): #necessary to accept events
         self.numTypes = 6
         self.pipeBag = GrabBag(self.numTypes)
         self.pipeList = []
-        self.pipeInterval = 20.25*3.05 #length*timesLonger
+        self.pipeInterval = 20.25*3.05*.97 #length*timesLonger*overlapConstant
         self.pipeDepth = 0
         
         self.redHelperList = []
