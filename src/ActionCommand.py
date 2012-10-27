@@ -25,6 +25,7 @@ class ActionCommand:
             print self.CommandArray
 
     def inputCommand(self,character):
+        #Lets you input something into the action command.
         if self.CommandArray != []:
             if character == self.CommandArray[0]:
                 self.CommandArray.pop(0)
@@ -35,12 +36,29 @@ class ActionCommand:
                 return False
         else:
             return False
+
+    def inputCommandNoOrder(self,character):
+        #Lets you input something into the action command.
+        #This version does not take the order of commands into account
+        if self.CommandArray != []:
+            for i in range (0,len(self.CommandArray)):
+                if character == self.CommandArray[i]:
+                    self.CommandArray.pop(i)
+                    print self.CommandArray
+                    return True
+            else:
+                print self.CommandArray
+        return False
+
     def isEmpty(self):
         if self.CommandArray == []:
             return True
         else:
             return False
-            
-#DEBUG            
+
+    def getCommand(self):
+        return self.CommandArray
+
+#DEBUG
 #AC = ActionCommand(5,['!','@','#','$','%'])
 
