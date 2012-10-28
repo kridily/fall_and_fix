@@ -12,6 +12,8 @@ from panda3d.core import Filename
 from direct.particles.Particles import Particles
 from direct.particles.ParticleEffect import ParticleEffect
 from direct.particles.ForceGroup import ForceGroup
+import math, sys, random, time
+from GrabBag import *
 
 class PipeGeneric:
     """
@@ -19,30 +21,15 @@ class PipeGeneric:
     reference, and destroy models, collision tubes, lights,
     particles, and ActionCommand sequences.
     """
-    def __init__(self, world):
+    def __init__(self):
         
+        #self.nodePath = NodePath(self)
         self.addModel()
         self.addPointLight(self.model)
-        
+        self.addCollision()
+        #self.addParticle()
 
-        #Adding a collision sphere to the pipe
-        #cSphere = CollisionSphere((200,0,0), 100)
-        self.collision = nodepath.find("**/pipe_collision")        
-        cNode = CollisionNode("pipeCollision")
-        cNode.addSolid(self.collision)
-        cNodePath = self.model.attachNewNode(cNode)        
-        cNodePath.show()
-
-        #Particle Effect: VERY SLOW
-        # p = ParticleEffect()
-        # p.loadConfig("../models/steam.ptf")
-        # p.start(pipe)
-        # p.setPos(100.00, 0.000, 0)
-        # p.setScale(100.00, 80.000, 80)
-
-        # self.particleList.append(p)
-        
-        world.pipeList.append(self)
+        #return (self)
         
     def addPointLight(self, pipe):    
         """create a point light for pipe"""      
@@ -54,7 +41,7 @@ class PipeGeneric:
         
         self.helper.setColor( Vec4( r, gb, gb, 1 ) )      
         self.helper.setPos(pipe.getPos())
-        print self.helper.getColor()
+        #print self.helper.getColor()
         self.helper.setScale(.25*0)
         #optionally set location of light within pipe
         self.helper.setY(self.helper.getY()-50*35 ) #moves to inbetween segments
@@ -66,41 +53,59 @@ class PipeGeneric:
         self.light.node().setSpecularColor( Vec4( 1 ) )
         self.helper.reparentTo( pipe )
         render.setLight( self.light )
-        
-        self.redHelperList.append(self.helper)
-        self.redLightList.append(self.light)
+
         
     def addModel(self):
         """Adds the model to the pipe object"""
     
         #pick file
-        self.filename = "../models/COMPARE1tunnelwall ALL.egg"
+        self.filename = "../models/broken pipe tunnel (with collision tube).egg"
 
         #load model
         self.model = loader.loadModel(self.filename)
         self.model.setScale(.0175)
+        #print self.model.ls()
         
-        #set position in queue
-        if i >= 0:
-            self.model.setPos(0, i*world.pipeInterval, 4.25)
-        else:
-            self.model.setPos(0, world.pipeList[world.pipeList.__len__()-1].getY() \
-            + world.pipeInterval, 4.25)
-
         #rotate by 0, 90, 180, or 270 degrees
         self.model.setR(random.randint(0,3)*90)
-        print self.model.getR()
+        #print self.model.getR()
 
+        self.nodePath = NodePath(self.model)
         self.model.reparentTo(render)
     
     def addCollision(self):
-    
-    def particle(self):
-    
-    def actionCommand(self):
+        #Finding and adding collision tube to the pipe
+        #cSphere = CollisionSphere((200,0,0), 100)
+        cNode = self.nodePath.find("**/pipe_collision").node()
+        #cNode = CollisionNode("pipeCollision")
+        #cNode.addSolid(solid)
+        self.collision = self.model.attachNewNode(cNode)        
+        self.collision.show()
+        
+        
+    def addParticle(self, pipe):
+        #Particle Effect: VERY SLOW
+        self.particle = ParticleEffect()
+        self.particle.loadConfig("../models/steam.ptf")
+        self.particle.start(pipe)
+        self.particle.setPos(100.00, 0.000, 0)
+        self.particle.setScale(100.00, 80.000, 80)
+          
+    #def addActionCommand(self):
     
     def destroy(self):
-    
+        #Remove particles from particle list
+        #Idea: Instead of deleting particle effects, try moving them
+        #to new pipe segment?
+        # self.particle.cleanup()
+        # self.particle.removeNode()
+        
+        #remove pointLight from segment
+        render.clearLight(self.light)
+        self.helper.removeNode()
+        
+        #remove pipe segment
+        self.model.removeNode()       
     
 
 

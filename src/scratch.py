@@ -6,6 +6,7 @@ from direct.interval.IntervalGlobal import * #for compound intervals
 from direct.task import Task #for update functions
 import math, sys, random, time
 from GrabBag import *
+from Pipe import *
 
 
 class World(DirectObject): #necessary to accept events
@@ -25,6 +26,7 @@ class World(DirectObject): #necessary to accept events
         self.prevTime = 0
         
         #Sets initial collision state, will change name later
+        self.numCollisions = 0
         self.currentPipeSegment = False
         
         self.loadModels()            
@@ -37,7 +39,7 @@ class World(DirectObject): #necessary to accept events
         # loop, pause, resume, finish
         # start can optionally take arguments: starttime, endtime, playrate
         
-                
+        
         #for "continuous" control
         self.accept("space", self.setKey, ["drop", 1])
         self.accept("space-up", self.setKey, ["drop", 0])
@@ -59,7 +61,7 @@ class World(DirectObject): #necessary to accept events
         self.accept("a-up", self.setKey, ["moveLeft", 0])
         self.accept("d-up", self.setKey, ["moveRight", 0])
         
-        self.accept("over-pipe", self.pipeCollide)
+        self.accept("spider-and-pipe_collision", self.pipeCollide)
         
         #self.env.setShaderAuto()
         self.shaderenable = 1
@@ -79,15 +81,9 @@ class World(DirectObject): #necessary to accept events
         self.pipeInterval = 20.25*3.05 #length*timesLonger
         self.pipeDepth = 0
         
-        self.redHelperList = []
-        self.redLightList = []
-        
-        #Stores particle effects
-        self.particleList = []
-        #Note: These lists will be replaced when pipe objects are created
-        
         for i in range(self.numPipes):
-            self.createPipe(i)   
+            self.createPipe(i)
+            print self.pipeList[i].model.getY()
                 
         #load spider
         self.spider = loader.loadModel("../models/spider.egg")
@@ -128,21 +124,24 @@ class World(DirectObject): #necessary to accept events
         self.cHandler = CollisionHandlerEvent()
         #set the pattern for the event sent on collision
         # "%in" is substituted with the name of the into object
-        self.cHandler.setInPattern("over-%in")
+        self.cHandler.setInPattern("%fn-and-%in")
         
         cSphere = CollisionSphere((0,-5,0), 40)
         cNode = CollisionNode("spider")
         cNode.addSolid(cSphere)
         #spider is *only* a from object
         cNode.setIntoCollideMask(BitMask32.allOff())
-        cNodePath = self.spider.attachNewNode(cNode)
-        #cNodePath.show()
-        base.cTrav.addCollider(cNodePath, self.cHandler)
+        self.spiderCollisionNode = self.spider.attachNewNode(cNode)
+        #self.spiderCollisionNode.show()
+        base.cTrav.addCollider(self.spiderCollisionNode, self.cHandler)
         
         
     def pipeCollide(self, cEntry):
+        self.numCollisions += 1
+        print self.numCollisions
         self.currentPipeSegment = cEntry.getIntoNodePath().getParent()
-        print "!!!!!!    Collided with Pipe"
+        print self.currentPipeSegment
+        print "------!!!!!!!!!!!!!------"
         
         
         
