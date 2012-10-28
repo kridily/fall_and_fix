@@ -50,27 +50,29 @@ class PipeGeneric:
         #The redpoint light and helper
         gb = random.uniform(0, 300) / 1000
         r = random.uniform(700, 900) / 1000        
-        helper = loader.loadModel("../models/sphere.egg.pz")
+        self.helper = loader.loadModel("../models/sphere.egg.pz")
         
-        helper.setColor( Vec4( r, gb, gb, 1 ) )      
-        helper.setPos(pipe.getPos())
-        print helper.getColor()
-        helper.setScale(.25*0)
+        self.helper.setColor( Vec4( r, gb, gb, 1 ) )      
+        self.helper.setPos(pipe.getPos())
+        print self.helper.getColor()
+        self.helper.setScale(.25*0)
         #optionally set location of light within pipe
-        helper.setY(helper.getY()-50*35 ) #moves to inbetween segments
-        helper.setZ(helper.getZ()-50*6 ) #makes 3 sided lights
+        self.helper.setY(self.helper.getY()-50*35 ) #moves to inbetween segments
+        self.helper.setZ(self.helper.getZ()-50*6 ) #makes 3 sided lights
         
-        light = helper.attachNewNode( PointLight( "light" ) )
-        light.node().setAttenuation( Vec3( .1, 0.04, 0.0 )/2 )                   
-        light.node().setColor( Vec4( r, gb, gb, 1 ) )
-        light.node().setSpecularColor( Vec4( 1 ) )
-        helper.reparentTo( pipe )
-        render.setLight( light )
+        self.light = self.helper.attachNewNode( PointLight( "self.light" ) )
+        self.light.node().setAttenuation( Vec3( .1, 0.04, 0.0 )/2 )                   
+        self.light.node().setColor( Vec4( r, gb, gb, 1 ) )
+        self.light.node().setSpecularColor( Vec4( 1 ) )
+        self.helper.reparentTo( pipe )
+        render.setLight( self.light )
         
-        self.redHelperList.append(helper)
-        self.redLightList.append(light)
+        self.redHelperList.append(self.helper)
+        self.redLightList.append(self.light)
         
     def addModel(self):
+        """Adds the model to the pipe object"""
+    
         #pick file
         self.filename = "../models/COMPARE1tunnelwall ALL.egg"
 
@@ -91,11 +93,7 @@ class PipeGeneric:
 
         self.model.reparentTo(render)
     
-    def collision(self):
-    
-    # def helper(self):
-    
-    # def light(self):
+    def addCollision(self):
     
     def particle(self):
     
