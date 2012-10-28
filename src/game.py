@@ -22,7 +22,8 @@ class World(DirectObject): #necessary to accept events
         base.enableParticles()
         
         camera.setPosHpr(0, -18, 3, 0, 0, 0)
-        self.keyMap = {"moveLeft":0, "moveRight":0, "moveUp":0, "moveDown":0, "drop":0}
+        self.keyMap = {"moveLeft":0, "moveRight":0, "moveUp":0, "moveDown":0, "drop":0, \
+        "actionLeft":0, "actionRight":0, "actionDown":0, "actionUp":0}
         self.prevTime = 0
         
         #Sets initial collision state, will change name later
@@ -43,14 +44,15 @@ class World(DirectObject): #necessary to accept events
         #for "continuous" control
         self.accept("space", self.setKey, ["drop", 1])
         self.accept("space-up", self.setKey, ["drop", 0])
-        # self.accept("arrow_up", self.setKey, ["moveUp", 1])
-        # self.accept("arrow_down", self.setKey, ["moveDown", 1])
-        # self.accept("arrow_left", self.setKey, ["moveLeft", 1])
-        # self.accept("arrow_right", self.setKey, ["moveRight", 1])
-        # self.accept("arrow_up-up", self.setKey, ["moveUp", 0])
-        # self.accept("arrow_down-up", self.setKey, ["moveDown", 0])
-        # self.accept("arrow_left-up", self.setKey, ["moveLeft", 0])
-        # self.accept("arrow_right-up", self.setKey, ["moveRight", 0])
+        
+        self.accept("arrow_up", self.setKey, ["actionUp", 1])
+        self.accept("arrow_down", self.setKey, ["actionDown", 1])
+        self.accept("arrow_left", self.setKey, ["actionLeft", 1])
+        self.accept("arrow_right", self.setKey, ["actionRight", 1])
+        self.accept("arrow_up-up", self.setKey, ["actionUp", 0])
+        self.accept("arrow_down-up", self.setKey, ["actionDown", 0])
+        self.accept("arrow_left-up", self.setKey, ["actionLeft", 0])
+        self.accept("arrow_right-up", self.setKey, ["actionRight", 0])
         
         self.accept("w", self.setKey, ["moveUp", 1])
         self.accept("s", self.setKey, ["moveDown", 1])
@@ -145,12 +147,12 @@ class World(DirectObject): #necessary to accept events
         
         
         
-import updateScratch
-World.keyEvents = updateScratch.keyEvents
-World.adjustCamera = updateScratch.adjustCamera
-World.loopMusic = updateScratch.loopMusic
-World.checkPipes = updateScratch.checkPipes
-World.createPipe = updateScratch.createPipe
+import updateWorld
+World.keyEvents = updateWorld.keyEvents
+World.adjustCamera = updateWorld.adjustCamera
+World.loopMusic = updateWorld.loopMusic
+World.checkPipes = updateWorld.checkPipes
+World.createPipe = updateWorld.createPipe
 
 world = World()
 run()

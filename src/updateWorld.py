@@ -58,9 +58,18 @@ def keyEvents(self, task):
         if self.spider.getZ() > 2.6:
             self.spider.setZ(self.spider.getZ()-1*dist)
     #print self.spider.getPos()
-
     self.adjustCamera()
-
+    
+    if self.keyMap["actionLeft"] == 1:
+        print "actionLeft"
+    if self.keyMap["actionRight"] == 1:
+        print "actionRight"
+    if self.keyMap["actionUp"] == 1:
+        print "actionUp"
+    if self.keyMap["actionDown"] == 1:
+        print "actionDown"
+    
+    
     self.prevTime = task.time
     return Task.cont
 
@@ -118,45 +127,4 @@ def createPipe(self, i):
             
         self.pipeList.append(pipe)    
         
-        # #pick file
-        # filename = ["../models/tunnelWallTemp"]
-        # filename.append(str(self.pipeBag.pick()-1))
-        # filename.append(".egg")
-        # filename = ''.join(filename)
-        # filename = "../models/COMPARE1tunnelwall ALL.egg"
-
-        # #load file
-        # pipe = loader.loadModel(filename)
-        # pipe.setScale(.0175)
-        # self.addPointLight(pipe)
-
-        # #set position in queue
-        # if i >= 0:
-            # pipe.setPos(0, i*self.pipeInterval, 4.25)
-        # else:
-            # pipe.setPos(0, self.pipeList[self.pipeList.__len__()-1].getY() \
-            # + self.pipeInterval, 4.25)
-
-        # #rotate by 0, 90, 180, or 270 degrees
-        # pipe.setR(random.randint(0,3)*90)
-        # print pipe.getR()
-
-        # pipe.reparentTo(render)
-        # self.pipeList.append(pipe)
-
-        # #Adding a collision sphere to the pipe
-        # cSphere = CollisionSphere((200,0,0), 100)
-        # cNode = CollisionNode("pipe")
-        # cNode.addSolid(cSphere)
-        # cNodePath = pipe.attachNewNode(cNode)
-        # #cNodePath.show()
-
-        #Particle Effect: VERY SLOW
-##        p = ParticleEffect()
-##        p.loadConfig("../models/steam.ptf")
-##        p.start(pipe)
-##        p.setPos(100.00, 0.000, 0)
-##        p.setScale(100.00, 80.000, 80)
-##
-##        self.particleList.append(p)
-
+        
