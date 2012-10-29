@@ -30,7 +30,7 @@ class PipeGeneric:
         self.addPointLight(self.model)
         self.addCollision()
         #self.addParticle()
-        self.addActionCommand("abcs")
+        self.addActionCommand("")
 
         #return (self)
         
