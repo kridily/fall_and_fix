@@ -80,7 +80,7 @@ class PipeGeneric:
         filename.append(".egg")
         self.fileName = ''.join(filename)
         
-        self.fileName = "../models/tunnelclear.egg"
+        self.fileName = "../models/tunnelsteam.egg"
 
         #load model
         self.model = loader.loadModel(self.fileName)

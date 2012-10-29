@@ -13,8 +13,19 @@ from direct.task import Task #for update functions
 import math, sys, random, time, os
 from ActionCommand import *
 from GrabBag import *
-from PipeScratch import *
+from Pipe import *
 
+from direct.gui.OnscreenText import OnscreenText 
+from direct.gui.OnscreenImage import OnscreenImage
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from direct.gui.DirectGui import DirectFrame
+from panda3d.core import TransparencyAttrib
+
+myFrame = OnscreenImage(image = 'panel.png', scale = (0.3, 1, 1), pos = (1.5, 0, 0))
+myFrame.setTransparency(TransparencyAttrib.MAlpha)
+yourFrame = OnscreenImage(image = 'panel.png', scale = (0.3, 1, 1), pos = (-1.5, 0, 0))
+yourFrame.setTransparency(TransparencyAttrib.MAlpha)
 
 class World(DirectObject): #necessary to accept events
     def __init__(self):
@@ -170,7 +181,7 @@ class World(DirectObject): #necessary to accept events
         
         
         
-import updateScratch as updateWorld
+import updateWorld
 World.keyEvents = updateWorld.keyEvents
 World.adjustCamera = updateWorld.adjustCamera
 World.loopMusic = updateWorld.loopMusic
