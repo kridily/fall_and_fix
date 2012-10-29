@@ -21,6 +21,7 @@ from direct.particles.ParticleEffect import ParticleEffect
 from direct.particles.ForceGroup import ForceGroup
 from direct.gui.OnscreenText import OnscreenText
 
+from ActionCommand import *
 from GrabBag import *
 from Pipe import *
 

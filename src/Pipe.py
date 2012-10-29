@@ -13,6 +13,8 @@ from direct.particles.Particles import Particles
 from direct.particles.ParticleEffect import ParticleEffect
 from direct.particles.ForceGroup import ForceGroup
 import math, sys, random, time
+
+from ActionCommand import *
 from GrabBag import *
 
 class PipeGeneric:
@@ -28,6 +30,7 @@ class PipeGeneric:
         self.addPointLight(self.model)
         self.addCollision()
         #self.addParticle()
+        self.addActionCommand("abcs")
 
         #return (self)
         
@@ -59,10 +62,10 @@ class PipeGeneric:
         """Adds the model to the pipe object"""
     
         #pick file
-        self.filename = "../models/broken pipe tunnel (with collision tube).egg"
+        self.fileName = "../models/broken pipe tunnel (with collision tube).egg"
 
         #load model
-        self.model = loader.loadModel(self.filename)
+        self.model = loader.loadModel(self.fileName)
         self.model.setScale(.0175)
         #print self.model.ls()
         
@@ -91,7 +94,9 @@ class PipeGeneric:
         self.particle.setPos(100.00, 0.000, 0)
         self.particle.setScale(100.00, 80.000, 80)
           
-    #def addActionCommand(self):
+    def addActionCommand(self, command):
+        self.actionCommand = ActionCommand(command.__len__(), command, command)    
+    
     
     def destroy(self):
         #Remove particles from particle list

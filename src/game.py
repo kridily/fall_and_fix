@@ -5,6 +5,7 @@ from direct.actor.Actor import Actor #for animated models
 from direct.interval.IntervalGlobal import * #for compound intervals
 from direct.task import Task #for update functions
 import math, sys, random, time
+from ActionCommand import *
 from GrabBag import *
 from Pipe import *
 
@@ -28,7 +29,7 @@ class World(DirectObject): #necessary to accept events
         
         #Sets initial collision state, will change name later
         self.numCollisions = 0
-        self.currentPipeSegment = False
+        self.currentPipe = False
         
         self.loadModels()            
         self.setupLights()                
@@ -85,7 +86,7 @@ class World(DirectObject): #necessary to accept events
         
         for i in range(self.numPipes):
             self.createPipe(i)
-            print self.pipeList[i].model.getY()
+            #print self.pipeList[i].model.getY()
                 
         #load spider
         self.spider = loader.loadModel("../models/spider.egg")
@@ -128,22 +129,31 @@ class World(DirectObject): #necessary to accept events
         # "%in" is substituted with the name of the into object
         self.cHandler.setInPattern("%fn-and-%in")
         
-        cSphere = CollisionSphere((0,-5,0), 40)
+        cSphere = CollisionSphere((0,-5,0), 30)
         cNode = CollisionNode("spider")
         cNode.addSolid(cSphere)
         #spider is *only* a from object
         cNode.setIntoCollideMask(BitMask32.allOff())
         self.spiderCollisionNode = self.spider.attachNewNode(cNode)
-        #self.spiderCollisionNode.show()
+        self.spiderCollisionNode.show()
         base.cTrav.addCollider(self.spiderCollisionNode, self.cHandler)
         
         
     def pipeCollide(self, cEntry):
         self.numCollisions += 1
         print self.numCollisions
-        self.currentPipeSegment = cEntry.getIntoNodePath().getParent()
-        print self.currentPipeSegment
+        model = cEntry.getIntoNodePath().getTop().find("**/*.egg").getName()
+        self.currentPipe = self.getPipe("../models/", model)
+        print self.currentPipe.actionCommand.getCommand()
         print "------!!!!!!!!!!!!!------"
+        
+    
+    def getPipe(self, modelPath, model):
+        modelPath += model
+        print modelPath
+        for i in range(self.pipeList.__len__()):
+            print self.pipeList[i].fileName
+            if self.pipeList[i].fileName == modelPath: return(self.pipeList[i])
         
         
         
