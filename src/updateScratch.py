@@ -13,14 +13,18 @@ from panda3d.physics import BaseParticleEmitter,BaseParticleRenderer
 from panda3d.physics import PointParticleFactory,SpriteParticleRenderer
 from panda3d.physics import LinearNoiseForce,DiscEmitter
 from panda3d.core import TextNode
-from panda3d.core import AmbientLight,DirectionalLight
+from panda3d.core import AmbientLight,DirectionalLight,PointLight
 from panda3d.core import Point3,Vec3,Vec4
-from panda3d.core import Filename
+from panda3d.core import Filename, Shader
+from panda3d.core import WindowProperties
+
+from direct.filter.CommonFilters import *
 from direct.particles.Particles import Particles
 from direct.particles.ParticleEffect import ParticleEffect
 from direct.particles.ForceGroup import ForceGroup
 from direct.gui.OnscreenText import OnscreenText
 
+from ActionCommand import *
 from GrabBag import *
 from Pipe import *
 
@@ -40,7 +44,7 @@ def keyEvents(self, task):
         for i in range(self.pipeList.__len__()):
             self.pipeList[i].model.setR(self.pipeList[i].model.getR() + dt*20*i)
 
-    dist = .1
+    dist = .135
     if self.keyMap["moveLeft"] == 1:
         self.spider.setHpr(-115, 0, 90)
         if self.spider.getX() > -2.0:
@@ -58,9 +62,18 @@ def keyEvents(self, task):
         if self.spider.getZ() > 2.6:
             self.spider.setZ(self.spider.getZ()-1*dist)
     #print self.spider.getPos()
-
     self.adjustCamera()
-
+    
+    if self.keyMap["actionLeft"] == 1:
+        print "actionLeft"
+    if self.keyMap["actionRight"] == 1:
+        print "actionRight"
+    if self.keyMap["actionUp"] == 1:
+        print "actionUp"
+    if self.keyMap["actionDown"] == 1:
+        print "actionDown"
+    
+    
     self.prevTime = task.time
     return Task.cont
 
@@ -101,13 +114,16 @@ def checkPipes(self, task):
 
         #create new pipe segment
         self.createPipe(-1)
-
+        
+        #Enable shaders for the first two pipe segments
+        if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
+        if not self.pipeList[1].shaderEnabled: self.pipeList[1].addShader()
 
 
     return Task.cont
 
 def createPipe(self, i):
-        pipe = PipeGeneric()
+        pipe = PipeGeneric(self.pipeBag)
         
         #set position in queue
         if i >= 0:
@@ -118,45 +134,4 @@ def createPipe(self, i):
             
         self.pipeList.append(pipe)    
         
-        # #pick file
-        # filename = ["../models/tunnelWallTemp"]
-        # filename.append(str(self.pipeBag.pick()-1))
-        # filename.append(".egg")
-        # filename = ''.join(filename)
-        # filename = "../models/COMPARE1tunnelwall ALL.egg"
-
-        # #load file
-        # pipe = loader.loadModel(filename)
-        # pipe.setScale(.0175)
-        # self.addPointLight(pipe)
-
-        # #set position in queue
-        # if i >= 0:
-            # pipe.setPos(0, i*self.pipeInterval, 4.25)
-        # else:
-            # pipe.setPos(0, self.pipeList[self.pipeList.__len__()-1].getY() \
-            # + self.pipeInterval, 4.25)
-
-        # #rotate by 0, 90, 180, or 270 degrees
-        # pipe.setR(random.randint(0,3)*90)
-        # print pipe.getR()
-
-        # pipe.reparentTo(render)
-        # self.pipeList.append(pipe)
-
-        # #Adding a collision sphere to the pipe
-        # cSphere = CollisionSphere((200,0,0), 100)
-        # cNode = CollisionNode("pipe")
-        # cNode.addSolid(cSphere)
-        # cNodePath = pipe.attachNewNode(cNode)
-        # #cNodePath.show()
-
-        #Particle Effect: VERY SLOW
-##        p = ParticleEffect()
-##        p.loadConfig("../models/steam.ptf")
-##        p.start(pipe)
-##        p.setPos(100.00, 0.000, 0)
-##        p.setScale(100.00, 80.000, 80)
-##
-##        self.particleList.append(p)
-
+        
