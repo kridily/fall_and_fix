@@ -4,27 +4,23 @@ from direct.showbase.DirectObject import DirectObject #for event handling
 from direct.actor.Actor import Actor #for animated models
 from direct.interval.IntervalGlobal import * #for compound intervals
 from direct.task import Task #for update functions
-import math, sys, random, time
+import math, sys, random, time, colorsys
 from GrabBag import *
 import direct.directbase.DirectStart
 from direct.gui.OnscreenText import OnscreenText 
 from direct.gui.DirectGui import *
 from panda3d.core import *
 from direct.gui.DirectGui import DirectFrame
- 
-myFrame = DirectFrame(frameColor=(1, 0.5, 0.5, 0.5),
-                      frameSize=(-1, 1, -2, 2),
-                      pos=(2.15, 0, 0)) 
+
+
+myFrame = DirectFrame(frameColor=(1, 0.5, 0.5, 0.5), frameSize=(-1, 1, -2, 2), pos=(2.15, 0, 0)) 
                       
-yourframe = DirectFrame(frameColor=(1, 0.5, 0.5, 0.5),
-                        frameSize=(-1, 1, -2, 2),
-                        pos=(-2.15, 0, 0)) 
+yourframe = DirectFrame(frameColor=(1, 0.5, 0.5, 0.5), frameSize=(-1, 1, -2, 2), pos=(-2.15, 0, 0)) 
                  
  
 # Callback function to set  text
 def setText():
-        bk_text = "Button"
-       
+        bk_text = "Button"       
  
 # Add button
 b = DirectButton(text = ("gauge", "click!", "gauge", "gauge"), scale=.05, pos = (1.4,0,0), command=setText)
@@ -201,12 +197,13 @@ class World(DirectObject): #necessary to accept events
             sound = loader.loadSfx("assets/bubbles2.wav")
         SoundInterval(sound).start()
         
-import updateWorld
+import updateOld as updateWorld
 World.keyEvents = updateWorld.keyEvents
 World.adjustCamera = updateWorld.adjustCamera
 World.loopMusic = updateWorld.loopMusic
 World.checkPipes = updateWorld.checkPipes
 World.createPipe = updateWorld.createPipe
+World.changeHue = updateWorld.changeHue
 
 w = World()
 run()
