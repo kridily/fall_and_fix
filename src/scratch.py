@@ -13,7 +13,7 @@ from direct.task import Task #for update functions
 import math, sys, random, time, os
 from ActionCommand import *
 from GrabBag import *
-from Pipe import *
+from PipeScratch import *
 
 
 class World(DirectObject): #necessary to accept events
