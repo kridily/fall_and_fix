@@ -44,7 +44,7 @@ def keyEvents(self, task):
         for i in range(self.pipeList.__len__()):
             self.pipeList[i].model.setR(self.pipeList[i].model.getR() + dt*20*i)
 
-    dist = .1
+    dist = .135
     if self.keyMap["moveLeft"] == 1:
         self.spider.setHpr(-115, 0, 90)
         if self.spider.getX() > -2.0:
@@ -114,13 +114,16 @@ def checkPipes(self, task):
 
         #create new pipe segment
         self.createPipe(-1)
-
+        
+        #Enable shaders for the first two pipe segments
+        if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
+        if not self.pipeList[1].shaderEnabled: self.pipeList[1].addShader()
 
 
     return Task.cont
 
 def createPipe(self, i):
-        pipe = PipeGeneric()
+        pipe = PipeGeneric(self.pipeBag)
         
         #set position in queue
         if i >= 0:

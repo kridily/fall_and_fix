@@ -70,7 +70,7 @@ class World(DirectObject): #necessary to accept events
         self.accept("a-up", self.setKey, ["moveLeft", 0])
         self.accept("d-up", self.setKey, ["moveRight", 0])
         
-        self.accept("spider-and-pipe_collision", self.pipeCollide)
+        self.accept("spider-and-tube_collision", self.pipeCollide)
         
         #self.env.setShaderAuto()
         self.shaderenable = 1
@@ -84,16 +84,20 @@ class World(DirectObject): #necessary to accept events
         """loads initial models into the world"""
         #load pipes
         self.numPipes = 6
-        self.numTypes = 6
+        self.numTypes = 5
         self.pipeBag = GrabBag(self.numTypes)
         self.pipeList = []
-        self.pipeInterval = 20.25*3.05 #length*timesLonger
+        self.pipeInterval = 20.25*3.05*.98 #length*timesLonger*overlapConstant
         self.pipeDepth = 0
         
         for i in range(self.numPipes):
             self.createPipe(i)
             #print self.pipeList[i].model.getY()
-                
+        
+        #Enable initial shaders
+        self.pipeList[0].addShader()
+        self.pipeList[1].addShader()
+        
         #load spider
         self.spider = loader.loadModel("../models/spider.egg")
         self.spider.reparentTo(render)
@@ -114,7 +118,8 @@ class World(DirectObject): #necessary to accept events
         """loads initial lighting"""
         self.ambientLight = AmbientLight("ambientLight")
         #for setting colors, alpha is largely irrelevant
-        self.ambientLight.setColor((.25, .25, .25, 1.0))
+        self.ambientLight.setColor((.25, .25, .35, 1.0))
+        #self.ambientLight.setColor((.25, .25, .25, 1.0))
         #create a NodePath, and attach it directly into the scene
         self.ambientLightNP = render.attachNewNode(self.ambientLight)
         #the node that calls setLight is what's illuminated by the given light
@@ -122,7 +127,8 @@ class World(DirectObject): #necessary to accept events
         render.setLight(self.ambientLightNP)
         
         self.dirLight = DirectionalLight("dirLight")
-        self.dirLight.setColor((.7, .7, 1, 1))
+        self.dirLight.setColor((.7, .5, .5, 1))
+        #self.dirLight.setColor((.7, .7, 1, 1))
         self.dirLightNP = render.attachNewNode(self.dirLight)
         self.dirLightNP.setHpr(0, -25, 0)
         render.setLight(self.dirLightNP)

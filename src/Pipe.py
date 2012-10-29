@@ -23,12 +23,12 @@ class PipeGeneric:
     reference, and destroy models, collision tubes, lights,
     particles, and ActionCommand sequences.
     """
-    def __init__(self):
+    def __init__(self, bag):
         
-        #self.nodePath = NodePath(self)
-        self.addModel()
+        self.addModel(bag)
         self.addPointLight(self.model)
-        self.addShaders()
+        #self.addShader()
+        self.shaderEnabled = 0
         #self.addCollision()
         #self.addParticle()
         self.addActionCommand("")
@@ -71,11 +71,16 @@ class PipeGeneric:
         render.setLight( self.light )
 
         
-    def addModel(self):
+    def addModel(self, bag):
         """Adds the model to the pipe object"""
     
         #pick file
-        self.fileName = "../models/Tunnel wall with textures and such.egg"
+        filename = ["../models/tunnel"]
+        filename.append(str(bag.pick()))
+        filename.append(".egg")
+        self.fileName = ''.join(filename)
+        
+        #self.fileName = "../models/tunnel3.egg"
 
         #load model
         self.model = loader.loadModel(self.fileName)
@@ -89,15 +94,15 @@ class PipeGeneric:
         self.nodePath = NodePath(self.model)
         self.model.reparentTo(render)
         
-    def addShaders(self):
+    def addShader(self):
         self.model.setShaderAuto()
-        #self.shaderEnable = 1
-        pass
+        self.shaderEnabled = 1
+        
     
     def addCollision(self):
         #Finding and adding collision tube to the pipe
         #cSphere = CollisionSphere((200,0,0), 100)
-        cNode = self.nodePath.find("**/pipe_collision").node()
+        cNode = self.nodePath.find("**/tube_collision").node()
         #cNode = CollisionNode("pipeCollision")
         #cNode.addSolid(solid)
         self.collision = self.model.attachNewNode(cNode)        
