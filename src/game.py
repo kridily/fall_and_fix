@@ -1,10 +1,16 @@
 import direct.directbase.DirectStart #starts Panda
 from pandac.PandaModules import * #basic Panda modules
+from panda3d.core import WindowProperties
+from panda3d.core import Filename,Shader
+from panda3d.core import AmbientLight,PointLight
+from panda3d.core import TextNode
+from panda3d.core import Point3,Vec3,Vec4
 from direct.showbase.DirectObject import DirectObject #for event handling
 from direct.actor.Actor import Actor #for animated models
 from direct.interval.IntervalGlobal import * #for compound intervals
+from direct.filter.CommonFilters import *
 from direct.task import Task #for update functions
-import math, sys, random, time
+import math, sys, random, time, os
 from ActionCommand import *
 from GrabBag import *
 from Pipe import *
@@ -135,7 +141,8 @@ class World(DirectObject): #necessary to accept events
         #spider is *only* a from object
         cNode.setIntoCollideMask(BitMask32.allOff())
         self.spiderCollisionNode = self.spider.attachNewNode(cNode)
-        self.spiderCollisionNode.show()
+        
+        #self.spiderCollisionNode.show()
         base.cTrav.addCollider(self.spiderCollisionNode, self.cHandler)
         
         

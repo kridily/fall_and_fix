@@ -6,9 +6,9 @@ from panda3d.physics import BaseParticleEmitter,BaseParticleRenderer
 from panda3d.physics import PointParticleFactory,SpriteParticleRenderer
 from panda3d.physics import LinearNoiseForce,DiscEmitter
 from panda3d.core import TextNode
-from panda3d.core import AmbientLight,DirectionalLight
+from panda3d.core import AmbientLight,DirectionalLight, PointLight
 from panda3d.core import Point3,Vec3,Vec4
-from panda3d.core import Filename
+from panda3d.core import Filename, Shader
 from direct.particles.Particles import Particles
 from direct.particles.ParticleEffect import ParticleEffect
 from direct.particles.ForceGroup import ForceGroup
@@ -28,31 +28,44 @@ class PipeGeneric:
         #self.nodePath = NodePath(self)
         self.addModel()
         self.addPointLight(self.model)
-        self.addCollision()
+        self.addShaders()
+        #self.addCollision()
         #self.addParticle()
         self.addActionCommand("")
-
-        #return (self)
+   
         
     def addPointLight(self, pipe):    
         """create a point light for pipe"""      
         
         #The redpoint light and helper
-        gb = random.uniform(0, 300) / 1000
-        r = random.uniform(700, 900) / 1000        
+        #RED
+        r = random.uniform(700, 900) / 1000
+        g = random.uniform(0, 300) / 1000
+        b = g
+
+        #ORANGE
+        # r = 1
+        # b = random.randint(0,91)
+        # g = (b / 2) + 102
+        # b = b / 255.0
+        # g = g / 255.0
         self.helper = loader.loadModel("../models/sphere.egg.pz")
         
-        self.helper.setColor( Vec4( r, gb, gb, 1 ) )      
+        self.helper.setColor( Vec4( r, g, b, 1 ) )      
         self.helper.setPos(pipe.getPos())
         #print self.helper.getColor()
-        self.helper.setScale(.25*0)
+        
+        #This is value is irrelevent at the moment unless I move the lights
+        self.helper.setScale(.25*1) #must be greater than 0.001
+        
+        
         #optionally set location of light within pipe
         self.helper.setY(self.helper.getY()-50*35 ) #moves to inbetween segments
         self.helper.setZ(self.helper.getZ()-50*6 ) #makes 3 sided lights
         
         self.light = self.helper.attachNewNode( PointLight( "self.light" ) )
-        self.light.node().setAttenuation( Vec3( .1, 0.04, 0.0 )/2 )                   
-        self.light.node().setColor( Vec4( r, gb, gb, 1 ) )
+        self.light.node().setAttenuation( Vec3( .1, 0.04, 0 )/1 )                   
+        self.light.node().setColor( Vec4( r, g, b, 1 ) )
         self.light.node().setSpecularColor( Vec4( 1 ) )
         self.helper.reparentTo( pipe )
         render.setLight( self.light )
@@ -62,7 +75,7 @@ class PipeGeneric:
         """Adds the model to the pipe object"""
     
         #pick file
-        self.fileName = "../models/broken pipe tunnel (with collision tube).egg"
+        self.fileName = "../models/Tunnel wall with textures and such.egg"
 
         #load model
         self.model = loader.loadModel(self.fileName)
@@ -75,6 +88,11 @@ class PipeGeneric:
 
         self.nodePath = NodePath(self.model)
         self.model.reparentTo(render)
+        
+    def addShaders(self):
+        self.model.setShaderAuto()
+        #self.shaderEnable = 1
+        pass
     
     def addCollision(self):
         #Finding and adding collision tube to the pipe
@@ -92,7 +110,7 @@ class PipeGeneric:
         self.particle.loadConfig("../models/steam.ptf")
         self.particle.start(pipe)
         self.particle.setPos(100.00, 0.000, 0)
-        self.particle.setScale(100.00, 80.000, 80)
+        self.particle.setScale(100.00, 80.00, 80.00)
           
     def addActionCommand(self, command):
         self.actionCommand = ActionCommand(command.__len__(), command, command)    

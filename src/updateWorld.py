@@ -13,9 +13,12 @@ from panda3d.physics import BaseParticleEmitter,BaseParticleRenderer
 from panda3d.physics import PointParticleFactory,SpriteParticleRenderer
 from panda3d.physics import LinearNoiseForce,DiscEmitter
 from panda3d.core import TextNode
-from panda3d.core import AmbientLight,DirectionalLight
+from panda3d.core import AmbientLight,DirectionalLight,PointLight
 from panda3d.core import Point3,Vec3,Vec4
-from panda3d.core import Filename
+from panda3d.core import Filename, Shader
+from panda3d.core import WindowProperties
+
+from direct.filter.CommonFilters import *
 from direct.particles.Particles import Particles
 from direct.particles.ParticleEffect import ParticleEffect
 from direct.particles.ForceGroup import ForceGroup
