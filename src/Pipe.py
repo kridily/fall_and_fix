@@ -39,16 +39,16 @@ class PipeGeneric:
         
         #The redpoint light and helper
         #RED
-        r = random.uniform(700, 900) / 1000
-        g = random.uniform(0, 300) / 1000
-        b = g
+        # r = random.uniform(700, 900) / 1000
+        # g = random.uniform(0, 300) / 1000
+        # b = g
 
         #ORANGE
-        # r = 1
-        # b = random.randint(0,91)
-        # g = (b / 2) + 102
-        # b = b / 255.0
-        # g = g / 255.0
+        r = 1
+        b = random.randint(0,91)
+        g = (b / 2) + 102
+        b = b / 255.0
+        g = g / 255.0
         self.helper = loader.loadModel("../models/sphere.egg.pz")
         
         self.helper.setColor( Vec4( r, g, b, 1 ) )      
@@ -64,7 +64,7 @@ class PipeGeneric:
         self.helper.setZ(self.helper.getZ()-50*6 ) #makes 3 sided lights
         
         self.light = self.helper.attachNewNode( PointLight( "self.light" ) )
-        self.light.node().setAttenuation( Vec3( .1, 0.04, 0 )/1 )                   
+        self.light.node().setAttenuation( Vec3( .1, 0.04, 0.1 )/2.5 )                   
         self.light.node().setColor( Vec4( r, g, b, 1 ) )
         self.light.node().setSpecularColor( Vec4( 1 ) )
         self.helper.reparentTo( pipe )
