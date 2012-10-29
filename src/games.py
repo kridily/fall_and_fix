@@ -176,7 +176,7 @@ class World(DirectObject): #necessary to accept events
         print "------!!!!!!!!!!!!!------"
         self.gameScore = self.gameScore + 1
         self.gameStability = self.gameStability - 10
-        self.HUD.updateHud(self.gameStability,self.gameScore,50)
+        self.HUD.updateHud(self.gameStability,self.gameScore,1)
 
 
     def getPipe(self, modelPath, model):

@@ -22,22 +22,23 @@ from direct.gui.DirectGui import DirectFrame
 
 class GameHUD:
      def __init__(self):
-        #self.arrowArray = OnscreenImage(image = "../images/100.png", pos = (-0.5, 0, 0.02))
-        #self.arrowArray.setScale(1,1,1)
+        #Creates the HUD elements.
 
-        self.stabilityBar = OnscreenImage(image = "../images/100.png", pos = (1.2, 0, 0))
-        self.stabilityBar.setScale(.05,1,.4)
+
+        self.stabilityBar = OnscreenImage(image = "../images/100.png", pos = (1.2, 0, .1))
+        self.stabilityBar.setScale(.05,1,.65)
         self.stabilityBar.setTransparency(TransparencyAttrib.MAlpha)
-        
+
         self.actionCommand = OnscreenImage(image = '../images/open.png', pos = (.95, 0, -.75), scale = (0.33, 1, 0.2))
         self.actionCommand.setTransparency(TransparencyAttrib.MAlpha)
 
-        self.score = OnscreenText(text = 'Score: 0', align = TextNode.ALeft, pos = (-1.3, .9), scale = 0.07, fg = (1,1,1,1), mayChange = True)
+        self.score = OnscreenText(text = 'Score: 0', align = TextNode.ALeft, pos = (-1.3, -.9), scale = 0.07, fg = (1,1,1,1), mayChange = True)
         self.score.align = TextNode.ALeft
         self.score.setText('Depth: 0')
         #self.score.setScale(.2,.2,.2)
 
      def updateHud(self, NewStability, NewScore, NewActionCommand):
+        #Updates the HUD using the inputted values.
         self.score.setText('Depth: ' + str(NewScore))
 
         if NewStability >= 100:
@@ -62,7 +63,22 @@ class GameHUD:
             self.stabilityBar.setImage('../images/10.png')
         elif NewStability >= 0:
             self.stabilityBar.setImage('../images/0.png')
-            
-        
+
+        if NewActionCommand == 0:
+            self.actionCommand.setImage('../images/open.png')
+        elif NewActionCommand == 1:
+            self.actionCommand.setImage('../images/left_down.png')
+        elif NewActionCommand == 2:
+            self.actionCommand.setImage('../images/right_down.png')
+        elif NewActionCommand == 3:
+            self.actionCommand.setImage('../images/left_up.png')
+        elif NewActionCommand == 4:
+            self.actionCommand.setImage('../images/right_down.png')
+        elif NewActionCommand == 5:
+            self.actionCommand.setImage('../images/up_down.png')
+        elif NewActionCommand == 6:
+            self.actionCommand.setImage('../images/left_right.png')
+
+        self.actionCommand.setTransparency(TransparencyAttrib.MAlpha)
 
 
