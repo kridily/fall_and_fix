@@ -29,7 +29,7 @@ class GameHUD:
         self.stabilityBar.setScale(.05,1,.4)
         self.stabilityBar.setTransparency(TransparencyAttrib.MAlpha)
         
-        self.actionCommand = OnscreenImage(image = 'images/open.png', pos = (.95, 0, -.75), scale = (0.33, 1, 0.2))
+        self.actionCommand = OnscreenImage(image = '../images/open.png', pos = (.95, 0, -.75), scale = (0.33, 1, 0.2))
         self.actionCommand.setTransparency(TransparencyAttrib.MAlpha)
 
         self.score = OnscreenText(text = 'Score: 0', align = TextNode.ALeft, pos = (-1.3, .9), scale = 0.07, fg = (1,1,1,1), mayChange = True)
