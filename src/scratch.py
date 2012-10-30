@@ -157,7 +157,7 @@ class World(DirectObject): #necessary to accept events
         print self.numCollisions
         model = cEntry.getIntoNodePath().getTop().find("**/*.egg").getName()
         self.currentPipe = self.getPipe("../models/", model)
-        print self.currentPipe.actionCommand.getCommand()
+        #print self.currentPipe.actionCommand.getCommand()
         print "------!!!!!!!!!!!!!------"
         
     
