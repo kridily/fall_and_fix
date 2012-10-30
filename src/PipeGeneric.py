@@ -23,16 +23,16 @@ class PipeGeneric:
     reference, and destroy models, collision tubes, lights,
     particles, and ActionCommand sequences.
     """
-    def __init__(self, bag):
+    def __init__(self, bag, template=False):
         
-        self.addModel(bag)
-        self.addPointLight(self.model)
-        #self.addShader()
-        self.shaderEnabled = 0
-        self.addCollision()
-        #self.addParticle()
-        self.addActionCommand("")
-   
+        if template is not False: self.reactivate(template)
+        else:
+            self.addModel(bag)
+            self.addPointLight(self.model)
+            self.shaderEnabled = 0
+            #self.addCollision()
+            #self.addParticle()
+            self.addActionCommand("") 
         
     def addPointLight(self, pipe):    
         """create a point light for pipe"""      
@@ -135,6 +135,29 @@ class PipeGeneric:
         #remove pipe segment
         self.model.removeNode()       
     
-
-
-    
+    def reactivate(self, pipe):
+        print pipe.nodePath.ls()
+        print "\n\n\n\n"
+        self.model = pipe.model
+        self.helper = pipe.helper
+        self.light = pipe.light.node()     
+        self.shaderEnabled = 0
+        self.collision = pipe.collision.node()
+        #self.particle = pipe.particle
+        self.actionCommand = pipe.actionCommand
+        #rotate by 0, 90, 180, or 270 degrees
+        self.model.setR(random.randint(0,3)*90)
+        
+    def recycle(self):
+        #rotate by 0, 90, 180, or 270 degrees
+        self.model.setR(random.randint(0,3)*90)
+        
+        #ORANGE
+        r = 1
+        b = random.randint(0,91)
+        g = (b / 2) + 102
+        b = b / 255.0
+        g = g / 255.0
+        self.helper.setColor( Vec4( r, g, b, 1 ) )      
+        self.light.node().setColor( Vec4( r, g, b, 1 ) )
+        

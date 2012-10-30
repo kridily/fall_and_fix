@@ -85,8 +85,9 @@ class World(DirectObject): #necessary to accept events
         self.numGenericTypes = 5
         self.numSpecialPipes = 4
         
-        self.pipeGenericBag = GrabBag(self.numTypes)        
+        self.pipeGenericBag = GrabBag(self.numGenericTypes)        
         self.pipeList = []
+        #self.pipeGenericKeep = []
         self.pipeInterval = 20.25*3.05*.98 #length*timesLonger*overlapConstant
         self.pipeDepth = 0
         
@@ -157,7 +158,9 @@ class World(DirectObject): #necessary to accept events
     def pipeCollide(self, cEntry):
         self.numCollisions += 1
         print self.numCollisions
-        model = cEntry.getIntoNodePath().getTop().find("**/*.egg").getName()
+        #print cEntry.getIntoNodePath().getParent().getParent().getName()
+        #print "\n\n\n"
+        model = cEntry.getIntoNodePath().getParent().getParent().getName()
         self.currentPipe = self.getPipe("../models/", model)
         print self.currentPipe.actionCommand.getCommand()
         print "------!!!!!!!!!!!!!------"

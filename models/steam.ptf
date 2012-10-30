@@ -1,7 +1,7 @@
 
 self.reset()
 self.setPos(0.000, 0.000, 0.000)
-self.setHpr(0.000, 0.000, 270.000)
+self.setHpr(0.000, 0.000, 0.000)
 self.setScale(1.000, 1.000, 1.000)
 p0 = Particles.Particles('particles-1')
 # Particles parameters
@@ -47,7 +47,7 @@ p0.emitter.setOffsetForce(Vec3(0.0000, 0.0000, 4.0000))
 p0.emitter.setExplicitLaunchVector(Vec3(0.0000, 0.0000, 0.0000))
 p0.emitter.setRadiateOrigin(Point3(0.0000, 0.0000, 0.0000))
 # Disc parameters
-p0.emitter.setRadius(0.4000)
+p0.emitter.setRadius(2.000)
 self.addParticles(p0)
 f0 = ForceGroup.ForceGroup('vertex')
 # Force parameters
