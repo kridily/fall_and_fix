@@ -13,12 +13,9 @@ from direct.task import Task #for update functions
 import math, sys, random, time, os
 from ActionCommand import *
 from GrabBag import *
-<<<<<<< HEAD
 from PipeGeneric import *
 from GameHud import *
-=======
-#from PipeGeneric import *
->>>>>>> f3e0215aaf127f8ffcc486e0942fdf210ea9f971
+
 
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
