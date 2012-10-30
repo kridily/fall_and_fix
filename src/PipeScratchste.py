@@ -152,6 +152,31 @@ class PipeGeneric:
         #remove pipe segment
         self.model.removeNode()       
     
-
+    
+    def reactivate(self, pipe):
+        print pipe.nodePath.ls()
+        print "\n\n\n\n"
+        self.model = pipe.model
+        self.helper = pipe.helper
+        self.light = pipe.light.node()     
+        self.shaderEnabled = 0
+        self.collision = pipe.collision.node()
+        #self.particle = pipe.particle
+        self.actionCommand = pipe.actionCommand
+        #rotate by 0, 90, 180, or 270 degrees
+        self.model.setR(random.randint(0,3)*90)
+        
+    def recycle(self):
+        #rotate by 0, 90, 180, or 270 degrees
+        self.model.setR(random.randint(0,3)*90)
+        
+        #ORANGE
+        r = 1
+        b = random.randint(0,91)
+        g = (b / 2) + 102
+        b = b / 255.0
+        g = g / 255.0
+        self.helper.setColor( Vec4( r, g, b, 1 ) )      
+        self.light.node().setColor( Vec4( r, g, b, 1 ) )
 
     
