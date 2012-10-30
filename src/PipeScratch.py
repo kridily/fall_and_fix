@@ -23,16 +23,45 @@ class PipeGeneric:
     reference, and destroy models, collision tubes, lights,
     particles, and ActionCommand sequences.
     """
+    
+    
+    
     def __init__(self, bag):
         
-        self.addModel(bag)
+        
+        #pick file
+        filename = ["../models/tunnel"]
+        filename.append(str(bag.pick()))
+        filename.append(".egg")
+        self.fileName = ''.join(filename)
+        self.fileName = "../models/tunnelsteam"
+        #"../models/tunnelsteam.egg"
+        #load model
+        self.model = loader.loadModel(self.fileName)
+        self.model.setScale(.0175)
+        #print self.model.ls()
+      
+        self.nodePath = NodePath(self.model)
+        self.model.reparentTo(render)
+        
+        
+        ##self.addModel(bag)
         self.addPointLight(self.model)
         #self.addShader()
         self.shaderEnabled = 0
         #self.addCollision()
-        #self.addParticle()
+        ##self.addParticle(self.model)
+        
+        base.enableParticles()
+        
+        self.particle = ParticleEffect()
+        self.loadParticleConfig('../models/steam.ptf')
+                
         self.addActionCommand("")
-   
+        
+        #rotate by 0, 90, 180, or 270 degrees
+        self.model.setR(random.randint(0,3)*90)
+        #print self.model.getR()
         
     def addPointLight(self, pipe):    
         """create a point light for pipe"""      
@@ -71,28 +100,12 @@ class PipeGeneric:
         render.setLight( self.light )
 
         
-    def addModel(self, bag):
+    ###def addModel(self, bag):
         """Adds the model to the pipe object"""
     
-        #pick file
-        filename = ["../models/tunnel"]
-        filename.append(str(bag.pick()))
-        filename.append(".egg")
-        self.fileName = ''.join(filename)
         
-        self.fileName = "../models/tunnelsteam.egg"
-
-        #load model
-        self.model = loader.loadModel(self.fileName)
-        self.model.setScale(.0175)
-        #print self.model.ls()
+        ####
         
-        #rotate by 0, 90, 180, or 270 degrees
-        self.model.setR(random.randint(0,3)*90)
-        #print self.model.getR()
-
-        self.nodePath = NodePath(self.model)
-        self.model.reparentTo(render)
         
     def addShader(self):
         self.model.setShaderAuto()
@@ -109,13 +122,17 @@ class PipeGeneric:
         self.collision.show()
         
         
-    def addParticle(self, pipe):
-        #Particle Effect: VERY SLOW
+    def loadParticleConfig(self, file):
+        #Start of the code from steam.ptf
+        self.particle.cleanup()
         self.particle = ParticleEffect()
-        self.particle.loadConfig("../models/steam.ptf")
-        self.particle.start(pipe)
-        self.particle.setPos(100.00, 0.000, 0)
-        self.particle.setScale(100.00, 80.00, 80.00)
+        self.particle.loadConfig(Filename(file))        
+        #Sets particles to birth relative to the teapot, but to render at toplevel
+        self.particle.start(self.model)
+        self.particle.setScale(20)
+        self.particle.setPos(0.00, -200.000, -200.00)
+        
+        
           
     def addActionCommand(self, command):
         self.actionCommand = ActionCommand(command.__len__(), command, command)    
