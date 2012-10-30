@@ -13,7 +13,7 @@ from direct.task import Task #for update functions
 import math, sys, random, time, os
 from ActionCommand import *
 from GrabBag import *
-from Pipe import *
+from PipeGeneric import *
 
 
 class World(DirectObject): #necessary to accept events
@@ -72,9 +72,7 @@ class World(DirectObject): #necessary to accept events
         
         self.accept("spider-and-tube_collision", self.pipeCollide)
         
-        #self.env.setShaderAuto()
-        self.shaderenable = 1
-    
+       
     
     
     def setKey(self, key, value):
@@ -84,13 +82,17 @@ class World(DirectObject): #necessary to accept events
         """loads initial models into the world"""
         #load pipes
         self.numPipes = 6
-        self.numTypes = 5
-        self.pipeBag = GrabBag(self.numTypes)
+        self.numGenericTypes = 5
+        self.numSpecialPipes = 4
+        
+        self.pipeGenericBag = GrabBag(self.numTypes)        
         self.pipeList = []
         self.pipeInterval = 20.25*3.05*.98 #length*timesLonger*overlapConstant
         self.pipeDepth = 0
         
-        for i in range(self.numPipes):
+        
+        #create initial pipes
+        for i in range(self.numPipes):            
             self.createPipe(i)
             #print self.pipeList[i].model.getY()
         

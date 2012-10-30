@@ -29,7 +29,7 @@ class PipeGeneric:
         self.addPointLight(self.model)
         #self.addShader()
         self.shaderEnabled = 0
-        #self.addCollision()
+        self.addCollision()
         #self.addParticle()
         self.addActionCommand("")
    
@@ -80,7 +80,7 @@ class PipeGeneric:
         filename.append(".egg")
         self.fileName = ''.join(filename)
         
-        self.fileName = "../models/tunnelclear.egg"
+        #self.fileName = "../models/tunnelclear.egg"
 
         #load model
         self.model = loader.loadModel(self.fileName)
