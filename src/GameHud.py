@@ -64,19 +64,19 @@ class GameHUD:
         elif NewStability >= 0:
             self.stabilityBar.setImage('../images/0.png')
 
-        if NewActionCommand == 0:
+        if NewActionCommand == []:
             self.actionCommand.setImage('../images/open.png')
-        elif NewActionCommand == 1:
+        elif NewActionCommand == ['l','d']:
             self.actionCommand.setImage('../images/left_down.png')
-        elif NewActionCommand == 2:
+        elif NewActionCommand == ['r','d']:
             self.actionCommand.setImage('../images/right_down.png')
-        elif NewActionCommand == 3:
+        elif NewActionCommand == ['l','u']:
             self.actionCommand.setImage('../images/left_up.png')
-        elif NewActionCommand == 4:
-            self.actionCommand.setImage('../images/right_down.png')
-        elif NewActionCommand == 5:
+        elif NewActionCommand == ['r','u']:
+            self.actionCommand.setImage('../images/right_up.png')
+        elif NewActionCommand == ['u','d']:
             self.actionCommand.setImage('../images/up_down.png')
-        elif NewActionCommand == 6:
+        elif NewActionCommand == ['l','r']:
             self.actionCommand.setImage('../images/left_right.png')
 
         self.actionCommand.setTransparency(TransparencyAttrib.MAlpha)

@@ -15,6 +15,7 @@ class ActionCommand:
             self.size = 0
 
         self.CommandArray = []
+        self.Original = []
 
         if fixedCommandList == 0:
             for i in range (0, size):
@@ -24,6 +25,8 @@ class ActionCommand:
         else:
             self.CommandArray = list(fixedCommandList)
             #print self.CommandArray
+
+        self.Original = self.CommandArray
 
     def inputCommand(self,character):
         #Lets you input something into the action command.
@@ -60,6 +63,9 @@ class ActionCommand:
 
     def getCommand(self):
         return self.CommandArray
+
+    def getOriginal(self):
+        return self.Original
 
 #DEBUG
 #AC = ActionCommand(5,['!','@','#','$','%'])
