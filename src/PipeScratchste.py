@@ -34,7 +34,7 @@ class PipeGeneric:
         filename.append(str(bag.pick()))
         filename.append(".egg")
         self.fileName = ''.join(filename)
-        self.fileName = "../models/tunnelwires"
+        self.fileName = "../models/tunnelsteam"
         #"../models/tunnelsteam.egg"
         #load model
         self.model = loader.loadModel(self.fileName)
@@ -55,7 +55,7 @@ class PipeGeneric:
         base.enableParticles()
         
         self.particle = ParticleEffect()
-        self.loadParticleConfig('../models/spark.ptf')
+        self.loadParticleConfig('../models/steam.ptf')
                 
         self.addActionCommand("")
         
@@ -129,7 +129,7 @@ class PipeGeneric:
         self.particle.loadConfig(Filename(file))        
         #Sets particles to birth relative to the teapot, but to render at toplevel
         self.particle.start(self.model)
-        self.particle.setScale(100)
+        self.particle.setScale(20)
         self.particle.setPos(0.00, -200.000, -200.00)
         
         

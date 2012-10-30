@@ -47,5 +47,5 @@ p0.emitter.setOffsetForce(Vec3(0.0000, 0.0000, 3.0000))
 p0.emitter.setExplicitLaunchVector(Vec3(1.0000, 0.0000, 0.0000))
 p0.emitter.setRadiateOrigin(Point3(0.0000, 0.0000, 0.0000))
 # Disc parameters
-p0.emitter.setRadius(2.0000)
+p0.emitter.setRadius(.5000)
 self.addParticles(p0)
