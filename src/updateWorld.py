@@ -62,18 +62,23 @@ def keyEvents(self, task):
         if self.spider.getZ() > 2.6:
             self.spider.setZ(self.spider.getZ()-1*dist)
     #print self.spider.getPos()
+
     self.adjustCamera()
-    
+
     if self.keyMap["actionLeft"] == 1:
         print "actionLeft"
+        self.keyMap["actionLeft"] = 0
     if self.keyMap["actionRight"] == 1:
         print "actionRight"
+        self.keyMap["actionRight"] = 0
     if self.keyMap["actionUp"] == 1:
         print "actionUp"
+        self.keyMap["actionUp"] = 0
     if self.keyMap["actionDown"] == 1:
         print "actionDown"
-    
-    
+        self.keyMap["actionDown"] = 0
+
+
     self.prevTime = task.time
     return Task.cont
 
@@ -114,7 +119,7 @@ def checkPipes(self, task):
 
         #create new pipe segment
         self.createPipe(-1)
-        
+
         #Enable shaders for the first two pipe segments
         if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
         if not self.pipeList[1].shaderEnabled: self.pipeList[1].addShader()
@@ -124,14 +129,13 @@ def checkPipes(self, task):
 
 def createPipe(self, i):
         pipe = PipeGeneric(self.pipeBag)
-        
+
         #set position in queue
         if i >= 0:
             pipe.model.setPos(0, i*self.pipeInterval, 4.25)
         else:
             pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
             + self.pipeInterval, 4.25)
-            
-        self.pipeList.append(pipe)    
-        
-        
+
+        self.pipeList.append(pipe)
+

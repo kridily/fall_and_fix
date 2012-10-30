@@ -39,6 +39,7 @@ class World(DirectObject): #necessary to accept events
         taskMgr.add(self.keyEvents, "keyEventTask")
         taskMgr.add(self.loopMusic, "loopMusicTask")
         taskMgr.add(self.checkPipes, "checkPipesTask")
+        taskMgr.add(self.updateTimer, "timeTask")
 
         #Enables particle effects
         base.enableParticles()
@@ -67,11 +68,14 @@ class World(DirectObject): #necessary to accept events
         self.accept("space", self.setKey, ["drop", 1])
         self.accept("space-up", self.setKey, ["drop", 0])
 
-        self.accept("arrow_up", self.setKey, ["actionUp", 1])
+        #self.accept("arrow_up", self.setKey, ["actionUp", 1])
+        self.acceptOnce("arrow_up", self.setKey, ["actionUp", 1])
+        self.accept("arrow_up-up", self.acceptOnce, ["arrow_up", self.setKey, ["actionUp", 1]])
+
         self.accept("arrow_down", self.setKey, ["actionDown", 1])
         self.accept("arrow_left", self.setKey, ["actionLeft", 1])
         self.accept("arrow_right", self.setKey, ["actionRight", 1])
-        self.accept("arrow_up-up", self.setKey, ["actionUp", 0])
+        #self.accept("arrow_up-up", self.setKey, ["actionUp", 0])
         self.accept("arrow_down-up", self.setKey, ["actionDown", 0])
         self.accept("arrow_left-up", self.setKey, ["actionLeft", 0])
         self.accept("arrow_right-up", self.setKey, ["actionRight", 0])
@@ -90,7 +94,18 @@ class World(DirectObject): #necessary to accept events
         #self.env.setShaderAuto()
         self.shaderenable = 1
 
+        self.DefaultTime = .2
+        self.TimeLeft = self.DefaultTime
+        self.TimerGoing = False
 
+    def updateTimer(self,task):
+        if self.TimerGoing == True:
+            self.TimeLeft = self.TimeLeft - globalClock.getDt()
+            if self.TimeLeft <= 0:
+                print"TIME UP!!!!!!!!!"
+                self.TimeLeft = self.DefaultTime
+                self.TimerGoing = False
+        return Task.cont
 
     def setKey(self, key, value):
         self.keyMap[key] = value
@@ -178,6 +193,10 @@ class World(DirectObject): #necessary to accept events
         self.gameStability = self.gameStability - 10
         self.HUD.updateHud(self.gameStability,self.gameScore,1)
 
+        if self.TimerGoing == False:
+            self.TimeLeft = self.DefaultTime
+            self.TimerGoing = True
+
 
     def getPipe(self, modelPath, model):
         modelPath += model
@@ -185,8 +204,6 @@ class World(DirectObject): #necessary to accept events
         for i in range(self.pipeList.__len__()):
             print self.pipeList[i].fileName
             if self.pipeList[i].fileName == modelPath: return(self.pipeList[i])
-
-
 
 import updateWorld
 World.keyEvents = updateWorld.keyEvents
