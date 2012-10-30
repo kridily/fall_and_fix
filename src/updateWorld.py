@@ -133,8 +133,8 @@ def createPipe(self, i, pipe = False):
     #set position in queue
     if i >= 0:
         #create new pipe
-        pipe = PipeGeneric(self.pipeGenericBag)
-        pipe.model.setPos(0, i*self.pipeInterval, 4.25)
+       pipe = PipeGeneric(self.pipeGenericBag)
+       pipe.model.setPos(0, i*self.pipeInterval, 4.25)
     else:
         pipe.recycle()
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
