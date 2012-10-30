@@ -1,3 +1,3 @@
-python ./src/scratch.py
+cd src
+python scratch.py
 pause
-del ./src/*.pyc
