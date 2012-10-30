@@ -35,7 +35,7 @@ class PipeGeneric:
         filename.append(".egg")
         self.fileName = ''.join(filename)
         self.fileName = "../models/tunnelfire"
-        #"../models/tunnelsteam.egg"
+        
         #load model
         self.model = loader.loadModel(self.fileName)
         self.model.setScale(.0175)
@@ -123,7 +123,7 @@ class PipeGeneric:
         
         
     def loadParticleConfig(self, file):
-        #Start of the code from steam.ptf
+        #Start of the code from fireish.ptf
         self.particle.cleanup()
         self.particle = ParticleEffect()
         self.particle.loadConfig(Filename(file))        
