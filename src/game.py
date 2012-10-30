@@ -14,16 +14,28 @@ import math, sys, random, time, os
 from ActionCommand import *
 from GrabBag import *
 from PipeGeneric import *
+from GameHud import *
 
+from direct.gui.OnscreenText import OnscreenText
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from direct.gui.DirectGui import DirectFrame
 
 class World(DirectObject): #necessary to accept events
     def __init__(self):
+    
+        #Setup HUD
+        self.HUD = GameHUD()
+        self.gameScore = 0
+        self.gameStability = 100    
+    
         #turn off default mouse control
         base.disableMouse()
         #add update tasks to taskManager
         taskMgr.add(self.keyEvents, "keyEventTask")
         taskMgr.add(self.loopMusic, "loopMusicTask")
-        taskMgr.add(self.checkPipes, "checkPipesTask")
+        taskMgr.add(self.checkPipes, "checkPipesTask")        
+        taskMgr.add(self.updateTimer, "timeTask")
         
         #Enables particle effects
         base.enableParticles()
@@ -72,8 +84,18 @@ class World(DirectObject): #necessary to accept events
         
         self.accept("spider-and-tube_collision", self.pipeCollide)
         
-       
-    
+        self.DefaultTime = .2
+        self.TimeLeft = self.DefaultTime
+        self.TimerGoing = False
+
+    def updateTimer(self,task):
+        if self.TimerGoing == True:
+            self.TimeLeft = self.TimeLeft - globalClock.getDt()
+            if self.TimeLeft <= 0:
+                print"TIME UP!!!!!!!!!"
+                self.TimeLeft = self.DefaultTime
+                self.TimerGoing = False
+        return Task.cont    
     
     def setKey(self, key, value):
         self.keyMap[key] = value
@@ -164,6 +186,15 @@ class World(DirectObject): #necessary to accept events
         self.currentPipe = self.getPipe("../models/", model)
         print self.currentPipe.actionCommand.getCommand()
         print "------!!!!!!!!!!!!!------"
+        
+        #increase counters and update HUD
+        self.gameScore = self.gameScore + 1
+        self.gameStability = self.gameStability - 10
+        self.HUD.updateHud(self.gameStability,self.gameScore,1)
+
+        if self.TimerGoing == False:
+            self.TimeLeft = self.DefaultTime
+            self.TimerGoing = True
         
     
     def getPipe(self, modelPath, model):

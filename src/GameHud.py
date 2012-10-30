@@ -13,7 +13,7 @@ from direct.task import Task #for update functions
 import math, sys, random, time, os
 from ActionCommand import *
 from GrabBag import *
-from Pipe import *
+from PipeGeneric import *
 
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *

@@ -13,7 +13,7 @@ from direct.task import Task #for update functions
 import math, sys, random, time, os
 from ActionCommand import *
 from GrabBag import *
-from Pipe import *
+from PipeGeneric import *
 from GameHud import *
 
 from direct.gui.OnscreenText import OnscreenText
@@ -91,9 +91,7 @@ class World(DirectObject): #necessary to accept events
 
         self.accept("spider-and-tube_collision", self.pipeCollide)
 
-        #self.env.setShaderAuto()
-        self.shaderenable = 1
-
+        
         self.DefaultTime = .2
         self.TimeLeft = self.DefaultTime
         self.TimerGoing = False
