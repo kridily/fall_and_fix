@@ -32,7 +32,7 @@ class GameHUD:
         self.actionCommand = OnscreenImage(image = '../images/open.png', pos = (.95, 0, -.75), scale = (0.33, 1, 0.2))
         self.actionCommand.setTransparency(TransparencyAttrib.MAlpha)
 
-        self.score = OnscreenText(text = 'Score: 0', align = TextNode.ALeft, pos = (-1.3, -.9), scale = 0.07, fg = (1,1,1,1), mayChange = True)
+        self.score = OnscreenText(text = 'Score: 0', align = TextNode.ALeft, pos = (-1.3, -.9), scale = 0.10, fg = (1,1,1,1), mayChange = True)
         self.score.align = TextNode.ALeft
         self.score.setText('Depth: 0')
         #self.score.setScale(.2,.2,.2)

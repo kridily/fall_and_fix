@@ -13,33 +13,17 @@ from direct.task import Task #for update functions
 import math, sys, random, time, os
 from ActionCommand import *
 from GrabBag import *
-<<<<<<< HEAD
-from PipeGeneric import *
-from GameHud import *
-=======
-#from PipeGeneric import *
->>>>>>> f3e0215aaf127f8ffcc486e0942fdf210ea9f971
+from PipeScratchfi import *
 
-from direct.gui.OnscreenText import OnscreenText
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from direct.gui.DirectGui import DirectFrame
 
 class World(DirectObject): #necessary to accept events
     def __init__(self):
-    
-        #Setup HUD
-        self.HUD = GameHUD()
-        self.gameScore = 0
-        self.gameStability = 100    
-    
         #turn off default mouse control
         base.disableMouse()
         #add update tasks to taskManager
         taskMgr.add(self.keyEvents, "keyEventTask")
         taskMgr.add(self.loopMusic, "loopMusicTask")
-        taskMgr.add(self.checkPipes, "checkPipesTask")        
-        taskMgr.add(self.updateTimer, "timeTask")
+        taskMgr.add(self.checkPipes, "checkPipesTask")
         
         #Enables particle effects
         base.enableParticles()
@@ -88,18 +72,10 @@ class World(DirectObject): #necessary to accept events
         
         self.accept("spider-and-tube_collision", self.pipeCollide)
         
-        self.DefaultTime = .2
-        self.TimeLeft = self.DefaultTime
-        self.TimerGoing = False
-
-    def updateTimer(self,task):
-        if self.TimerGoing == True:
-            self.TimeLeft = self.TimeLeft - globalClock.getDt()
-            if self.TimeLeft <= 0:
-                print"TIME UP!!!!!!!!!"
-                self.TimeLeft = self.DefaultTime
-                self.TimerGoing = False
-        return Task.cont    
+        #self.env.setShaderAuto()
+        self.shaderenable = 1
+    
+    
     
     def setKey(self, key, value):
         self.keyMap[key] = value
@@ -108,18 +84,13 @@ class World(DirectObject): #necessary to accept events
         """loads initial models into the world"""
         #load pipes
         self.numPipes = 6
-        self.numGenericTypes = 5
-        self.numSpecialPipes = 4
-        
-        self.pipeGenericBag = GrabBag(self.numGenericTypes)        
+        self.numTypes = 5
+        self.pipeBag = GrabBag(self.numTypes)
         self.pipeList = []
-        #self.pipeGenericKeep = []
         self.pipeInterval = 20.25*3.05*.98 #length*timesLonger*overlapConstant
         self.pipeDepth = 0
         
-        
-        #create initial pipes
-        for i in range(self.numPipes):            
+        for i in range(self.numPipes):
             self.createPipe(i)
             #print self.pipeList[i].model.getY()
         
@@ -184,21 +155,10 @@ class World(DirectObject): #necessary to accept events
     def pipeCollide(self, cEntry):
         self.numCollisions += 1
         print self.numCollisions
-        #print cEntry.getIntoNodePath().getParent().getParent().getName()
-        #print "\n\n\n"
-        model = cEntry.getIntoNodePath().getParent().getParent().getName()
-        self.currentPipe = self.getPipe("../models/", model)
-        print self.currentPipe.actionCommand.getCommand()
+        model = cEntry.getIntoNodePath().getTop().find("**/*.egg").getName()
+        self.currentPipe = self.getPipe("../models/", model)######################################
+        #print self.currentPipe.actionCommand.getCommand()
         print "------!!!!!!!!!!!!!------"
-        
-        #increase counters and update HUD
-        self.gameScore = self.gameScore + 1
-        self.gameStability = self.gameStability - 10
-        self.HUD.updateHud(self.gameStability,self.gameScore,1)
-
-        if self.TimerGoing == False:
-            self.TimeLeft = self.DefaultTime
-            self.TimerGoing = True
         
     
     def getPipe(self, modelPath, model):
@@ -210,7 +170,7 @@ class World(DirectObject): #necessary to accept events
         
         
         
-import updateWorld
+import updateScratch as updateWorld
 World.keyEvents = updateWorld.keyEvents
 World.adjustCamera = updateWorld.adjustCamera
 World.loopMusic = updateWorld.loopMusic

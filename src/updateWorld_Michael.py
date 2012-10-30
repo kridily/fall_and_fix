@@ -113,13 +113,13 @@ def checkPipes(self, task):
     self.pipeDepth = self.pipeList[0].model.getY()
     #print self.pipeDepth
     if self.pipeDepth < -1*self.pipeInterval:
-        
+
         #create new pipe segment
-        self.createPipe(-1, self.pipeList[0])    
-        
+        self.createPipe(-1, self.pipeList[0])
+
         #destroy or recycle the old pipe
         #self.pipeList[0].destroy()
-        self.pipeList.pop(0)            
+        self.pipeList.pop(0)
 
         #Enable shaders for the first two pipe segments
         if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
@@ -133,8 +133,8 @@ def createPipe(self, i, pipe = False):
     #set position in queue
     if i >= 0:
         #create new pipe
-       pipe = PipeGeneric(self.pipeGenericBag)
-       pipe.model.setPos(0, i*self.pipeInterval, 4.25)
+        pipe = PipeGeneric(self.pipeGenericBag)
+        pipe.model.setPos(0, i*self.pipeInterval, 4.25)
     else:
         pipe.recycle()
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
@@ -142,4 +142,3 @@ def createPipe(self, i, pipe = False):
 
     self.pipeList.append(pipe)
     #self.pipeGenericKeep.append(pipe)
-
