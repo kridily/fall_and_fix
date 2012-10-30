@@ -34,7 +34,7 @@ class PipeGeneric:
         filename.append(str(bag.pick()))
         filename.append(".egg")
         self.fileName = ''.join(filename)
-        self.fileName = "../models/tunnelgears"
+        self.fileName = "../models/tunnelwires"
         #"../models/tunnelsteam.egg"
         #load model
         self.model = loader.loadModel(self.fileName)
