@@ -27,6 +27,7 @@ from direct.gui.OnscreenText import OnscreenText
 from ActionCommand import *
 from GrabBag import *
 from GameHud import *
+from PipeFire import PipeFire
 from PipeGeneric import PipeGeneric
 from PipeFire import PipeFire
 from PipeGears import PipeGears
@@ -50,7 +51,7 @@ def keyEvents(self, task):
             pass
             #self.pipeList[i].model.setR(self.pipeList[i].model.getR() + dt*20*i)
 
-    dist = .135
+    dist = .15#35
     if self.keyMap["moveLeft"] == 1:
         self.spider.setHpr(-115, 0, 90)
         if self.spider.getX() > -2.0:
@@ -68,9 +69,8 @@ def keyEvents(self, task):
         if self.spider.getZ() > 2.6:
             self.spider.setZ(self.spider.getZ()-1*dist)
     #print self.spider.getPos()
-
     self.adjustCamera()
-
+    
     if self.keyMap["actionLeft"] == 1:
         print "actionLeft"
         self.keyMap["actionLeft"] = 0
@@ -83,8 +83,8 @@ def keyEvents(self, task):
     if self.keyMap["actionDown"] == 1:
         print "actionDown"
         self.keyMap["actionDown"] = 0
-
-
+    
+    
     self.prevTime = task.time
     return Task.cont
 
@@ -115,44 +115,89 @@ def loopMusic(self, task):
 
     return Task.cont
 
-def checkPipes(self, task):
+# def checkPipes(self, task):
+    # self.pipeDepth = self.pipeList[0].model.getY()
+    # #print self.pipeDepth
+    # if self.pipeDepth < -1*self.pipeInterval:
+
+        # self.pipeList[0].destroy()
+        # self.pipeList.pop(0)
+
+        # #create new pipe segment
+        # self.createPipe(-1)
+        
+        # #Enable shaders for the first two pipe segments
+        # if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
+        # if not self.pipeList[1].shaderEnabled: self.pipeList[1].addShader()
+
+
+    # return Task.cont
+
+# def createPipe(self, i):
+        # a = random.randint(0,2)
+        # if not a:
+            # pipe = PipeFire()#Generic(self.pipeGenericBag)
+        # else:
+            # pipe = PipeSteam()
+        
+        # #set position in queue
+        # if i >= 0:
+            # pipe.model.setPos(0, i*self.pipeInterval, 4.25)
+        # else:
+            # pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+            # + self.pipeInterval, 4.25)
+            
+        # self.pipeList.append(pipe)    
+        
+
+def checkPipes2(self, task):
     self.pipeDepth = self.pipeList[0].model.getY()
     #print self.pipeDepth
     if self.pipeDepth < -1*self.pipeInterval:
+    
+        #Damage player if he didn't make it in time.
+        if not self.pipeList[0].isCommandEmpty():
+            self.playerStability = self.playerStability - 10
         
         self.pipeCycle += 1
         print self.pipeCycle
         print self.pipeCycle % 7
         print "\n"        
         
+        test = self.pipeCycle % 7
         #check pipe cycle state
-        if self.pipeCycle % 7 >= 2:
+        if test > 0 and test < 6:
         #recycle pipe
-            self.createPipe(-5, self.pipeList[0])
+            self.createPipe2(-5, self.pipeList[0])
             self.pipeList.pop(0)
-        elif self.pipeCycle % 7 == 0:
+        elif test == 0:
         #spawn broken pipe            
             type = self.pipeSpecialBag.pick() *-1
             print "type" + str(type)
-            self.createPipe(type)
+            self.createPipe2(type)
+            self.pipeList[0].destroy()
             self.pipeList.pop(0)
-        elif self.pipeCycle % 7 == 1:
+        elif test == 6:
         #spawn generic pipe            
-            self.createPipe(-6)
+            self.createPipe2(-6)
+            self.pipeList[0].destroy()
             self.pipeList.pop(0)
             
         #Enable shaders for the first two pipe segments
-        if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
-        if not self.pipeList[1].shaderEnabled: self.pipeList[1].addShader()
+        if self.pipeList[0].type != "fire" and not self.pipeList[0].shaderEnabled: 
+                self.pipeList[0].addShader()
+        if self.pipeList[1].type != "fire" and not self.pipeList[1].shaderEnabled: 
+                self.pipeList[1].addShader()
 
 
     return Task.cont
 
-def createPipe(self, i, pipe = False):
+    
+def createPipe2(self, i, pipe = False):
     print "i = " + str(i) + "!!!!!!"
     if i >= 0: #only in initial world.loadModels()
     #create new generic pipe
-       pipe = PipeFire()#Generic(self.pipeGenericBag)
+       pipe = PipeGeneric(self.pipeGenericBag)
     #set position in queue
        pipe.model.setPos(0, i*self.pipeInterval, 4.25)
     elif i == -5:
@@ -162,33 +207,33 @@ def createPipe(self, i, pipe = False):
         + self.pipeInterval, 4.25)
     elif i == -6:
     #create new generic pipe
-        pipe = PipeFire()#Generic(self.pipeGenericBag)
+        pipe = PipeGeneric(self.pipeGenericBag)
     #set position in queue
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
         + self.pipeInterval, 4.25)
     elif i == -1:
     #create Steam pipe
-        pipe = PipeFire()
+        pipe = PipeSteam()
         #self.loadParticleConfig(pipe, '../models/','steam.ptf')
     #set position in queue
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
         + self.pipeInterval, 4.25)    
     elif i == -2:
-    #create Steam pipe
-        pipe = PipeFire()
+    #create Gears pipe
+        pipe = PipeGears()
         #self.loadParticleConfig(pipe, '../models/','spark.ptf')
     #set position in queue
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
         + self.pipeInterval, 4.25)    
     elif i == -3:
-    #create Steam pipe
-        pipe = PipeFire()
+    #create Wires pipe
+        pipe = PipeWires()
         #self.loadParticleConfig(pipe, '../models/','spark.ptf')
     #set position in queue
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
         + self.pipeInterval, 4.25)    
     elif i == -4:
-    #create Steam pipe
+    #create Fire pipe
         pipe = PipeFire()
         #self.loadParticleConfig(pipe, '../models/','fireish.ptf')
     #set position in queue
@@ -198,14 +243,5 @@ def createPipe(self, i, pipe = False):
 
     self.pipeList.append(pipe)
     #self.pipeGenericKeep.append(pipe)
-    
-def loadParticleConfig(self, pipe, path, file):
-    #Start of the code from steam.ptf
-    pipe.particle.cleanup()
-    pipe.particle = ParticleEffect()
-    pipe.particle.loadConfig(Filename(path,file))
-    #Sets particles to birth relative to the teapot, but to render at toplevel
-    pipe.particle.start(pipe.model)
-    pipe.particle.setScale(20)
-    pipe.particle.setPos(0.00, -200.000, -200.00)
-
+        
+        

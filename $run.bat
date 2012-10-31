@@ -1,3 +1,3 @@
-python ./src/game.py
+cd src
+python game.py
 pause
-del ./src/*.pyc
