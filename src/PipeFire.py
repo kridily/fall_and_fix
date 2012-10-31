@@ -29,7 +29,7 @@ class PipeGeneric:
     def __init__(self, bag):
 
         #SoundIntervals
-        base = ShowBase()
+        #base = ShowBase()
         self.sound = loader.loadSfx("../audio/fire.wav")
         self.sound.setLoop(True)
         self.sound.play()
@@ -65,6 +65,8 @@ class PipeGeneric:
 
         self.addActionCommand("")
 
+        
+        
         #rotate by 0, 90, 180, or 270 degrees
         self.model.setR(random.randint(0,3)*90)
         #print self.model.getR()
@@ -102,10 +104,27 @@ class PipeGeneric:
         self.light.node().setAttenuation( Vec3( .1, 0.04, 0.1 )/2.5 )
         self.light.node().setColor( Vec4( r, g, b, 1 ) )
         self.light.node().setSpecularColor( Vec4( 1 ) )
-        self.helper.reparentTo( pipe )
+     
         render.setLight( self.light )
 
-
+        self.helper.reparentTo( pipe )
+        
+        ###
+        self.h = loader.loadModel("../models/sphere.egg.pz")
+        self.h.setColor( Vec4( 1, 1, 1, 1 ) )
+        self.h.setPos(140, 0, -100)
+        self.h.setScale(.25*1)
+        
+        self.plight = self.h.attachNewNode( PointLight( "self.plight" ) )
+        self.plight.node().setColor(VBase4(2, 1, 0, 1))
+        self.plight.node().setAttenuation(Point3(1, 1, 1))
+        
+        render.setLight(self.plight)
+        self.h.reparentTo( pipe )
+        
+        
+        
+        
     ###def addModel(self, bag):
         """Adds the model to the pipe object"""
 
@@ -136,10 +155,14 @@ class PipeGeneric:
         #Sets particles to birth relative to the teapot, but to render at toplevel
         self.particle.start(self.model)
         self.particle.setScale(40)
-        self.particle.setPos(0.00, -200.000, -200.00)
+        self.particle.setPos(140.00, 0.00, -200.00)
+        
+        
+        
+        
 
-
-
+        
+        
     def addActionCommand(self, command):
         self.actionCommand = ActionCommand(command.__len__(), command, command)
 
@@ -157,6 +180,7 @@ class PipeGeneric:
 
         #remove pointLight from segment
         render.clearLight(self.light)
+        render.clearLight(self.plight)
         self.helper.removeNode()
 
         #remove pipe segment

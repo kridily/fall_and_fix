@@ -26,7 +26,7 @@ from direct.gui.OnscreenText import OnscreenText
 
 from ActionCommand import *
 from GrabBag import *
-from PipeScratch import *
+from PipeGeneric import *
 
 
 import math, sys, random, time
