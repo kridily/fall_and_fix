@@ -13,21 +13,36 @@ from direct.task import Task #for update functions
 import math, sys, random, time, os
 from ActionCommand import *
 from GrabBag import *
+from GameHud import *
 from PipeGeneric import PipeGeneric
 from PipeFire import PipeFire
 from PipeGears import PipeGears
 from PipeWires import PipeWires
 from PipeSteam import PipeSteam
 
+from direct.gui.OnscreenText import OnscreenText
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from direct.gui.DirectGui import DirectFrame
+
 
 class World(DirectObject): #necessary to accept events
     def __init__(self):
+        print "START THE GAAAAAME!"
+        self.accept("space", self.StartGame)
+        self.titleScreen = OnscreenImage(image = '../images/Title.png', scale = (1.3333333,1,1))
+        self.titleScreen.setTransparency(TransparencyAttrib.MAlpha)
+
+    def StartGame(self):
+
+        self.titleScreen.destroy()
         #turn off default mouse control
         base.disableMouse()
         #add update tasks to taskManager
         taskMgr.add(self.keyEvents, "keyEventTask")
         taskMgr.add(self.loopMusic, "loopMusicTask")
         taskMgr.add(self.checkPipes2, "checkPipesTask")
+        taskMgr.add(self.updateTimer, "timeTask")
         
         #Enables particle effects
         base.enableParticles()
@@ -76,7 +91,48 @@ class World(DirectObject): #necessary to accept events
         
         self.accept("spider-and-tube_collision", self.pipeCollide)
         
-          
+        self.DefaultTime = .8
+        self.TimeLeft = self.DefaultTime
+        self.TimerGoing = False
+        
+        #Set game over thing
+        self.GameOver = False
+
+        #Set gameplay variables to keep track of
+        self.gameScore = 0
+        self.playerStability = 100
+        self.currentActionCommand = []
+
+        #Create HUD and add it to task thing
+        self.Hud = GameHUD()
+        taskMgr.add(self.update_game_Hud, "updateHudTask")
+
+        #Fog and changing background
+        myFog = Fog("Fog Name")
+        f = 0.05
+        myFog.setColor(f,f,f)
+        myFog.setExpDensity(.01)
+        render.setFog(myFog)
+        base.setBackgroundColor(f,f,f)
+
+    def updateTimer(self,task):
+        if self.TimerGoing == True:
+            self.TimeLeft = self.TimeLeft - globalClock.getDt()
+            if self.TimeLeft <= 0:
+                print"TIME UP!!!!!!!!!"
+                if self.currentActionCommand != []:
+                    self.playerStability = self.playerStability - 10
+                    if self.playerStability <= 0:
+                        if self.GameOver == False:
+                            #REPLACE TITLE.PNG WITH THE GAME OVER IMAGE!!!!!!
+                            self.gameOverScreen = OnscreenImage(image = '../images/Title.png', scale = (1.3333333,1,1))
+                            self.gameOverScreen.setTransparency(TransparencyAttrib.MAlpha)
+                            self.GameOver = True
+                            self.Hud.hide = True
+                self.currentActionCommand = []
+                self.TimeLeft = self.DefaultTime
+                self.TimerGoing = False
+        return Task.cont  
     
     def setKey(self, key, value):
         self.keyMap[key] = value
@@ -84,9 +140,9 @@ class World(DirectObject): #necessary to accept events
     def loadModels(self):
         """loads initial models into the world"""
         #load pipes
-        self.numPipes = 6
-        self.numGenericTypes = 5
-        self.numSpecialTypes = 4
+        self.numPipes = 6 #number appearing on the stage at any given time
+        self.numGenericTypes = 5 #number of normal pipe models
+        self.numSpecialTypes = 4 #number of 'broken' pipe models
         self.pipeGenericBag = GrabBag(self.numGenericTypes)
         self.pipeSpecialBag = GrabBag(self.numSpecialTypes)
         self.pipeList = []
@@ -94,6 +150,7 @@ class World(DirectObject): #necessary to accept events
         self.pipeDepth = 0
         self.pipeCycle = 1
         
+        #create initial pipes
         for i in range(self.numPipes):
             self.createPipe2(i)
             #print self.pipeList[i].model.getY()
@@ -103,7 +160,9 @@ class World(DirectObject): #necessary to accept events
         self.pipeList[1].addShader()
         
         #load spider
-        self.spider = loader.loadModel("../models/spider.egg")
+        #self.spider = loader.loadModel("../models/spider.egg")
+        self.spider = Actor("../models/spider.egg", {"spider mechanicWITHRIG2013animuted_temp":"../models/animation_fall cycle.egg"})
+        self.spider.loop("spider mechanicWITHRIG2013animuted_temp")
         self.spider.reparentTo(render)
         self.spider.setShaderAuto()
         self.spider.setScale(.045)
@@ -111,6 +170,11 @@ class World(DirectObject): #necessary to accept events
         self.spider.setH(180)
         self.spider.setP(-65)
 
+        #load back panal
+        self.backPanal = loader.loadModel("../models/infinity.egg")
+        self.backPanal.reparentTo(render)
+        self.backPanal.setZ(4.25)
+        self.backPanal.setY(self.pipeInterval*5*.90)
         
             
     def loadSound(self):
@@ -160,20 +224,44 @@ class World(DirectObject): #necessary to accept events
     def pipeCollide(self, cEntry):
         self.numCollisions += 1
         print self.numCollisions
-        model = cEntry.getIntoNodePath().getTop().find("**/*.egg").getName()
-        self.currentPipe = self.getPipe("../models/", model)######################################
-        #print self.currentPipe.actionCommand.getCommand()
+        #print cEntry.getIntoNodePath().getParent().getParent().getName()
+        #print "\n\n\n"
+        modelKey = cEntry.getIntoNodePath().getParent().getParent().getKey()
+        self.currentPipe = self.getPipe(modelKey)
+        print self.currentPipe.actionCommand.getCommand()
+        self.currentActionCommand = self.currentPipe.actionCommand.getCommand()
+        self.currentPipe.actionCommand.blankCommand()
+        
         print "------!!!!!!!!!!!!!------"
         
+        if self.TimerGoing == False:
+            self.TimeLeft = self.DefaultTime
+            self.TimerGoing = True
+        
     
-    def getPipe(self, modelPath, model):
-        modelPath += model
+    # def getPipe(self, modelPath, model):
+        # modelPath += model
+        # print modelPath
+        # for i in range(self.pipeList.__len__()):
+            # print self.pipeList[i].fileName
+            # if self.pipeList[i].fileName == modelPath: return(self.pipeList[i])
+            
+    def getPipe(self, model):
+        modelPath = model
         print modelPath
+        print "CollideKey: " + str(modelPath)
+        #KeyTestDebug
         for i in range(self.pipeList.__len__()):
-            print self.pipeList[i].fileName
-            if self.pipeList[i].fileName == modelPath: return(self.pipeList[i])
+            print "Key "+ str(i) +":" + str(self.pipeList[i].key)
+        for i in range(self.pipeList.__len__()):
+            print "Testing Key: " + str(self.pipeList[i].key)
+            if self.pipeList[i].key == modelPath: return(self.pipeList[i])
         
-        
+    def update_game_Hud(self,task):
+        self.gameScore = self.gameScore + globalClock.getDt()
+        tempScore = int(self.gameScore * 100)
+        self.Hud.updateHud(self.playerStability,tempScore,self.currentActionCommand)
+        return Task.cont    
         
 import updateScratch as updateWorld
 World.keyEvents = updateWorld.keyEvents
