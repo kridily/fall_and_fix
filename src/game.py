@@ -147,6 +147,7 @@ class World(DirectObject): #necessary to accept events
         #load spider
         self.spider = loader.loadModel("../models/spider.egg")
         self.spider.reparentTo(render)
+        self.spider.setShaderAuto()
         self.spider.setScale(.045)
         self.spider.setZ(4.25)
         self.spider.setH(180)
@@ -155,7 +156,6 @@ class World(DirectObject): #necessary to accept events
         #load back panal
         self.backPanal = loader.loadModel("../models/infinity.egg")
         self.backPanal.reparentTo(render)
-        #self.spider.setScale(.045)
         self.backPanal.setZ(4.25)
         self.backPanal.setY(self.pipeInterval*5*.90)
 
@@ -241,6 +241,7 @@ World.adjustCamera = updateWorld.adjustCamera
 World.loopMusic = updateWorld.loopMusic
 World.checkPipes = updateWorld.checkPipes
 World.createPipe = updateWorld.createPipe
+World.loadParticleConfig = updateWorld.loadParticleConfig
 
 world = World()
 run()

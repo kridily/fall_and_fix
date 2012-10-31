@@ -112,6 +112,7 @@ class World(DirectObject): #necessary to accept events
         #self.pipeGenericKeep = []
         self.pipeInterval = 20.25*3.05*.98 #length*timesLonger*overlapConstant
         self.pipeDepth = 0
+        self.pipeCycle = 1
         
         
         #create initial pipes
@@ -124,12 +125,15 @@ class World(DirectObject): #necessary to accept events
         self.pipeList[1].addShader()
         
         #load spider
-        self.spider = loader.loadModel("../models/spider.egg")
+        #self.spider = loader.loadModel("../models/spider.egg")
+        self.spider = Actor("../models/spider.egg", {"spider mechanicWITHRIG2013animuted_temp":"../models/animation_fall cycle.egg"})
+        self.spider.loop("spider mechanicWITHRIG2013animuted_temp")
         self.spider.reparentTo(render)
         self.spider.setScale(.045)
         self.spider.setZ(4.25)
         self.spider.setH(180)
         self.spider.setP(-65)
+        self.spider.setShaderAuto()
 
         
             
@@ -206,7 +210,7 @@ class World(DirectObject): #necessary to accept events
         
         
         
-import updateWorld
+import updateScratch as updateWorld
 World.keyEvents = updateWorld.keyEvents
 World.adjustCamera = updateWorld.adjustCamera
 World.loopMusic = updateWorld.loopMusic

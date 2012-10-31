@@ -8,7 +8,8 @@ from panda3d.physics import LinearNoiseForce,DiscEmitter
 from panda3d.core import TextNode
 from panda3d.core import AmbientLight,DirectionalLight, PointLight
 from panda3d.core import Point3,Vec3,Vec4
-from panda3d.core import Filename, Shader
+from panda3d.core import Filename
+from panda3d.core import Shader
 from direct.particles.Particles import Particles
 from direct.particles.ParticleEffect import ParticleEffect
 from direct.particles.ForceGroup import ForceGroup
@@ -56,8 +57,8 @@ class PipeWires:
         base.enableParticles()
 
         self.particle = ParticleEffect()
-        #self.loadParticleConfig("../models/spark.ptf")
-        self.loadParticleConfig("spark.ptf")
+        #self.loadParticleConfig('../models/', 'spark.ptf')
+        #self.loadParticleConfig("spark.ptf")
 
         self.addActionCommand("ur")
 
@@ -133,11 +134,11 @@ class PipeWires:
         self.collision.show()
 
 
-    def loadParticleConfig(self, file):
+    def loadParticleConfig(self, path, file):
         #Start of the code from steam.ptf
         self.particle.cleanup()
         self.particle = ParticleEffect()
-        self.particle.loadConfig(Filename(file))
+        self.particle.loadConfig(Filename(path, file))
         #Sets particles to birth relative to the teapot, but to render at toplevel
         self.particle.start(self.model)
         self.particle.setScale(100)

@@ -26,7 +26,7 @@ from direct.gui.OnscreenText import OnscreenText
 
 from ActionCommand import *
 from GrabBag import *
-from PipeFire import *
+from PipeGeneric import *
 
 
 import math, sys, random, time
@@ -124,7 +124,7 @@ def checkPipes(self, task):
     return Task.cont
 
 def createPipe(self, i):
-        pipe = PipeFire()
+        pipe = PipeGeneric(self.pipeGenericBag)
         
         #set position in queue
         if i >= 0:

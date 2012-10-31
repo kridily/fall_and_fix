@@ -121,9 +121,9 @@ def checkPipes(self, task):
     if self.pipeDepth < -1*self.pipeInterval:
         
         self.pipeCycle += 1
-        # print self.pipeCycle
-        # print self.pipeCycle % 7
-        # print "\n"        
+        print self.pipeCycle
+        print self.pipeCycle % 7
+        print "\n"        
         
         #check pipe cycle state
         if self.pipeCycle % 7 >= 2:
@@ -133,6 +133,7 @@ def checkPipes(self, task):
         elif self.pipeCycle % 7 == 0:
         #spawn broken pipe            
             type = self.pipeSpecialBag.pick() *-1
+            print "type" + str(type)
             self.createPipe(type)
             self.pipeList.pop(0)
         elif self.pipeCycle % 7 == 1:
@@ -148,7 +149,7 @@ def checkPipes(self, task):
     return Task.cont
 
 def createPipe(self, i, pipe = False):
-    
+    print "i = " + str(i) + "!!!!!!"
     if i >= 0: #only in initial world.loadModels()
     #create new generic pipe
        pipe = PipeGeneric(self.pipeGenericBag)
@@ -168,24 +169,28 @@ def createPipe(self, i, pipe = False):
     elif i == -1:
     #create Steam pipe
         pipe = PipeSteam()
+        #self.loadParticleConfig(pipe, '../models/','steam.ptf')
     #set position in queue
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
         + self.pipeInterval, 4.25)    
     elif i == -2:
     #create Steam pipe
         pipe = PipeWires()
+        #self.loadParticleConfig(pipe, '../models/','spark.ptf')
     #set position in queue
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
         + self.pipeInterval, 4.25)    
     elif i == -3:
     #create Steam pipe
         pipe = PipeGears()
+        #self.loadParticleConfig(pipe, '../models/','spark.ptf')
     #set position in queue
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
         + self.pipeInterval, 4.25)    
     elif i == -4:
     #create Steam pipe
         pipe = PipeFire()
+        #self.loadParticleConfig(pipe, '../models/','fireish.ptf')
     #set position in queue
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
         + self.pipeInterval, 4.25)
@@ -193,4 +198,14 @@ def createPipe(self, i, pipe = False):
 
     self.pipeList.append(pipe)
     #self.pipeGenericKeep.append(pipe)
+    
+def loadParticleConfig(self, pipe, path, file):
+    #Start of the code from steam.ptf
+    pipe.particle.cleanup()
+    pipe.particle = ParticleEffect()
+    pipe.particle.loadConfig(Filename(path,file))
+    #Sets particles to birth relative to the teapot, but to render at toplevel
+    pipe.particle.start(pipe.model)
+    pipe.particle.setScale(20)
+    pipe.particle.setPos(0.00, -200.000, -200.00)
 
