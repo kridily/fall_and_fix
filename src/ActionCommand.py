@@ -33,10 +33,12 @@ class ActionCommand:
         if self.CommandArray != []:
             if character == self.CommandArray[0]:
                 self.CommandArray.pop(0)
-                #print self.CommandArray
+                print self.CommandArray
+                print True
                 return True
             else:
-                #print self.CommandArray
+                print self.CommandArray
+                print False
                 return False
         else:
             return False
