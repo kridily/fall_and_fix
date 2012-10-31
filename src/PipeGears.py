@@ -45,6 +45,7 @@ class PipeGears:
 
         self.nodePath = NodePath(self.model)
         self.model.reparentTo(render)
+        self.key = self.model.getKey()
 
 
         ##self.addModel(bag)
@@ -170,7 +171,7 @@ class PipeGears:
         self.shaderEnabled = 0
         self.collision = pipe.collision.node()
         #self.particle = pipe.particle
-        self.actionCommand = pipe.actionCommand
+        
         #rotate by 0, 90, 180, or 270 degrees
         self.model.setR(random.randint(0,3)*90)
 
@@ -186,3 +187,9 @@ class PipeGears:
         g = g / 255.0
         self.helper.setColor( Vec4( r, g, b, 1 ) )
         self.light.node().setColor( Vec4( r, g, b, 1 ) )
+        self.actionCommand.resetCommand()
+
+    def isCommandEmpty(self):
+        print "LETS FIND OUT"
+        return self.actionCommand.isEmpty()
+

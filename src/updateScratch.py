@@ -26,6 +26,7 @@ from direct.gui.OnscreenText import OnscreenText
 
 from ActionCommand import *
 from GrabBag import *
+from GameHud import *
 from PipeFire import PipeFire
 from PipeGeneric import PipeGeneric
 from PipeFire import PipeFire
@@ -72,12 +73,16 @@ def keyEvents(self, task):
     
     if self.keyMap["actionLeft"] == 1:
         print "actionLeft"
+        self.keyMap["actionLeft"] = 0
     if self.keyMap["actionRight"] == 1:
         print "actionRight"
+        self.keyMap["actionRight"] = 0
     if self.keyMap["actionUp"] == 1:
         print "actionUp"
+        self.keyMap["actionUp"] = 0
     if self.keyMap["actionDown"] == 1:
         print "actionDown"
+        self.keyMap["actionDown"] = 0
     
     
     self.prevTime = task.time
@@ -110,45 +115,49 @@ def loopMusic(self, task):
 
     return Task.cont
 
-def checkPipes(self, task):
-    self.pipeDepth = self.pipeList[0].model.getY()
-    #print self.pipeDepth
-    if self.pipeDepth < -1*self.pipeInterval:
+# def checkPipes(self, task):
+    # self.pipeDepth = self.pipeList[0].model.getY()
+    # #print self.pipeDepth
+    # if self.pipeDepth < -1*self.pipeInterval:
 
-        self.pipeList[0].destroy()
-        self.pipeList.pop(0)
+        # self.pipeList[0].destroy()
+        # self.pipeList.pop(0)
 
-        #create new pipe segment
-        self.createPipe(-1)
+        # #create new pipe segment
+        # self.createPipe(-1)
         
-        #Enable shaders for the first two pipe segments
-        if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
-        if not self.pipeList[1].shaderEnabled: self.pipeList[1].addShader()
+        # #Enable shaders for the first two pipe segments
+        # if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
+        # if not self.pipeList[1].shaderEnabled: self.pipeList[1].addShader()
 
 
-    return Task.cont
+    # return Task.cont
 
-def createPipe(self, i):
-        a = random.randint(0,2)
-        if not a:
-            pipe = PipeFire()#Generic(self.pipeGenericBag)
-        else:
-            pipe = PipeSteam()
+# def createPipe(self, i):
+        # a = random.randint(0,2)
+        # if not a:
+            # pipe = PipeFire()#Generic(self.pipeGenericBag)
+        # else:
+            # pipe = PipeSteam()
         
-        #set position in queue
-        if i >= 0:
-            pipe.model.setPos(0, i*self.pipeInterval, 4.25)
-        else:
-            pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
-            + self.pipeInterval, 4.25)
+        # #set position in queue
+        # if i >= 0:
+            # pipe.model.setPos(0, i*self.pipeInterval, 4.25)
+        # else:
+            # pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+            # + self.pipeInterval, 4.25)
             
-        self.pipeList.append(pipe)    
+        # self.pipeList.append(pipe)    
         
 
 def checkPipes2(self, task):
     self.pipeDepth = self.pipeList[0].model.getY()
     #print self.pipeDepth
     if self.pipeDepth < -1*self.pipeInterval:
+    
+        #Damage player if he didn't make it in time.
+        if not self.pipeList[0].isCommandEmpty():
+            self.playerStability = self.playerStability - 10
         
         self.pipeCycle += 1
         print self.pipeCycle
