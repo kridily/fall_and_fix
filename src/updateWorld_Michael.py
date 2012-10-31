@@ -115,12 +115,18 @@ def checkPipes(self, task):
     #print self.pipeDepth
     if self.pipeDepth < -1*self.pipeInterval:
 
+        #Damage player if he didn't make it in time.
+        if not self.pipeList[0].isCommandEmpty():
+            self.playerStability = self.playerStability - 10
+
         #create new pipe segment
         self.createPipe(-1, self.pipeList[0])
 
         #destroy or recycle the old pipe
         #self.pipeList[0].destroy()
+
         self.pipeList.pop(0)
+
 
         #Enable shaders for the first two pipe segments
         if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
