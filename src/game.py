@@ -166,8 +166,12 @@ class World(DirectObject): #necessary to accept events
         self.spider = Actor("../models/spider.egg", 
             {"aniFall":"../models/animation_fall cycle.egg",
             "aniFix1":"../models/animation_fixattack1.egg",}
-        )        
-        self.spider.loop("aniFall")        
+        )
+        #setup animation
+        self.spider.enableBlend()
+        self.spider.setControlEffect('aniFall', 1)        
+        self.spider.loop("aniFall")   
+
         self.spider.reparentTo(render)
         self.spider.setShaderAuto()
         self.spider.setScale(.045)

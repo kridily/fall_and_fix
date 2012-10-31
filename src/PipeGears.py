@@ -31,7 +31,7 @@ class PipeGears:
 
         #SoundIntervals
         #base = ShowBase()
-        self.sound = loader.loadSfx("../audio/sparks.wav")
+        self.sound = loader.loadSfx("../audio/gears.wav")
         self.sound.setLoop(True)
         self.sound.play()
 

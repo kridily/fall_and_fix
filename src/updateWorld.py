@@ -78,17 +78,12 @@ def keyEvents(self, task):
         print "actionRight"
         self.keyMap["actionRight"] = 0
     if self.keyMap["actionUp"] == 1:
-        self.spider.enableBlend()
-        self.spider.setControlEffect("aniFall", 1)
-        self.spider.setControlEffect("aniFix1", 1)
-        self.spider.loop("aniFix1")
-        self.spider.setControlEffect("aniFix1", 0)
-        #self.spider.disableBlend()
-        #self.spider.loop("aniFall")
+        self.spider.setControlEffect("aniFix1", 1)       
+        self.spider.play("aniFix1")
         print "actionUp"
         self.keyMap["actionUp"] = 0
     if self.keyMap["actionDown"] == 1:
-        self.spider.enableBlend()
+        self.spider.setControlEffect("aniFix1", 1)       
         self.spider.play("aniFix1")
         print "actionDown"
         self.keyMap["actionDown"] = 0
