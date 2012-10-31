@@ -117,7 +117,6 @@ class PipeSteam:
         render.setLight(self.plight)
         self.h.reparentTo( pipe )
         
-        
 
 
     ###def addModel(self, bag):
