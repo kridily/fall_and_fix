@@ -50,7 +50,7 @@ def keyEvents(self, task):
             pass
             #self.pipeList[i].model.setR(self.pipeList[i].model.getR() + dt*20*i)
 
-    dist = .135
+    dist = .15#35
     if self.keyMap["moveLeft"] == 1:
         self.spider.setHpr(-115, 0, 90)
         if self.spider.getX() > -2.0:
