@@ -61,7 +61,9 @@ class PipeGears:
         self.loadParticleConfig('../models/','spark.ptf')
         #self.loadParticleConfig("spark.ptf")
 
-        self.addActionCommand("ld")
+        i = random.randint(0,2)
+        if not i: self.addActionCommand("ld")
+        else: self.addActionCommand("rd")
         self.type = "gears"
 
         #rotate by 0, 90, 180, or 270 degrees

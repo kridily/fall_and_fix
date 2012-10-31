@@ -91,7 +91,7 @@ class World(DirectObject): #necessary to accept events
         
         self.accept("spider-and-tube_collision", self.pipeCollide)
         
-        self.DefaultTime = .8
+        self.DefaultTime = 1#.8
         self.TimeLeft = self.DefaultTime
         self.TimerGoing = False
         

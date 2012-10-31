@@ -61,7 +61,7 @@ class PipeWires:
         self.loadParticleConfig('../models/', 'spark.ptf')
         #self.loadParticleConfig("spark.ptf")
 
-        self.addActionCommand("ur")
+        self.addActionCommand("ru")
         self.type = "wires"
 
         #rotate by 0, 90, 180, or 270 degrees

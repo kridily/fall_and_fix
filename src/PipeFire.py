@@ -61,7 +61,9 @@ class PipeFire:
         self.loadParticleConfig('../models/', 'fireish.ptf')
         #self.loadParticleConfig("fireish.ptf")
         
-        self.addActionCommand("ud")
+        i = random.randint(0,2)
+        if not i: self.addActionCommand("ud")
+        else: self.addActionCommand("lr")
         self.type = "fire"
 
         

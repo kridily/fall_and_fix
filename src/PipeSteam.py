@@ -61,7 +61,7 @@ class PipeSteam:
         self.loadParticleConfig('../models/', 'steam.ptf')
         #self.loadParticleConfig("steam.ptf")
 
-        self.addActionCommand("ul")
+        self.addActionCommand("lu")
         self.type = "steam"
 
         #rotate by 0, 90, 180, or 270 degrees
