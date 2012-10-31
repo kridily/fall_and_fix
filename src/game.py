@@ -33,6 +33,8 @@ class World(DirectObject): #necessary to accept events
         self.titleScreen = OnscreenImage(image = '../images/Title.png', scale = (1.3333333,1,1))
         self.titleScreen.setTransparency(TransparencyAttrib.MAlpha)
         self.loadSound()
+        
+        
                 
 
     def StartGame(self):
@@ -103,7 +105,8 @@ class World(DirectObject): #necessary to accept events
         #Set gameplay variables to keep track of
         self.gameScore = 0
         self.playerStability = 100
-        self.currentActionCommand = []
+        self.currentActionCommand = ActionCommand(0,"")
+        self.currentActionCommand.isEmpty()
 
         #Create HUD and add it to task thing
         self.Hud = GameHUD()
@@ -121,17 +124,19 @@ class World(DirectObject): #necessary to accept events
         if self.TimerGoing == True:
             self.TimeLeft = self.TimeLeft - globalClock.getDt()
             if self.TimeLeft <= 0:
-                print"TIME UP!!!!!!!!!"
-                if self.currentActionCommand != []:
+               print"-----------TIME UP!!!!!!!!!---------"
+                print self.currentActionCommand.getCommand()
+                if self.currentActionCommand.isEmpty() == False:
                     self.playerStability = self.playerStability - 10
                     if self.playerStability <= 0:
                         if self.GameOver == False:
                             #REPLACE TITLE.PNG WITH THE GAME OVER IMAGE!!!!!!
-                            self.gameOverScreen = OnscreenImage(image = '../images/Title.png', scale = (1.3333333,1,1))
+                            self.gameOverScreen = OnscreenImage(image = '../images/GameOver.png', scale = (1.3333333,1,1))
                             self.gameOverScreen.setTransparency(TransparencyAttrib.MAlpha)
                             self.GameOver = True
                             self.Hud.hide = True
-                self.currentActionCommand = []
+                print "***Blanked Action Command***"
+                self.currentActionCommand = ActionCommand(0,"")
                 self.TimeLeft = self.DefaultTime
                 self.TimerGoing = False
         return Task.cont  
@@ -191,6 +196,12 @@ class World(DirectObject): #necessary to accept events
         self.mainLoopMusic = loader.loadSfx("../audio/mainLoop.wav")
         SoundInterval(self.openingMusic).start()
         
+        #repair sound effects
+        self.fixSound1 = loader.loadSfx("../audio/repair1.wav")
+        self.fixSound2 = loader.loadSfx("../audio/repair2.wav")
+        self.fixSound3 = loader.loadSfx("../audio/repair3.wav")
+        self.fixSound4 = loader.loadSfx("../audio/repair4.wav")
+        
             
     def setupLights(self):
         """loads initial lighting"""
@@ -237,15 +248,18 @@ class World(DirectObject): #necessary to accept events
         #print "\n\n\n"
         modelKey = cEntry.getIntoNodePath().getParent().getParent().getKey()
         self.currentPipe = self.getPipe(modelKey)
-        print self.currentPipe.actionCommand.getCommand()
-        self.currentActionCommand = self.currentPipe.actionCommand.getCommand()
-        self.currentPipe.actionCommand.blankCommand()
-        
-        print "------!!!!!!!!!!!!!------"
-        
-        if self.TimerGoing == False:
-            self.TimeLeft = self.DefaultTime
-            self.TimerGoing = True
+        if self.currentPipe.actionCommand.isEmpty() == False:
+            print "Pipe Action Command = " + str(self.currentPipe.actionCommand.getCommand())
+            self.currentActionCommand = ActionCommand(2,"",self.currentPipe.actionCommand.getCommand())
+            print "Player Action Command = " + str(self.currentActionCommand.getCommand())
+            self.currentPipe.actionCommand.blankCommand()
+            print "Player Action Command = " + str(self.currentActionCommand.getCommand())
+
+            print "------!!!!!!!!!!!!!------"
+
+            if self.TimerGoing == False:
+                self.TimeLeft = self.DefaultTime
+                self.TimerGoing = True
            
             
     def getPipe(self, model):
@@ -262,7 +276,7 @@ class World(DirectObject): #necessary to accept events
     def update_game_Hud(self,task):
         self.gameScore = self.gameScore + globalClock.getDt()
         tempScore = int(self.gameScore * 100)
-        self.Hud.updateHud(self.playerStability,tempScore,self.currentActionCommand)
+        self.Hud.updateHud(self.playerStability,tempScore,self.currentActionCommand.getOriginal())
         return Task.cont    
         
 import updateWorld
