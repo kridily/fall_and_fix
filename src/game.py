@@ -32,6 +32,8 @@ class World(DirectObject): #necessary to accept events
         self.accept("space", self.StartGame)
         self.titleScreen = OnscreenImage(image = '../images/Title.png', scale = (1.3333333,1,1))
         self.titleScreen.setTransparency(TransparencyAttrib.MAlpha)
+        self.loadSound()
+                
 
     def StartGame(self):
 
@@ -39,9 +41,9 @@ class World(DirectObject): #necessary to accept events
         #turn off default mouse control
         base.disableMouse()
         #add update tasks to taskManager
-        taskMgr.add(self.keyEvents, "keyEventTask")
-        taskMgr.add(self.loopMusic, "loopMusicTask")
+        taskMgr.add(self.keyEvents, "keyEventTask")        
         taskMgr.add(self.checkPipes2, "checkPipesTask")
+        taskMgr.add(self.loopMusic, "loopMusicTask")
         taskMgr.add(self.updateTimer, "timeTask")
         
         #Enables particle effects
@@ -58,7 +60,7 @@ class World(DirectObject): #necessary to accept events
         
         self.loadModels()            
         self.setupLights()                
-        self.loadSound()                
+        #self.loadSound()                
         self.setupCollisions()
       
         self.accept("escape", sys.exit) #message name, function to call, (optional) list of arguments to that function
@@ -161,8 +163,11 @@ class World(DirectObject): #necessary to accept events
         
         #load spider
         #self.spider = loader.loadModel("../models/spider.egg")
-        self.spider = Actor("../models/spider.egg", {"spider mechanicWITHRIG2013animuted_temp":"../models/animation_fall cycle.egg"})
-        self.spider.loop("spider mechanicWITHRIG2013animuted_temp")
+        self.spider = Actor("../models/spider.egg", 
+            {"aniFall":"../models/animation_fall cycle.egg",
+            "aniFix1":"../models/animation_fixattack1.egg",}
+        )        
+        self.spider.loop("aniFall")        
         self.spider.reparentTo(render)
         self.spider.setShaderAuto()
         self.spider.setScale(.045)
@@ -237,14 +242,7 @@ class World(DirectObject): #necessary to accept events
         if self.TimerGoing == False:
             self.TimeLeft = self.DefaultTime
             self.TimerGoing = True
-        
-    
-    # def getPipe(self, modelPath, model):
-        # modelPath += model
-        # print modelPath
-        # for i in range(self.pipeList.__len__()):
-            # print self.pipeList[i].fileName
-            # if self.pipeList[i].fileName == modelPath: return(self.pipeList[i])
+           
             
     def getPipe(self, model):
         modelPath = model

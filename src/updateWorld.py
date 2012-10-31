@@ -51,7 +51,7 @@ def keyEvents(self, task):
             pass
             #self.pipeList[i].model.setR(self.pipeList[i].model.getR() + dt*20*i)
 
-    dist = .15#35
+    dist = .15#.135
     if self.keyMap["moveLeft"] == 1:
         self.spider.setHpr(-115, 0, 90)
         if self.spider.getX() > -2.0:
@@ -78,9 +78,18 @@ def keyEvents(self, task):
         print "actionRight"
         self.keyMap["actionRight"] = 0
     if self.keyMap["actionUp"] == 1:
+        self.spider.enableBlend()
+        self.spider.setControlEffect("aniFall", 1)
+        self.spider.setControlEffect("aniFix1", 1)
+        self.spider.loop("aniFix1")
+        self.spider.setControlEffect("aniFix1", 0)
+        #self.spider.disableBlend()
+        #self.spider.loop("aniFall")
         print "actionUp"
         self.keyMap["actionUp"] = 0
     if self.keyMap["actionDown"] == 1:
+        self.spider.enableBlend()
+        self.spider.play("aniFix1")
         print "actionDown"
         self.keyMap["actionDown"] = 0
     
@@ -115,40 +124,6 @@ def loopMusic(self, task):
 
     return Task.cont
 
-# def checkPipes(self, task):
-    # self.pipeDepth = self.pipeList[0].model.getY()
-    # #print self.pipeDepth
-    # if self.pipeDepth < -1*self.pipeInterval:
-
-        # self.pipeList[0].destroy()
-        # self.pipeList.pop(0)
-
-        # #create new pipe segment
-        # self.createPipe(-1)
-        
-        # #Enable shaders for the first two pipe segments
-        # if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
-        # if not self.pipeList[1].shaderEnabled: self.pipeList[1].addShader()
-
-
-    # return Task.cont
-
-# def createPipe(self, i):
-        # a = random.randint(0,2)
-        # if not a:
-            # pipe = PipeFire()#Generic(self.pipeGenericBag)
-        # else:
-            # pipe = PipeSteam()
-        
-        # #set position in queue
-        # if i >= 0:
-            # pipe.model.setPos(0, i*self.pipeInterval, 4.25)
-        # else:
-            # pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
-            # + self.pipeInterval, 4.25)
-            
-        # self.pipeList.append(pipe)    
-        
 
 def checkPipes2(self, task):
     self.pipeDepth = self.pipeList[0].model.getY()
