@@ -117,7 +117,7 @@ class PipeFire:
         self.h.setScale(.25*1)
         
         self.plight = self.h.attachNewNode( PointLight( "self.plight" ) )
-        self.plight.node().setColor(VBase4(2, 1, 0, 1))
+        self.plight.node().setColor(VBase4(4, 2, 0, 1))
         self.plight.node().setAttenuation(Point3(1, 1, 1))
         
         render.setLight(self.plight)

@@ -106,6 +106,17 @@ class PipeGears:
         self.helper.reparentTo( pipe )
         render.setLight( self.light )
 
+        ###
+        self.h = loader.loadModel("../models/sphere.egg.pz")
+        self.h.setPos(0, -300, 200)
+        self.h.setScale(.25*1)
+        self.spl = self.h.attachNewNode( Spotlight( "self.spl") )
+        self.spl.node().setColor( Vec4( 5, 5, 5, 1 ) )
+        #self.spl.node().setAttenuation( Vec3( 0.003, 0.003, 0.003 ) )
+        self.spl.lookAt(0, 20, -200)
+        
+        self.h.reparentTo( pipe)
+        render.setLight( self.spl)
 
     ###def addModel(self, bag):
         """Adds the model to the pipe object"""
