@@ -39,7 +39,7 @@ def keyEvents(self, task):
 
     if self.keyMap["drop"] == 0:
         for i in range(self.pipeList.__len__()):
-            self.pipeList[i].model.setY(self.pipeList[i].model.getY() - dt*100*1.6)
+            self.pipeList[i].model.setY(self.pipeList[i].model.getY() - dt*100*1)
     if self.keyMap["drop"] == 1:
         for i in range(self.pipeList.__len__()):
             self.pipeList[i].model.setR(self.pipeList[i].model.getR() + dt*20*i)
@@ -133,8 +133,8 @@ def createPipe(self, i, pipe = False):
     #set position in queue
     if i >= 0:
         #create new pipe
-        pipe = PipeGeneric(self.pipeGenericBag)
-        pipe.model.setPos(0, i*self.pipeInterval, 4.25)
+       pipe = PipeGeneric(self.pipeGenericBag)
+       pipe.model.setPos(0, i*self.pipeInterval, 4.25)
     else:
         pipe.recycle()
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
@@ -142,3 +142,4 @@ def createPipe(self, i, pipe = False):
 
     self.pipeList.append(pipe)
     #self.pipeGenericKeep.append(pipe)
+

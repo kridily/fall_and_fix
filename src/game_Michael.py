@@ -13,18 +13,25 @@ from direct.task import Task #for update functions
 import math, sys, random, time, os
 from ActionCommand import *
 from GrabBag import *
+from PipeGeneric import *
 from GameHud import *
-#from PipeGeneric import *
 
+
+from direct.gui.OnscreenText import OnscreenText
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from direct.gui.DirectGui import DirectFrame
 
 class World(DirectObject): #necessary to accept events
     def __init__(self):
+
         #turn off default mouse control
         base.disableMouse()
         #add update tasks to taskManager
         taskMgr.add(self.keyEvents, "keyEventTask")
         taskMgr.add(self.loopMusic, "loopMusicTask")
         taskMgr.add(self.checkPipes, "checkPipesTask")
+        taskMgr.add(self.updateTimer, "timeTask")
 
         #Enables particle effects
         base.enableParticles()
@@ -73,6 +80,10 @@ class World(DirectObject): #necessary to accept events
 
         self.accept("spider-and-tube_collision", self.pipeCollide)
 
+        self.DefaultTime = .2
+        self.TimeLeft = self.DefaultTime
+        self.TimerGoing = False
+
         #Set gameplay variables to keep track of.
         self.gameScore = 0
         self.playerStability = 100
@@ -88,6 +99,16 @@ class World(DirectObject): #necessary to accept events
         myFog.setExpDensity(.013)
         render.setFog(myFog)
         base.setBackgroundColor(0,0,0)
+
+    def updateTimer(self,task):
+        if self.TimerGoing == True:
+            self.TimeLeft = self.TimeLeft - globalClock.getDt()
+            if self.TimeLeft <= 0:
+                print"TIME UP!!!!!!!!!"
+                self.currentActionCommand = []
+                self.TimeLeft = self.DefaultTime
+                self.TimerGoing = False
+        return Task.cont
 
     def setKey(self, key, value):
         self.keyMap[key] = value
@@ -174,34 +195,43 @@ class World(DirectObject): #necessary to accept events
         print self.numCollisions
         #print cEntry.getIntoNodePath().getParent().getParent().getName()
         #print "\n\n\n"
-        model = cEntry.getIntoNodePath().getParent().getParent().getName()
-        self.currentPipe = self.getPipe("../models/", model)
+        modelKey = cEntry.getIntoNodePath().getParent().getParent().getKey()
+        self.currentPipe = self.getPipe(modelKey)
         print self.currentPipe.actionCommand.getCommand()
+        self.currentActionCommand = self.currentPipe.actionCommand.getCommand()
+
         print "------!!!!!!!!!!!!!------"
 
+        if self.TimerGoing == False:
+            self.TimeLeft = self.DefaultTime
+            self.TimerGoing = True
 
-    def getPipe(self, modelPath, model):
-        modelPath += model
+
+    def getPipe(self, model):
+        modelPath = model
         print modelPath
+        print "CollideKey: " + str(modelPath)
+        #KeyTestDebug
         for i in range(self.pipeList.__len__()):
-            print self.pipeList[i].fileName
-            if self.pipeList[i].fileName == modelPath: return(self.pipeList[i])
+            print "Key "+ str(i) +":" + str(self.pipeList[i].key)
+        for i in range(self.pipeList.__len__()):
+            print "Testing Key: " + str(self.pipeList[i].key)
+            if self.pipeList[i].key == modelPath: return(self.pipeList[i])
 
     def update_game_Hud(self,task):
         self.gameScore = self.gameScore + globalClock.getDt()
         tempScore = int(self.gameScore * 100)
-        self.Hud.updateHud(self.playerStability,tempScore,[])
+        self.Hud.updateHud(self.playerStability,tempScore,self.currentActionCommand)
         return Task.cont
 
 
 
-
-import updateWorld_Michael
-World.keyEvents = updateWorld_Michael.keyEvents
-World.adjustCamera = updateWorld_Michael.adjustCamera
-World.loopMusic = updateWorld_Michael.loopMusic
-World.checkPipes = updateWorld_Michael.checkPipes
-World.createPipe = updateWorld_Michael.createPipe
+import updateWorld_michael as updateWorld
+World.keyEvents = updateWorld.keyEvents
+World.adjustCamera = updateWorld.adjustCamera
+World.loopMusic = updateWorld.loopMusic
+World.checkPipes = updateWorld.checkPipes
+World.createPipe = updateWorld.createPipe
 
 world = World()
 run()
