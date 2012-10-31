@@ -71,7 +71,7 @@ def keyEvents(self, task):
     #print self.spider.getPos()
     self.adjustCamera()
     
-     if self.keyMap["actionLeft"] == 1:
+    if self.keyMap["actionLeft"] == 1:
         self.spider.setControlEffect("aniFix1", 1)       
         self.spider.play("aniFix1")
         print "actionLeft"
