@@ -72,6 +72,8 @@ def keyEvents(self, task):
     self.adjustCamera()
 
     if self.keyMap["actionLeft"] == 1:
+        self.spider.setControlEffect("aniFix1", 1)       
+        self.spider.play("aniFix1")
         print "actionLeft"
         if self.currentActionCommand.isEmpty() == False:
             self.currentActionCommand.inputCommandNoOrder('l')
@@ -80,6 +82,8 @@ def keyEvents(self, task):
                 self.fixSound1.play()
         self.keyMap["actionLeft"] = 0
     if self.keyMap["actionRight"] == 1:
+        self.spider.setControlEffect("aniFix1", 1)       
+        self.spider.play("aniFix1")
         print "actionRight"
         if self.currentActionCommand.isEmpty() == False:
             self.currentActionCommand.inputCommandNoOrder('r')
@@ -88,6 +92,8 @@ def keyEvents(self, task):
                 self.fixSound2.play()
         self.keyMap["actionRight"] = 0
     if self.keyMap["actionUp"] == 1:
+        self.spider.setControlEffect("aniFix1", 1)       
+        self.spider.play("aniFix1")
         print "actionUp"
         if self.currentActionCommand.isEmpty() == False:
             self.currentActionCommand.inputCommandNoOrder('u')
@@ -96,6 +102,8 @@ def keyEvents(self, task):
                 self.fixSound3.play()
         self.keyMap["actionUp"] = 0
     if self.keyMap["actionDown"] == 1:
+        self.spider.setControlEffect("aniFix1", 1)       
+        self.spider.play("aniFix1")
         print "actionDown"
         if self.currentActionCommand.isEmpty() == False:
             self.currentActionCommand.inputCommandNoOrder('d')

@@ -71,21 +71,45 @@ def keyEvents(self, task):
     #print self.spider.getPos()
     self.adjustCamera()
     
-    if self.keyMap["actionLeft"] == 1:
+     if self.keyMap["actionLeft"] == 1:
+        self.spider.setControlEffect("aniFix1", 1)       
+        self.spider.play("aniFix1")
         print "actionLeft"
+        if self.currentActionCommand.isEmpty() == False:
+            self.currentActionCommand.inputCommandNoOrder('l')
+            if self.currentActionCommand.isEmpty() == True:
+                self.currentActionCommand = ActionCommand(0,"")
+                self.fixSound1.play()
         self.keyMap["actionLeft"] = 0
     if self.keyMap["actionRight"] == 1:
+        self.spider.setControlEffect("aniFix1", 1)       
+        self.spider.play("aniFix1")
         print "actionRight"
+        if self.currentActionCommand.isEmpty() == False:
+            self.currentActionCommand.inputCommandNoOrder('r')
+            if self.currentActionCommand.isEmpty() == True:
+                self.currentActionCommand = ActionCommand(0,"")
+                self.fixSound2.play()
         self.keyMap["actionRight"] = 0
     if self.keyMap["actionUp"] == 1:
         self.spider.setControlEffect("aniFix1", 1)       
         self.spider.play("aniFix1")
         print "actionUp"
+        if self.currentActionCommand.isEmpty() == False:
+            self.currentActionCommand.inputCommandNoOrder('u')
+            if self.currentActionCommand.isEmpty() == True:
+                self.currentActionCommand = ActionCommand(0,"")
+                self.fixSound3.play()
         self.keyMap["actionUp"] = 0
     if self.keyMap["actionDown"] == 1:
         self.spider.setControlEffect("aniFix1", 1)       
         self.spider.play("aniFix1")
         print "actionDown"
+        if self.currentActionCommand.isEmpty() == False:
+            self.currentActionCommand.inputCommandNoOrder('d')
+            if self.currentActionCommand.isEmpty() == True:
+                self.currentActionCommand = ActionCommand(0,"")
+                self.fixSound4.play()
         self.keyMap["actionDown"] = 0
     
     
