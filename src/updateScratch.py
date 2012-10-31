@@ -26,7 +26,12 @@ from direct.gui.OnscreenText import OnscreenText
 
 from ActionCommand import *
 from GrabBag import *
-from PipeGeneric import *
+from PipeFire import PipeFire
+from PipeGeneric import PipeGeneric
+from PipeFire import PipeFire
+from PipeGears import PipeGears
+from PipeWires import PipeWires
+from PipeSteam import PipeSteam
 
 
 import math, sys, random, time
@@ -124,7 +129,11 @@ def checkPipes(self, task):
     return Task.cont
 
 def createPipe(self, i):
-        pipe = PipeGeneric(self.pipeGenericBag)
+        a = random.randint(0,2)
+        if not a:
+            pipe = PipeFire()#Generic(self.pipeGenericBag)
+        else:
+            pipe = PipeSteam()
         
         #set position in queue
         if i >= 0:
@@ -134,5 +143,94 @@ def createPipe(self, i):
             + self.pipeInterval, 4.25)
             
         self.pipeList.append(pipe)    
+        
+
+def checkPipes2(self, task):
+    self.pipeDepth = self.pipeList[0].model.getY()
+    #print self.pipeDepth
+    if self.pipeDepth < -1*self.pipeInterval:
+        
+        self.pipeCycle += 1
+        print self.pipeCycle
+        print self.pipeCycle % 7
+        print "\n"        
+        
+        test = self.pipeCycle % 7
+        #check pipe cycle state
+        if test > 0 and test < 6:
+        #recycle pipe
+            self.createPipe2(-5, self.pipeList[0])
+            self.pipeList.pop(0)
+        elif test == 0:
+        #spawn broken pipe            
+            type = self.pipeSpecialBag.pick() *-1
+            print "type" + str(type)
+            self.createPipe2(type)
+            self.pipeList[0].destroy()
+            self.pipeList.pop(0)
+        elif test == 6:
+        #spawn generic pipe            
+            self.createPipe2(-6)
+            self.pipeList[0].destroy()
+            self.pipeList.pop(0)
+            
+        #Enable shaders for the first two pipe segments
+        if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
+        if not self.pipeList[1].shaderEnabled: self.pipeList[1].addShader()
+
+
+    return Task.cont
+
+    
+def createPipe2(self, i, pipe = False):
+    print "i = " + str(i) + "!!!!!!"
+    if i >= 0: #only in initial world.loadModels()
+    #create new generic pipe
+       pipe = PipeGeneric(self.pipeGenericBag)
+    #set position in queue
+       pipe.model.setPos(0, i*self.pipeInterval, 4.25)
+    elif i == -5:
+    #recycle pipe
+        pipe.recycle()
+        pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+        + self.pipeInterval, 4.25)
+    elif i == -6:
+    #create new generic pipe
+        pipe = PipeGeneric(self.pipeGenericBag)
+    #set position in queue
+        pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+        + self.pipeInterval, 4.25)
+    elif i == -1:
+    #create Steam pipe
+        pipe = PipeSteam()
+        #self.loadParticleConfig(pipe, '../models/','steam.ptf')
+    #set position in queue
+        pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+        + self.pipeInterval, 4.25)    
+    elif i == -2:
+    #create Gears pipe
+        pipe = PipeGears()
+        #self.loadParticleConfig(pipe, '../models/','spark.ptf')
+    #set position in queue
+        pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+        + self.pipeInterval, 4.25)    
+    elif i == -3:
+    #create Wires pipe
+        pipe = PipeWires()
+        #self.loadParticleConfig(pipe, '../models/','spark.ptf')
+    #set position in queue
+        pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+        + self.pipeInterval, 4.25)    
+    elif i == -4:
+    #create Fire pipe
+        pipe = PipeFire()
+        #self.loadParticleConfig(pipe, '../models/','fireish.ptf')
+    #set position in queue
+        pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+        + self.pipeInterval, 4.25)
+        
+
+    self.pipeList.append(pipe)
+    #self.pipeGenericKeep.append(pipe)
         
         

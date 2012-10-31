@@ -27,11 +27,11 @@ from direct.gui.OnscreenText import OnscreenText
 from ActionCommand import *
 from GrabBag import *
 from GameHud import *
-from PipeGeneric import *
-from PipeFire import *
-from PipeGears import *
-from PipeWires import *
-from PipeSteam import *
+from PipeGeneric import PipeGeneric
+from PipeFire import PipeFire
+from PipeGears import PipeGears
+from PipeWires import PipeWires
+from PipeSteam import PipeSteam
 
 
 import math, sys, random, time
@@ -152,7 +152,7 @@ def createPipe(self, i, pipe = False):
     print "i = " + str(i) + "!!!!!!"
     if i >= 0: #only in initial world.loadModels()
     #create new generic pipe
-       pipe = PipeGeneric(self.pipeGenericBag)
+       pipe = PipeFire()#Generic(self.pipeGenericBag)
     #set position in queue
        pipe.model.setPos(0, i*self.pipeInterval, 4.25)
     elif i == -5:
@@ -162,27 +162,27 @@ def createPipe(self, i, pipe = False):
         + self.pipeInterval, 4.25)
     elif i == -6:
     #create new generic pipe
-        pipe = PipeGeneric(self.pipeGenericBag)
+        pipe = PipeFire()#Generic(self.pipeGenericBag)
     #set position in queue
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
         + self.pipeInterval, 4.25)
     elif i == -1:
     #create Steam pipe
-        pipe = PipeSteam()
+        pipe = PipeFire()
         #self.loadParticleConfig(pipe, '../models/','steam.ptf')
     #set position in queue
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
         + self.pipeInterval, 4.25)    
     elif i == -2:
     #create Steam pipe
-        pipe = PipeWires()
+        pipe = PipeFire()
         #self.loadParticleConfig(pipe, '../models/','spark.ptf')
     #set position in queue
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
         + self.pipeInterval, 4.25)    
     elif i == -3:
     #create Steam pipe
-        pipe = PipeGears()
+        pipe = PipeFire()
         #self.loadParticleConfig(pipe, '../models/','spark.ptf')
     #set position in queue
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
