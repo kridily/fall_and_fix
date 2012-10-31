@@ -33,6 +33,7 @@ class PipeGeneric:
             #self.addCollision()
             #self.addParticle()
             self.addActionCommand("")
+            self.type = "generic"
 
     def addPointLight(self, pipe):
         """create a point light for pipe"""

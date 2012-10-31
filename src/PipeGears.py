@@ -49,18 +49,19 @@ class PipeGears:
 
         ##self.addModel(bag)
         self.addPointLight(self.model)
-        #self.addShader()
         self.shaderEnabled = 0
+        self.addShader()
         #self.addCollision()
         ##self.addParticle(self.model)
 
         base.enableParticles()
 
         self.particle = ParticleEffect()
-        #self.loadParticleConfig('../models/','spark.ptf')
+        self.loadParticleConfig('../models/','spark.ptf')
         #self.loadParticleConfig("spark.ptf")
 
         self.addActionCommand("ld")
+        self.type = "gears"
 
         #rotate by 0, 90, 180, or 270 degrees
         self.model.setR(random.randint(0,3)*90)

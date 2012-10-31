@@ -49,18 +49,19 @@ class PipeFire:
 
         ##self.addModel(bag)
         self.addPointLight(self.model)
-        #self.addShader()
         self.shaderEnabled = 0
+        self.addShader()        
         #self.addCollision()
         ##self.addParticle(self.model)
 
         base.enableParticles()
 
         self.particle = ParticleEffect()
-        #self.loadParticleConfig('../models/', 'fireish.ptf')
+        self.loadParticleConfig('../models/', 'fireish.ptf')
         #self.loadParticleConfig("fireish.ptf")
         
         self.addActionCommand("ud")
+        self.type = "fire"
 
         
         
