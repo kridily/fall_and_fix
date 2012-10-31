@@ -50,7 +50,7 @@ class PipeWires:
         ##self.addModel(bag)
         self.addPointLight(self.model)
         self.shaderEnabled = 0
-        self.addShader()        
+        #self.addShader()        
         #self.addCollision()
         ##self.addParticle(self.model)
 
@@ -103,17 +103,7 @@ class PipeWires:
         self.helper.reparentTo( pipe )
         render.setLight( self.light )
         ###
-        self.h = loader.loadModel("../models/sphere.egg.pz")
-        self.h.setColor( Vec4( 1, 1, 1, 1 ) )
-        self.h.setPos(0, 0, -100)
-        self.h.setScale(.25*40)
-        
-        self.plight = self.h.attachNewNode( PointLight( "self.plight" ) )
-        self.plight.node().setColor(VBase4(1, 1, 1, 1))
-        #self.plight.node().setAttenuation(Point3(1, 1, 1))
-        
-        render.setLight(self.plight)
-        self.h.reparentTo( pipe )
+        # sds
 
     ###def addModel(self, bag):
         """Adds the model to the pipe object"""        
@@ -164,7 +154,7 @@ class PipeWires:
 
         #remove pointLight from segment
         render.clearLight(self.light)
-        render.clearLight(self.plight)
+        #render.clearLight(self.plight)
         self.helper.removeNode()
 
         #remove pipe segment

@@ -50,7 +50,7 @@ class PipeFire:
         ##self.addModel(bag)
         self.addPointLight(self.model)
         self.shaderEnabled = 0
-        self.addShader()        
+        #self.addShader()        
         #self.addCollision()
         ##self.addParticle(self.model)
 

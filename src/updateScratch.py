@@ -175,8 +175,10 @@ def checkPipes2(self, task):
             self.pipeList.pop(0)
             
         #Enable shaders for the first two pipe segments
-        if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
-        if not self.pipeList[1].shaderEnabled: self.pipeList[1].addShader()
+        if self.pipeList[0].type != "fire" and not self.pipeList[0].shaderEnabled: 
+                self.pipeList[0].addShader()
+        if self.pipeList[1].type != "fire" and not self.pipeList[1].shaderEnabled: 
+                self.pipeList[1].addShader()
 
 
     return Task.cont

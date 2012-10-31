@@ -105,6 +105,7 @@ class World(DirectObject): #necessary to accept events
         #load spider
         self.spider = loader.loadModel("../models/spider.egg")
         self.spider.reparentTo(render)
+        self.spider.setShaderAuto()
         self.spider.setScale(.045)
         self.spider.setZ(4.25)
         self.spider.setH(180)
