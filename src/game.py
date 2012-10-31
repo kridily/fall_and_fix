@@ -95,10 +95,11 @@ class World(DirectObject): #necessary to accept events
 
         #Fog and changing background
         myFog = Fog("Fog Name")
-        myFog.setColor(0,0,0)
-        myFog.setExpDensity(.013)
+        f = 0.05
+        myFog.setColor(f,f,f)
+        myFog.setExpDensity(.008)
         render.setFog(myFog)
-        base.setBackgroundColor(0,0,0)
+        base.setBackgroundColor(f,f,f)
 
     def updateTimer(self,task):
         if self.TimerGoing == True:
@@ -142,6 +143,13 @@ class World(DirectObject): #necessary to accept events
         self.spider.setZ(4.25)
         self.spider.setH(180)
         self.spider.setP(-65)
+        
+        #load back panal
+        self.backPanal = loader.loadModel("../models/infinity.egg")
+        self.backPanal.reparentTo(render)
+        #self.spider.setScale(.045)
+        self.backPanal.setZ(4.25)
+        self.backPanal.setY(self.pipeInterval*5*.90)
 
 
 
