@@ -124,7 +124,7 @@ class World(DirectObject): #necessary to accept events
         if self.TimerGoing == True:
             self.TimeLeft = self.TimeLeft - globalClock.getDt()
             if self.TimeLeft <= 0:
-               print"-----------TIME UP!!!!!!!!!---------"
+                print"-----------TIME UP!!!!!!!!!---------"
                 print self.currentActionCommand.getCommand()
                 if self.currentActionCommand.isEmpty() == False:
                     self.playerStability = self.playerStability - 10
