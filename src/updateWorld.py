@@ -152,6 +152,7 @@ def checkPipes2(self, task):
         #Damage player if he didn't make it in time.
         if not self.pipeList[0].isCommandEmpty():
             self.playerStability = self.playerStability - 10
+            self.explosionSound.play()
         
         self.pipeCycle += 1
         print self.pipeCycle

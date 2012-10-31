@@ -201,6 +201,7 @@ class World(DirectObject): #necessary to accept events
         self.fixSound2 = loader.loadSfx("../audio/repair2.wav")
         self.fixSound3 = loader.loadSfx("../audio/repair3.wav")
         self.fixSound4 = loader.loadSfx("../audio/repair4.wav")
+        self.explosionSound = loader.loadSfx("../audio/explosion.wav")
         
             
     def setupLights(self):
