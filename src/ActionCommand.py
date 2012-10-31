@@ -57,8 +57,10 @@ class ActionCommand:
 
     def isEmpty(self):
         if self.CommandArray == []:
+            print "EMPTY"
             return True
         else:
+            print "NOT EMPTY"
             return False
 
     def getCommand(self):
@@ -66,6 +68,12 @@ class ActionCommand:
 
     def getOriginal(self):
         return self.Original
+
+    def resetCommand(self):
+        self.CommandArray = self.Original
+
+    def blankCommand(self):
+        self.CommandArray = []
 
 #DEBUG
 #AC = ActionCommand(5,['!','@','#','$','%'])

@@ -87,9 +87,12 @@ class World(DirectObject): #necessary to accept events
 
         self.accept("spider-and-tube_collision", self.pipeCollide)
 
-        self.DefaultTime = .2
+        self.DefaultTime = .8
         self.TimeLeft = self.DefaultTime
         self.TimerGoing = False
+
+        #Set game over thing
+        self.GameOver = False
 
         #Set gameplay variables to keep track of.
         self.gameScore = 0
@@ -112,6 +115,15 @@ class World(DirectObject): #necessary to accept events
             self.TimeLeft = self.TimeLeft - globalClock.getDt()
             if self.TimeLeft <= 0:
                 print"TIME UP!!!!!!!!!"
+                if self.currentActionCommand != []:
+                    self.playerStability = self.playerStability - 10
+                    if self.playerStability <= 0:
+                        if self.GameOver == False:
+                            #REPLACE TITLE.PNG WITH THE GAME OVER IMAGE!!!!!!
+                            self.gameOverScreen = OnscreenImage(image = '../images/Title.png', scale = (1.3333333,1,1))
+                            self.gameOverScreen.setTransparency(TransparencyAttrib.MAlpha)
+                            self.GameOver = True
+                            self.Hud.hide = True
                 self.currentActionCommand = []
                 self.TimeLeft = self.DefaultTime
                 self.TimerGoing = False
@@ -206,6 +218,7 @@ class World(DirectObject): #necessary to accept events
         self.currentPipe = self.getPipe(modelKey)
         print self.currentPipe.actionCommand.getCommand()
         self.currentActionCommand = self.currentPipe.actionCommand.getCommand()
+        self.currentPipe.actionCommand.blankCommand()
 
         print "------!!!!!!!!!!!!!------"
 
@@ -233,7 +246,7 @@ class World(DirectObject): #necessary to accept events
 
 
 
-import updateWorld_michael as updateWorld
+import updateWorld_Michael as updateWorld
 World.keyEvents = updateWorld.keyEvents
 World.adjustCamera = updateWorld.adjustCamera
 World.loopMusic = updateWorld.loopMusic
