@@ -29,7 +29,7 @@ class PipeGeneric:
     def __init__(self, bag):
 
         #SoundIntervals
-        base = ShowBase()
+        #base = ShowBase()
         self.sound = loader.loadSfx("../audio/steam.wav")
         self.sound.setLoop(True)
         self.sound.play()
@@ -103,6 +103,21 @@ class PipeGeneric:
         self.light.node().setSpecularColor( Vec4( 1 ) )
         self.helper.reparentTo( pipe )
         render.setLight( self.light )
+        
+        ##
+        self.h = loader.loadModel("../models/sphere.egg.pz")
+        self.h.setColor( Vec4( 1, 1, 1, 1 ) )
+        self.h.setPos(0, 0, -100)
+        self.h.setScale(.25*1)
+        
+        self.plight = self.h.attachNewNode( PointLight( "self.plight" ) )
+        self.plight.node().setColor(VBase4(1, 1, 1, 1))
+        self.plight.node().setAttenuation(Point3(1, 1, 1))
+        
+        render.setLight(self.plight)
+        self.h.reparentTo( pipe )
+        
+        
 
 
     ###def addModel(self, bag):
@@ -157,6 +172,7 @@ class PipeGeneric:
 
         #remove pointLight from segment
         render.clearLight(self.light)
+        render.clearLight(self.plight)
         self.helper.removeNode()
 
         #remove pipe segment

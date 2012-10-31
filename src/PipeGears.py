@@ -29,7 +29,7 @@ class PipeGeneric:
     def __init__(self, bag):
 
         #SoundIntervals
-        base = ShowBase()
+        #base = ShowBase()
         self.sound = loader.loadSfx("../audio/sparks.wav")
         self.sound.setLoop(True)
         self.sound.play()
