@@ -32,7 +32,7 @@ class PipeGeneric:
             self.shaderEnabled = 0
             #self.addCollision()
             #self.addParticle()
-            self.addActionCommand("lr")
+            self.addActionCommand("")
 
     def addPointLight(self, pipe):
         """create a point light for pipe"""

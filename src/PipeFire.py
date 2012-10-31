@@ -17,7 +17,7 @@ import math, sys, random, time
 from ActionCommand import *
 from GrabBag import *
 
-class PipeGeneric:
+class PipeFire:
     """
     Creates self contained pipe objects with methods that create,
     reference, and destroy models, collision tubes, lights,
@@ -26,7 +26,7 @@ class PipeGeneric:
 
 
 
-    def __init__(self, bag):
+    def __init__(self):
 
         #SoundIntervals
         #base = ShowBase()
@@ -34,14 +34,9 @@ class PipeGeneric:
         self.sound.setLoop(True)
         self.sound.play()
 
-
         #pick file
-        filename = ["../models/tunnel"]
-        filename.append(str(bag.pick()))
-        filename.append(".egg")
-        self.fileName = ''.join(filename)
         self.fileName = "../models/tunnelfire"
-        #"../models/tunnelsteam.egg"
+        
         #load model
         self.model = loader.loadModel(self.fileName)
         self.model.setScale(.0175)
@@ -61,9 +56,10 @@ class PipeGeneric:
         base.enableParticles()
 
         self.particle = ParticleEffect()
-        self.loadParticleConfig('../models/fireish.ptf')
-
-        self.addActionCommand("")
+        #self.loadParticleConfig("../models/fireish.ptf")
+        self.loadParticleConfig("fireish.ptf")
+        
+        self.addActionCommand("ud")
 
         
         
@@ -127,9 +123,8 @@ class PipeGeneric:
         
     ###def addModel(self, bag):
         """Adds the model to the pipe object"""
+        ####moved to init for some reason
 
-
-        ####
 
 
     def addShader(self):

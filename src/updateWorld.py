@@ -26,7 +26,12 @@ from direct.gui.OnscreenText import OnscreenText
 
 from ActionCommand import *
 from GrabBag import *
+from GameHud import *
 from PipeGeneric import *
+from PipeFire import *
+from PipeGears import *
+from PipeWires import *
+from PipeSteam import *
 
 
 import math, sys, random, time
@@ -115,13 +120,26 @@ def checkPipes(self, task):
     #print self.pipeDepth
     if self.pipeDepth < -1*self.pipeInterval:
         
-        #create new pipe segment
-        self.createPipe(-1, self.pipeList[0])    
+        self.pipeCycle += 1
+        # print self.pipeCycle
+        # print self.pipeCycle % 7
+        # print "\n"        
         
-        #destroy or recycle the old pipe
-        #self.pipeList[0].destroy()
-        self.pipeList.pop(0)            
-
+        #check pipe cycle state
+        if self.pipeCycle % 7 >= 2:
+        #recycle pipe
+            self.createPipe(-5, self.pipeList[0])
+            self.pipeList.pop(0)
+        elif self.pipeCycle % 7 == 0:
+        #spawn broken pipe            
+            type = self.pipeSpecialBag.pick() *-1
+            self.createPipe(type)
+            self.pipeList.pop(0)
+        elif self.pipeCycle % 7 == 1:
+        #spawn generic pipe            
+            self.createPipe(-6)
+            self.pipeList.pop(0)
+            
         #Enable shaders for the first two pipe segments
         if not self.pipeList[0].shaderEnabled: self.pipeList[0].addShader()
         if not self.pipeList[1].shaderEnabled: self.pipeList[1].addShader()
@@ -130,16 +148,48 @@ def checkPipes(self, task):
     return Task.cont
 
 def createPipe(self, i, pipe = False):
-
-    #set position in queue
-    if i >= 0:
-        #create new pipe
+    
+    if i >= 0: #only in initial world.loadModels()
+    #create new generic pipe
        pipe = PipeGeneric(self.pipeGenericBag)
+    #set position in queue
        pipe.model.setPos(0, i*self.pipeInterval, 4.25)
-    else:
+    elif i == -5:
+    #recycle pipe
         pipe.recycle()
         pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
         + self.pipeInterval, 4.25)
+    elif i == -6:
+    #create new generic pipe
+        pipe = PipeGeneric(self.pipeGenericBag)
+    #set position in queue
+        pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+        + self.pipeInterval, 4.25)
+    elif i == -1:
+    #create Steam pipe
+        pipe = PipeSteam()
+    #set position in queue
+        pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+        + self.pipeInterval, 4.25)    
+    elif i == -2:
+    #create Steam pipe
+        pipe = PipeWires()
+    #set position in queue
+        pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+        + self.pipeInterval, 4.25)    
+    elif i == -3:
+    #create Steam pipe
+        pipe = PipeGears()
+    #set position in queue
+        pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+        + self.pipeInterval, 4.25)    
+    elif i == -4:
+    #create Steam pipe
+        pipe = PipeFire()
+    #set position in queue
+        pipe.model.setPos(0, self.pipeList[self.pipeList.__len__()-1].model.getY() \
+        + self.pipeInterval, 4.25)
+        
 
     self.pipeList.append(pipe)
     #self.pipeGenericKeep.append(pipe)

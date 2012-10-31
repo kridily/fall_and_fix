@@ -17,7 +17,7 @@ import math, sys, random, time
 from ActionCommand import *
 from GrabBag import *
 
-class PipeGeneric:
+class PipeWires:
     """
     Creates self contained pipe objects with methods that create,
     reference, and destroy models, collision tubes, lights,
@@ -26,7 +26,7 @@ class PipeGeneric:
 
 
 
-    def __init__(self, bag):
+    def __init__(self):
 
         #SoundIntervals
         #base = ShowBase()
@@ -35,12 +35,8 @@ class PipeGeneric:
         self.sound.play()
 
         #pick file
-        filename = ["../models/tunnel"]
-        filename.append(str(bag.pick()))
-        filename.append(".egg")
-        self.fileName = ''.join(filename)
         self.fileName = "../models/tunnelwires"
-        #"../models/tunnelsteam.egg"
+        
         #load model
         self.model = loader.loadModel(self.fileName)
         self.model.setScale(.0175)
@@ -60,9 +56,10 @@ class PipeGeneric:
         base.enableParticles()
 
         self.particle = ParticleEffect()
-        self.loadParticleConfig('../models/spark.ptf')
+        #self.loadParticleConfig("../models/spark.ptf")
+        self.loadParticleConfig("spark.ptf")
 
-        self.addActionCommand("")
+        self.addActionCommand("ur")
 
         #rotate by 0, 90, 180, or 270 degrees
         self.model.setR(random.randint(0,3)*90)
@@ -117,10 +114,8 @@ class PipeGeneric:
         self.h.reparentTo( pipe )
 
     ###def addModel(self, bag):
-        """Adds the model to the pipe object"""
-
-
-        ####
+        """Adds the model to the pipe object"""        
+        ####moved to init for some reason
 
 
     def addShader(self):

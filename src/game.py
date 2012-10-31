@@ -11,10 +11,16 @@ from direct.interval.IntervalGlobal import * #for compound intervals
 from direct.filter.CommonFilters import *
 from direct.task import Task #for update functions
 import math, sys, random, time, os
+
 from ActionCommand import *
 from GrabBag import *
-from PipeGeneric import *
 from GameHud import *
+from PipeGeneric import *
+from PipeFire import *
+from PipeGears import *
+from PipeWires import *
+from PipeSteam import *
+
 
 
 from direct.gui.OnscreenText import OnscreenText
@@ -80,7 +86,7 @@ class World(DirectObject): #necessary to accept events
 
         self.accept("spider-and-tube_collision", self.pipeCollide)
 
-        self.DefaultTime = .2
+        self.DefaultTime = .5
         self.TimeLeft = self.DefaultTime
         self.TimerGoing = False
 
@@ -97,7 +103,7 @@ class World(DirectObject): #necessary to accept events
         myFog = Fog("Fog Name")
         f = 0.05
         myFog.setColor(f,f,f)
-        myFog.setExpDensity(.008)
+        myFog.setExpDensity(.01)
         render.setFog(myFog)
         base.setBackgroundColor(f,f,f)
 
@@ -116,15 +122,17 @@ class World(DirectObject): #necessary to accept events
     def loadModels(self):
         """loads initial models into the world"""
         #load pipes
-        self.numPipes = 6
-        self.numGenericTypes = 5
-        self.numSpecialPipes = 4
+        self.numPipes = 6 #number appearing on the stage at any given time
+        self.numGenericTypes = 5 #number of normal pipe models
+        self.numSpecialTypes = 4 #number of 'broken' pipe models
 
         self.pipeGenericBag = GrabBag(self.numGenericTypes)
+        self.pipeSpecialBag = GrabBag(self.numSpecialTypes)
         self.pipeList = []
         #self.pipeGenericKeep = []
-        self.pipeInterval = 20.25*3.05*.98 #length*timesLonger*overlapConstant
+        self.pipeInterval = 20.25*3.05#*.98 #length*timesLonger*overlapConstant
         self.pipeDepth = 0
+        self.pipeCycle = 1
 
 
         #create initial pipes
