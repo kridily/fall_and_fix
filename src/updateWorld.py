@@ -47,9 +47,9 @@ def keyEvents(self, task):
         for i in range(self.pipeList.__len__()):
             self.pipeList[i].model.setY(self.pipeList[i].model.getY() - dt*100*1.0)
     if self.keyMap["drop"] == 1:
-        for i in range(self.pipeList.__len__()):
-            pass
-            #self.pipeList[i].model.setR(self.pipeList[i].model.getR() + dt*20*i)
+        pass
+        # for i in range(self.pipeList.__len__()):            
+            # self.pipeList[i].model.setR(self.pipeList[i].model.getR() + dt*20*i)
 
     dist = .15#.135
     if self.keyMap["moveLeft"] == 1:

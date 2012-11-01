@@ -72,8 +72,8 @@ class World(DirectObject): #necessary to accept events
         
         
         #for "continuous" control
-        # self.accept("space", self.setKey, ["drop", 1])
-        # self.accept("space-up", self.setKey, ["drop", 0])
+        self.accept("space", self.setKey, ["drop", 0]) #disables debug stopping
+        self.accept("space-up", self.setKey, ["drop", 0])
         
         self.accept("arrow_up", self.setKey, ["actionUp", 1])
         self.accept("arrow_down", self.setKey, ["actionDown", 1])
