@@ -284,8 +284,6 @@ import updateWorld
 World.keyEvents = updateWorld.keyEvents
 World.adjustCamera = updateWorld.adjustCamera
 World.loopMusic = updateWorld.loopMusic
-# World.checkPipes = updateWorld.checkPipes
-# World.createPipe = updateWorld.createPipe
 World.checkPipes2 = updateWorld.checkPipes2
 World.createPipe2 = updateWorld.createPipe2
 
